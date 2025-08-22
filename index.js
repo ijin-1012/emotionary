@@ -114,3 +114,46 @@ document.addEventListener("DOMContentLoaded", () => {
     photoEl.value = "";
   });
 });
+
+// 모바일 터치 대응 이벤트
+function addClickOrTouchEvent(element, handler) {
+  element.addEventListener("click", handler);
+  element.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // 클릭과 중복 방지
+    handler(e);
+  });
+}
+
+// 달력 이전/다음 버튼
+addClickOrTouchEvent(document.getElementById("prevMonthBtn"), showPrevMonth);
+addClickOrTouchEvent(document.getElementById("nextMonthBtn"), showNextMonth);
+
+// 모달 닫기 버튼
+addClickOrTouchEvent(document.getElementById("closeModal"), () => {
+  document.getElementById("diaryModal").classList.add("hidden");
+});
+
+// 이미지 업로드 리사이즈 (선택)
+const photoInput = document.getElementById("photo");
+photoInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxWidth = 800; // 최대 가로 크기
+      const scaleSize = maxWidth / img.width;
+      canvas.width = maxWidth;
+      canvas.height = img.height * scaleSize;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        console.log("이미지 리사이즈 완료", blob);
+      }, file.type, 0.8);
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
