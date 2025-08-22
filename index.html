@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Emotionary</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- 로그인 화면 -->
+
+  <!-- =========================
+       로그인 화면
+  ========================= -->
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
       <h1>Emotionary</h1>
@@ -20,24 +22,28 @@
     </div>
   </div>
 
-  <!-- 메인 화면 -->
+  <!-- =========================
+       메인 화면
+  ========================= -->
   <div id="mainScreen" style="display:none;">
-    <header>⌨️ emotionary 🖱️</header>
+    <header>⌨️ Emotionary 🖱️</header>
+
     <nav class="nav">
       <button id="showHomeBtn">달력 🗓️</button>
       <button id="showWriteBtn">오늘의 하루 기록하기 ✒️</button>
     </nav>
 
+    <!-- 사용자 정보 -->
     <div class="user-info">
       <img id="userPhoto" style="display:none;" />
       <span id="userName"></span>
-      <button id="logoutBtn">로그아웃</button>
+      <button id="logoutBtn" style="display:none;">로그아웃</button>
     </div>
 
     <div id="todayDate" class="today-date"></div>
 
     <main class="container">
-      <!-- 📅 달력 -->
+      <!-- 달력 화면 -->
       <section id="calendarSection">
         <div class="calendar-header">
           <button id="prevMonthBtn">◀</button>
@@ -47,9 +53,10 @@
         <div id="calendarGrid" class="calendar-grid"></div>
       </section>
 
-      <!-- 📝 작성 -->
+      <!-- 작성 화면 -->
       <section id="writeScreen" style="display:none;">
         <section class="write-meta"></section>
+
         <label for="emotion">오늘의 감정:
           <select id="emotion">
             <option value="happy">😊 기쁨</option>
@@ -69,9 +76,9 @@
           </select>
         </label>
 
-        <label class="photo-upload" for="photo">📸 
-          <input type="file" id="photo" accept="image/*"> 
-        </label> 
+        <label class="photo-upload" for="photo">📸
+          <input type="file" id="photo" accept="image/*">
+        </label>
 
         <section class="diary-section">
           <textarea id="diary" placeholder="📖 오늘의 하루를 적어주세요 ✒️"></textarea>
@@ -91,15 +98,18 @@
         <div id="modalEmotion"></div>
         <div id="modalWeather"></div>
         <div id="modalDiary"></div>
-        <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;" />
+        <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
       </div>
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- =========================
+       Firebase SDK + 로그인 스크립트
+  ========================= -->
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
+  <script type="module" src="index.js"></script>
   <script>
     // Firebase 초기화
     const firebaseConfig = {
@@ -123,30 +133,50 @@
     // 로그인
     loginBtn.addEventListener("click", () => {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          const user = result.user;
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userName", user.displayName);
+          localStorage.setItem("userPhoto", user.photoURL);
+          showMainScreen(user);
+        })
+        .catch((error) => { console.error(error); alert("로그인 실패"); });
     });
 
     // 로그아웃
     logoutBtn.addEventListener("click", () => {
-      auth.signOut();
+      auth.signOut().then(() => {
+        localStorage.clear();
+        showLoginScreen();
+      });
     });
 
-    // 로그인 상태 변화 감지
+    // 페이지 로드 시 로그인 상태 확인
     auth.onAuthStateChanged((user) => {
-      if (user) {
-        loginScreen.style.display = "none";
-        mainScreen.style.display = "block";
-        userName.textContent = user.displayName;
-        userPhoto.src = user.photoURL;
-        userPhoto.style.display = "inline-block";
-      } else {
-        mainScreen.style.display = "none";
-        loginScreen.style.display = "flex";
-      }
+      if (user) showMainScreen(user);
+      else showLoginScreen();
     });
+
+    function showMainScreen(user) {
+      loginScreen.style.display = "none";
+      mainScreen.style.display = "block";
+      userName.textContent = user.displayName;
+      userPhoto.src = user.photoURL;
+      userPhoto.style.display = "inline-block";
+      logoutBtn.style.display = "inline-block";
+      loginBtn.style.display = "none";
+    }
+
+    function showLoginScreen() {
+      loginScreen.style.display = "flex";
+      mainScreen.style.display = "none";
+      userPhoto.style.display = "none";
+      logoutBtn.style.display = "none";
+      loginBtn.style.display = "inline-block";
+      userName.textContent = "";
+    }
   </script>
 
-  <script src="script.js"></script>
-  <script type="module" src="index.js"></script>
 </body>
 </html>

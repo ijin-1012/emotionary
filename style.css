@@ -1,537 +1,35 @@
-/* 전체 배경 및 기본 텍스트 */
-body {
-  background-color: #ffffff;
-  color: #222222;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-/* 헤더 */
-header {
-  background-color: #fefefe;
-  padding: 20px;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #222222;
-  border-bottom: 2px solid #dddddd; 
-}
-
-/* 내비게이션 버튼 */
-nav.nav {
-  text-align: center;
-  margin: 15px 0;
-}
-
-nav.nav button {
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  color: #222222;
-  font-size: 1.1rem;
-  padding: 10px 20px;
-  margin: 0 8px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-nav.nav button:hover {
-  background-color: #eaeaea;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-/* 오늘 날짜 표시 */
-.today-date {
-  text-align: center;
-  margin: 10px 0;
-  font-size: 1.2rem;
-  color: #444444;
-}
-
-/* 메인 컨테이너 */
-.container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 15px;
-}
-
-/* 달력 헤더 */
-.calendar-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f5f5f5;
-  padding: 10px 15px;
-  color: #222222;
-  border-radius: 6px 6px 0 0;
-  position: relative;
-  user-select: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-/* 이전/다음 버튼 */
-.calendar-header button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #e0e0e0;
-  border: none;
-  color: #222222;
-  font-size: 1.3rem;
-  padding: 5px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-#prevMonthBtn { left: 10px; }
-#nextMonthBtn { right: 10px; }
-
-.calendar-header button:hover {
-  background-color: #cccccc;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-}
-
-
-/* 중앙 연도/월 텍스트 */
-#calendarTitle {
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #222222;
-}
-
-/* 달력 그리드 */
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  background-color: #fafafa;
-  padding: 10px;
-  border-radius: 0 0 6px 6px;
-}
-
-.calendar-grid > div:nth-child(-n+7) {
-  text-align: center;
-  font-weight: 600;
-  color: #000000 !important; /* 요일 색상 */
-  border-bottom: 1.5px solid #dddddd;
-}
-
-.calendar-grid > div:not(:nth-child(-n+7)) {
-  background-color: #ffffff;
-  border-radius: 12px;
-  text-align: center;
-  padding: 10px 6px;
-  cursor: pointer;
-  color: #333333;
-  font-weight: 600;
-  min-height: 56px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  transition: all 0.25s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.calendar-grid > div:not(:nth-child(-n+7)):hover {
-  background-color: #f5f5f5;
-  color: #111111 !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-
-/* 작성 화면 전체 */
-#writeScreen {
-  background-color: #fdfdfd;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.05);
-  transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.5s ease;
-  color: #222222;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 감정/날씨/사진 선택 박스 */
-.write-meta {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  font-weight: 700;
-  color: #222222;
-}
-
-/* select 박스 */
-.write-meta select {
-  padding: 8px 12px;                   /* 패딩 약간 증가 */
-  border-radius: 12px;                  /* 라운드 강화 */
-  border: 1.5px solid #ccc;             /* 연한 회색 테두리 */
-  background-color: #fff;
-  color: #222222;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.write-meta select:hover,
-.write-meta select:focus {
-  border-color: #888;
-  background-color: #f9f9f9;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-/* 사진 업로드 버튼 */
-.photo-upload {
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 16px;
-  color: #222222;
-  background-color: #f5f5f5;
-  padding: 8px 16px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.photo-upload:hover {
-  background-color: #eaeaea;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.photo-upload input[type="file"] {
-  display: none;
-}
-
-
-/* 일기 입력 텍스트 박스 */
-.diary-section textarea {
-  width: 100%;
-  max-width: 600px;
-  height: 140px;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  background-color: #ffffff;
-  color: #222222;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  resize: vertical;
-  box-shadow: inset 0 0 5px #eee;
-  transition: border-color 0.3s ease;
-}
-
-.diary-section textarea:focus {
-  border-color: #888;
-  outline: none;
-}
-
-/* 기록하기 버튼 */
-.save-section {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-#saveBtn {
-  background-color: #eee;
-  border: none;
-  color: #222222;
-  font-size: 1.1rem;
-  padding: 10px 30px;
-  margin: 0 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
-}
-
-#saveBtn:hover {
-  background-color: #ddd;
-}
-
-#saveBtn:active {
-  transform: scale(0.97);
-  background-color: #ccc;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-}
-
-#saveBtn:focus {
-  outline: 2px solid #888;
-  outline-offset: 3px;
-}
-
-/* 감정별 테마 */
-#writeScreen.happy-theme {
-  box-shadow: 0 0 12px 3px rgba(255, 223, 93, 0.7), 0 0 30px 6px rgba(255, 223, 93, 0.4);
-  border: 2px solid rgba(255, 223, 93, 0.8);
-  color: #222222;
-}
-
-#writeScreen.sad-theme {
-  box-shadow: 0 0 12px 3px rgba(100, 149, 237, 0.7), 0 0 30px 6px rgba(100, 149, 237, 0.4);
-  border: 2px solid rgba(100, 149, 237, 0.8);
-  color: #222222;
-}
-
-#writeScreen.angry-theme {
-  box-shadow: 0 0 12px 3px rgba(244, 67, 54, 0.7), 0 0 30px 6px rgba(244, 67, 54, 0.4);
-  border: 2px solid rgba(244, 67, 54, 0.8);
-  color: #222222;
-}
-
-#writeScreen.tired-theme {
-  box-shadow: 0 0 12px 3px rgba(156, 39, 176, 0.7), 0 0 30px 6px rgba(156, 39, 176, 0.4);
-  border: 2px solid rgba(156, 39, 176, 0.8);
-  color: #222222;
-}
-
-/* 내부 textarea 색상 */
-#writeScreen.happy-theme textarea,
-#writeScreen.sad-theme textarea,
-#writeScreen.angry-theme textarea,
-#writeScreen.tired-theme textarea {
-  background-color: #fdfdfd;
-  color: #222222;
-  border: 1px solid #ccc;
-}
-
-/* 모달 */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background-color: #ffffff;
-  color: #222222;
-  padding: 25px 35px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 480px;
-  box-shadow: 0 0 10px #ccc;
-  position: relative;
-  user-select: text;
-}
-
-.close {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  font-size: 1.6rem;
-  cursor: pointer;
-  color: #222222;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.close:hover {
-  color: #000;
-  transform: scale(1.1);
-}
-
-#modalDate {
-  font-weight: 700;
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-  color: #222222;
-}
-
-#modalEmotion {
-  font-size: 2.4rem;
-  margin-bottom: 15px;
-}
-
-#modalDiary {
-  white-space: pre-wrap;
-  line-height: 1.5;
-  font-size: 1.1rem;
-  color: #333333;
-}
-
-/* 감정별 달력 테두리 효과 */
-.calendar-cell.happy {
-  border: 2px solid rgba(255, 223, 93, 0.8);
-  box-shadow: 0 0 8px 2px rgba(255, 223, 93, 0.3);
-  border-radius: 8px;
-}
-
-.calendar-cell.sad {
-  border: 2px solid rgba(100, 149, 237, 0.8);
-  box-shadow: 0 0 8px 2px rgba(100, 149, 237, 0.3);
-  border-radius: 8px;
-}
-
-.calendar-cell.angry {
-  border: 2px solid rgba(244, 67, 54, 0.8);
-  box-shadow: 0 0 8px 2px rgba(244, 67, 54, 0.3);
-  border-radius: 8px;
-}
-
-.calendar-cell.tired {
-  border: 2px solid rgba(156, 39, 176, 0.8);
-  box-shadow: 0 0 8px 2px rgba(156, 39, 176, 0.3);
-  border-radius: 8px;
-}
-
-/* 상단 사용자 정보 */
-.user-info {
-  position: absolute;
-  top: 16px;
-  right: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  z-index: 100;
-}
-
-.user-info img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid #ffffff88;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  object-fit: cover;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.user-info img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-.user-info span {
-  color: #222222;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.user-info button {
-  padding: 6px 14px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #ffb066, #ff9043);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.user-info button:hover {
-  background: linear-gradient(135deg, #ff9043, #ff7a22);
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255,120,75,0.4);
-}
-
-/* 모바일 기본 대응 */
-body, html {
-  width: 100%;
-  height: 100%;
+/* =========================
+   공통 기본 스타일
+========================= */
+html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 16px;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  width: 100%;
-}
-
-/* 캘린더 반응형 */
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  width: 100%;
-}
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-/* 버튼 반응형 */
-button {
-  padding: 10px;
-  font-size: 1rem;
-  min-width: 48px;
-  touch-action: manipulation; /* 모바일 터치 대응 */
-}
-
-/* textarea, select, input 반응형 */
-textarea, select, input[type="file"] {
-  width: 100%;
-  max-width: 100%;
-  font-size: 1rem;
-  margin-bottom: 10px;
-}
-
-/* 사용자 정보 표시 */
-.user-info img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  vertical-align: middle;
-  margin-right: 5px;
-}
-
-.user-info span, .user-info button {
-  vertical-align: middle;
-}
-
-/* 모달 반응형 */
-.modal-content {
-  width: 90%;
-  max-width: 400px;
-  margin: auto;
-  padding: 10px;
-}
-
-/* ---------------- 로그인 화면 스타일 ---------------- */
-body {
-  margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
-  background: linear-gradient(135deg, #a8edea, #fed6e3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  width: 100%;
+  min-height: 100%;
+  background: #ffffff;
+  color: #222222;
 }
 
+/* 버튼 공통 */
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+/* =========================
+   로그인 화면
+========================= */
 .login-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh; /* 화면 전체 */
   width: 100%;
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
 }
 
 .login-box {
@@ -540,14 +38,15 @@ body {
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0,0,0,0.15);
   width: 360px;
+  max-width: 90%;
   text-align: center;
 }
 
 .login-box h1 {
   margin-bottom: 20px;
   font-size: 28px;
-  color: #333;
   font-weight: 700;
+  color: #333;
 }
 
 .login-desc {
@@ -567,13 +66,9 @@ body {
   border: 1px solid #ddd;
   padding: 14px;
   border-radius: 8px;
-  cursor: pointer;
   font-weight: 600;
   font-size: 16px;
   width: 100%;
-  box-sizing: border-box;
-  margin: 0 auto;
-  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .google-btn img {
@@ -584,4 +79,226 @@ body {
 .google-btn:hover {
   background-color: #f7f7f7;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   메인 화면
+========================= */
+
+/* 헤더 */
+header {
+  background-color: #fefefe;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+/* 내비게이션 */
+nav.nav {
+  text-align: center;
+  margin: 15px 0;
+}
+nav.nav button {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 10px 20px;
+  margin: 0 8px;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+nav.nav button:hover {
+  background-color: #eaeaea;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* 오늘 날짜 */
+.today-date {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+/* 컨테이너 */
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 15px;
+  max-width: 700px;
+}
+
+/* 캘린더 헤더 */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 6px 6px 0 0;
+  font-weight: 600;
+}
+
+.calendar-header button {
+  background-color: #e0e0e0;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 1.3rem;
+}
+.calendar-header button:hover {
+  background-color: #ccc;
+}
+
+/* 달력 그리드 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  padding: 10px;
+  border-radius: 0 0 6px 6px;
+  background-color: #fafafa;
+}
+.calendar-grid > div:nth-child(-n+7) {
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 1.5px solid #ddd;
+}
+.calendar-grid > div:not(:nth-child(-n+7)) {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 56px;
+  font-weight: 600;
+}
+
+/* 작성 화면 */
+#writeScreen {
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 감정/날씨/사진 */
+.write-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+.write-meta select {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #ccc;
+  background-color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 사진 업로드 */
+.photo-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+.photo-upload input[type="file"] {
+  display: none;
+}
+
+/* 일기 입력창 */
+.diary-section textarea {
+  width: 100%;
+  max-width: 600px;
+  height: 140px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+}
+
+/* 기록 버튼 */
+.save-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+#saveBtn {
+  background-color: #eee;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
+#saveBtn:hover {
+  background-color: #ddd;
+}
+#saveBtn:active {
+  transform: scale(0.97);
+}
+
+/* 상단 사용자 정보 */
+.user-info {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.user-info span {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.user-info button {
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ffb066, #ff9043);
+  color: white;
+  font-weight: 600;
+}
+
+/* 모달 */
+.modal-content {
+  width: 90%;
+  max-width: 400px;
+}
+
+/* =========================
+   모바일 대응
+========================= */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+  nav.nav button {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  .diary-section textarea {
+    height: 120px;
+  }
+  .calendar-grid > div:not(:nth-child(-n+7)) {
+    min-height: 48px;
+    font-size: 0.9rem;
+  }
 }
