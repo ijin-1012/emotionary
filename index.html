@@ -8,9 +8,7 @@
 </head>
 <body>
 
-  <!-- =========================
-       로그인 화면
-  ========================= -->
+  <!-- 로그인 화면 -->
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
       <h1>Emotionary</h1>
@@ -22,9 +20,7 @@
     </div>
   </div>
 
-  <!-- =========================
-       메인 화면
-  ========================= -->
+  <!-- 메인 화면 -->
   <div id="mainScreen" style="display:none;">
     <header>⌨️ Emotionary 🖱️</header>
 
@@ -33,7 +29,6 @@
       <button id="showWriteBtn">오늘의 하루 기록하기 ✒️</button>
     </nav>
 
-    <!-- 사용자 정보 -->
     <div class="user-info">
       <img id="userPhoto" style="display:none;" />
       <span id="userName"></span>
@@ -56,7 +51,6 @@
       <!-- 작성 화면 -->
       <section id="writeScreen" style="display:none;">
         <section class="write-meta"></section>
-
         <label for="emotion">오늘의 감정:
           <select id="emotion">
             <option value="happy">😊 기쁨</option>
@@ -103,80 +97,11 @@
     </div>
   </div>
 
-  <!-- =========================
-       Firebase SDK + 로그인 스크립트
-  ========================= -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
+  <!-- index.js -->
   <script type="module" src="index.js"></script>
-  <script>
-    // Firebase 초기화
-    const firebaseConfig = {
-      apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
-      authDomain: "emotionary-7eb12.firebaseapp.com",
-      projectId: "emotionary-7eb12",
-      storageBucket: "emotionary-7eb12.appspot.com",
-      messagingSenderId: "811615110413",
-      appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    const loginScreen = document.getElementById("loginScreen");
-    const mainScreen = document.getElementById("mainScreen");
-    const loginBtn = document.getElementById("googleLoginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const userName = document.getElementById("userName");
-    const userPhoto = document.getElementById("userPhoto");
-
-    // 로그인
-    loginBtn.addEventListener("click", () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          const user = result.user;
-          localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("userName", user.displayName);
-          localStorage.setItem("userPhoto", user.photoURL);
-          showMainScreen(user);
-        })
-        .catch((error) => { console.error(error); alert("로그인 실패"); });
-    });
-
-    // 로그아웃
-    logoutBtn.addEventListener("click", () => {
-      auth.signOut().then(() => {
-        localStorage.clear();
-        showLoginScreen();
-      });
-    });
-
-    // 페이지 로드 시 로그인 상태 확인
-    auth.onAuthStateChanged((user) => {
-      if (user) showMainScreen(user);
-      else showLoginScreen();
-    });
-
-    function showMainScreen(user) {
-      loginScreen.style.display = "none";
-      mainScreen.style.display = "block";
-      userName.textContent = user.displayName;
-      userPhoto.src = user.photoURL;
-      userPhoto.style.display = "inline-block";
-      logoutBtn.style.display = "inline-block";
-      loginBtn.style.display = "none";
-    }
-
-    function showLoginScreen() {
-      loginScreen.style.display = "flex";
-      mainScreen.style.display = "none";
-      userPhoto.style.display = "none";
-      logoutBtn.style.display = "none";
-      loginBtn.style.display = "inline-block";
-      userName.textContent = "";
-    }
-  </script>
-
 </body>
 </html>
