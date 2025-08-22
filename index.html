@@ -16,12 +16,75 @@
   <button id = "showWriteBtn">오늘의 하루 기록하기 ✒️</button>
 </nav>
 
-<!-- 사용자 정보 표시-->
- <div class="user-info">
-  <img id="userPhoto" />
+<!-- 사용자 정보 표시 -->
+<div class="user-info">
+  <img id="userPhoto" style="display:none;" />
   <span id="userName"></span>
-  <button id="logoutBtn">로그아웃</button>
- </div>
+  <button id="logoutBtn" style="display:none;">로그아웃</button>
+  <button id="googleLoginBtn">Google로 로그인</button>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+<script>
+  // Firebase 초기화
+  const firebaseConfig = {
+    apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
+    authDomain: "emotionary-7eb12.firebaseapp.com",
+    projectId: "emotionary-7eb12",
+    storageBucket: "emotionary-7eb12.appspot.com",
+    messagingSenderId: "811615110413",
+    appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  const loginBtn = document.getElementById("googleLoginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userName = document.getElementById("userName");
+  const userPhoto = document.getElementById("userPhoto");
+
+  // 로그인
+  loginBtn.addEventListener("click", () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        userName.textContent = user.displayName;
+        userPhoto.src = user.photoURL;
+        userPhoto.style.display = "inline-block";
+        logoutBtn.style.display = "inline-block";
+        loginBtn.style.display = "none";
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("로그인 실패");
+      });
+  });
+
+  // 로그아웃
+  logoutBtn.addEventListener("click", () => {
+    auth.signOut().then(() => {
+      userName.textContent = "";
+      userPhoto.style.display = "none";
+      logoutBtn.style.display = "none";
+      loginBtn.style.display = "inline-block";
+    });
+  });
+
+  // 페이지 로드 시 이미 로그인되어 있으면 정보 표시
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      userName.textContent = user.displayName;
+      userPhoto.src = user.photoURL;
+      userPhoto.style.display = "inline-block";
+      logoutBtn.style.display = "inline-block";
+      loginBtn.style.display = "none";
+    }
+  });
+</script>
 
  <div id="todayDate" class="today-date"></div>
 
