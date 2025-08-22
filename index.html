@@ -1,158 +1,152 @@
 <!DOCTYPE html>
-<html lang = 'ko'>
+<html lang="ko">
 <head>
-  <meta charset = "UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title> emotinary </title>
-  <link rel = "stylesheet" href = "style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emotionary</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-<script type="module" src="index.js"></script>
+  <!-- 로그인 화면 -->
+  <div id="loginScreen" class="login-wrapper">
+    <div class="login-box">
+      <h1>Emotionary</h1>
+      <p class="login-desc">Google 계정으로 간편하게 로그인하세요</p>
+      <button id="googleLoginBtn" class="google-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+        Google 계정으로 로그인
+      </button>
+    </div>
+  </div>
 
-<header>⌨️ emotionary 🖱️</header>
+  <!-- 메인 화면 -->
+  <div id="mainScreen" style="display:none;">
+    <header>⌨️ emotionary 🖱️</header>
+    <nav class="nav">
+      <button id="showHomeBtn">달력 🗓️</button>
+      <button id="showWriteBtn">오늘의 하루 기록하기 ✒️</button>
+    </nav>
 
-<nav class="nav">
-  <button id="showHomeBtn">달력 🗓️</button>
-  <button id = "showWriteBtn">오늘의 하루 기록하기 ✒️</button>
-</nav>
+    <div class="user-info">
+      <img id="userPhoto" style="display:none;" />
+      <span id="userName"></span>
+      <button id="logoutBtn">로그아웃</button>
+    </div>
 
-<!-- 사용자 정보 표시 -->
-<div class="user-info">
-  <img id="userPhoto" style="display:none;" />
-  <span id="userName"></span>
-  <button id="logoutBtn" style="display:none;">로그아웃</button>
-  <button id="googleLoginBtn">Google로 로그인</button>
-</div>
+    <div id="todayDate" class="today-date"></div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <main class="container">
+      <!-- 📅 달력 -->
+      <section id="calendarSection">
+        <div class="calendar-header">
+          <button id="prevMonthBtn">◀</button>
+          <span id="calendarTitle"></span>
+          <button id="nextMonthBtn">▶</button>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
 
-<script>
-  // Firebase 초기화
-  const firebaseConfig = {
-    apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
-    authDomain: "emotionary-7eb12.firebaseapp.com",
-    projectId: "emotionary-7eb12",
-    storageBucket: "emotionary-7eb12.appspot.com",
-    messagingSenderId: "811615110413",
-    appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+      <!-- 📝 작성 -->
+      <section id="writeScreen" style="display:none;">
+        <section class="write-meta"></section>
+        <label for="emotion">오늘의 감정:
+          <select id="emotion">
+            <option value="happy">😊 기쁨</option>
+            <option value="sad">😭 슬픔</option>
+            <option value="angry">😡 분노</option>
+            <option value="tired">😴 피곤</option>
+          </select>
+        </label>
 
-  const loginBtn = document.getElementById("googleLoginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const userName = document.getElementById("userName");
-  const userPhoto = document.getElementById("userPhoto");
+        <label for="weather">오늘의 날씨:
+          <select id="weather">
+            <option value="sunny">☀️ 맑음</option>
+            <option value="cloudy">☁️ 흐림</option>
+            <option value="rainy">☔ 비</option>
+            <option value="snowy">❄️ 눈</option>
+            <option value="windy">💨 바람</option>
+          </select>
+        </label>
 
-  // 로그인
-  loginBtn.addEventListener("click", () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then((result) => {
-        const user = result.user;
+        <label class="photo-upload" for="photo">📸 
+          <input type="file" id="photo" accept="image/*"> 
+        </label> 
+
+        <section class="diary-section">
+          <textarea id="diary" placeholder="📖 오늘의 하루를 적어주세요 ✒️"></textarea>
+        </section>
+
+        <section class="save-section">
+          <button id="saveBtn">기록하기</button>
+        </section>
+      </section>
+    </main>
+
+    <!-- 모달 -->
+    <div id="diaryModal" class="modal hidden">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modalDate"></div>
+        <div id="modalEmotion"></div>
+        <div id="modalWeather"></div>
+        <div id="modalDiary"></div>
+        <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase 초기화
+    const firebaseConfig = {
+      apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
+      authDomain: "emotionary-7eb12.firebaseapp.com",
+      projectId: "emotionary-7eb12",
+      storageBucket: "emotionary-7eb12.appspot.com",
+      messagingSenderId: "811615110413",
+      appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginScreen = document.getElementById("loginScreen");
+    const mainScreen = document.getElementById("mainScreen");
+    const loginBtn = document.getElementById("googleLoginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userName = document.getElementById("userName");
+    const userPhoto = document.getElementById("userPhoto");
+
+    // 로그인
+    loginBtn.addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider);
+    });
+
+    // 로그아웃
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut();
+    });
+
+    // 로그인 상태 변화 감지
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        loginScreen.style.display = "none";
+        mainScreen.style.display = "block";
         userName.textContent = user.displayName;
         userPhoto.src = user.photoURL;
         userPhoto.style.display = "inline-block";
-        logoutBtn.style.display = "inline-block";
-        loginBtn.style.display = "none";
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("로그인 실패");
-      });
-  });
-
-  // 로그아웃
-  logoutBtn.addEventListener("click", () => {
-    auth.signOut().then(() => {
-      userName.textContent = "";
-      userPhoto.style.display = "none";
-      logoutBtn.style.display = "none";
-      loginBtn.style.display = "inline-block";
+      } else {
+        mainScreen.style.display = "none";
+        loginScreen.style.display = "flex";
+      }
     });
-  });
+  </script>
 
-  // 페이지 로드 시 이미 로그인되어 있으면 정보 표시
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      userName.textContent = user.displayName;
-      userPhoto.src = user.photoURL;
-      userPhoto.style.display = "inline-block";
-      logoutBtn.style.display = "inline-block";
-      loginBtn.style.display = "none";
-    }
-  });
-</script>
-
- <div id="todayDate" class="today-date"></div>
-
- <main class="container">
-  <!-- 📅 달력 화면 -->
-   <section id="calendarSection">
-    <div class="calendar-header">
-    <button id="prevMonthBtn">◀</button>
-    <span id="calendarTitle"></span>
-    <button id="nextMonthBtn">▶</button>
-    </div>
-    <div id="calendarGrid" class="calendar-grid"></div>
-   </section>
-
-  <!-- 📝 작성 화면 -->
-<section id="writeScreen" style="display: none;">
-  <!-- 감정/날씨/사진 선택 한 줄 중앙 정렬 -->
-  <section class="write-meta"></section>
-  <label for="emotion">오늘의 감정 :
-    <select id="emotion">
-      <option value="happy">😊 기쁨</option> 
-      <option value="sad">😭 슬픔</option> 
-      <option value="angry">😡 분노</option> 
-      <option value="tired">😴 피곤</option>
-    </select>
-  </label>  
-
-  <label for="weather">오늘의 날씨 : 
-    <select id="weather"> 
-      <option value="sunny">☀️ 맑음</option> 
-      <option value="cloudy">☁️ 흐림</option> 
-      <option value="rainy">☔ 비</option> 
-      <option value="snowy">❄️ 눈</option> 
-      <option value="windy">💨 바람</option> 
-    </select> 
-  </label>
-
-  <label class="photo-upload" for="photo">📸 
-    <input type="file" id="photo" accept="image/*"> 
-  </label> 
-
-  <!-- 일기 입력창 -->
-  <section class="diary-section">
-    <textarea id="diary" placeholder="📖 오늘의 하루를 적어주세요 ✒️"></textarea>
-  </section>
-
-  <!-- 기록하기 버튼 -->
-  <section class="save-section">
-    <button id="saveBtn">기록하기</button>
-  </section>
-</section>
-
- </main>
-
- <!-- 모달 --> 
-  <div id="diaryModal" class="modal hidden"> 
-    <div class="modal-content"> 
-      <span id="closeModal" class="close">&times;
-      </span> 
-      <div id="modalDate">
-      </div> <div id="modalEmotion">
-      </div> <div id="modalWeather">
-      </div> <div id="modalDiary">
-      </div> <img id="modalImage" style="max-width: 100%; margin-top: 15px; border-radius: 10px; display: none;" />
-     </div> 
-    </div>
-
-    <script src="script.js"></script> 
-    <script type="module" src="index.js"></script>
+  <script src="script.js"></script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>

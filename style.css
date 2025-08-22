@@ -515,3 +515,73 @@ textarea, select, input[type="file"] {
   margin: auto;
   padding: 10px;
 }
+
+/* ---------------- 로그인 화면 스타일 ---------------- */
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.login-box {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  width: 360px;
+  text-align: center;
+}
+
+.login-box h1 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+  font-weight: 700;
+}
+
+.login-desc {
+  margin-bottom: 30px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 구글 로그인 버튼 */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.google-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.google-btn:hover {
+  background-color: #f7f7f7;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
