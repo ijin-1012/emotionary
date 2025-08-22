@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang = 'ko'>
+<head>
+  <meta charset = "UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> emotinary </title>
+  <link rel = "stylesheet" href = "style.css" />
+</head>
+<body>
+<script type="module" src="index.js"></script>
+
+<header>⌨️ emotionary 🖱️</header>
+
+<nav class="nav">
+  <button id="showHomeBtn">달력 🗓️</button>
+  <button id = "showWriteBtn">오늘의 하루 기록하기 ✒️</button>
+</nav>
+
+<!-- 사용자 정보 표시-->
+ <div class="user-info">
+  <img id="userPhoto" />
+  <span id="userName"></span>
+  <button id="logoutBtn">로그아웃</button>
+ </div>
+
+ <div id="todayDate" class="today-date"></div>
+
+ <main class="container">
+  <!-- 📅 달력 화면 -->
+   <section id="calendarSection">
+    <div class="calendar-header">
+    <button id="prevMonthBtn">◀</button>
+    <span id="calendarTitle"></span>
+    <button id="nextMonthBtn">▶</button>
+    </div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+   </section>
+
+  <!-- 📝 작성 화면 -->
+<section id="writeScreen" style="display: none;">
+  <!-- 감정/날씨/사진 선택 한 줄 중앙 정렬 -->
+  <section class="write-meta"></section>
+  <label for="emotion">오늘의 감정 :
+    <select id="emotion">
+      <option value="happy">😊 기쁨</option> 
+      <option value="sad">😭 슬픔</option> 
+      <option value="angry">😡 분노</option> 
+      <option value="tired">😴 피곤</option>
+    </select>
+  </label>  
+
+  <label for="weather">오늘의 날씨 : 
+    <select id="weather"> 
+      <option value="sunny">☀️ 맑음</option> 
+      <option value="cloudy">☁️ 흐림</option> 
+      <option value="rainy">☔ 비</option> 
+      <option value="snowy">❄️ 눈</option> 
+      <option value="windy">💨 바람</option> 
+    </select> 
+  </label>
+
+  <label class="photo-upload" for="photo">📸 
+    <input type="file" id="photo" accept="image/*"> 
+  </label> 
+
+  <!-- 일기 입력창 -->
+  <section class="diary-section">
+    <textarea id="diary" placeholder="📖 오늘의 하루를 적어주세요 ✒️"></textarea>
+  </section>
+
+  <!-- 기록하기 버튼 -->
+  <section class="save-section">
+    <button id="saveBtn">기록하기</button>
+  </section>
+</section>
+
+ </main>
+
+ <!-- 모달 --> 
+  <div id="diaryModal" class="modal hidden"> 
+    <div class="modal-content"> 
+      <span id="closeModal" class="close">&times;
+      </span> 
+      <div id="modalDate">
+      </div> <div id="modalEmotion">
+      </div> <div id="modalWeather">
+      </div> <div id="modalDiary">
+      </div> <img id="modalImage" style="max-width: 100%; margin-top: 15px; border-radius: 10px; display: none;" />
+     </div> 
+    </div>
+
+    <script src="script.js"></script> 
+    <script type="module" src="index.js"></script>
+</body>
+</html>
