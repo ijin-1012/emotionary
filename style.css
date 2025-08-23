@@ -168,59 +168,94 @@ nav.nav button {
     0 0 70px #ff6ec7;
   transform: scale(1.08); /* 살짝 확대 효과 */
 }
-
-/* 작성 화면 */
+/* 작성 화면 개선 */
 #writeScreen {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 */
-  gap: 15px;               /* 항목 간 간격 */
+  align-items: stretch; /* 전체 폭 사용 */
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, .05);
-  width: 100%;
-  max-width: 750px;        /* 최대 넓이 */
+  box-shadow: 0 0 20px rgba(0,0,0,0.08);
+  max-width: 800px;
   margin: 0 auto;
+  gap: 20px;
+  background: #fffaf0; /* 약간 따뜻한 배경 */
 }
-/* 선택 항목 한 줄로 */
+
+/* 감정, 날씨, 사진 한 줄 배치 */
 .selection-row {
   display: flex;
+  align-items: center;
   gap: 15px;
-  margin-bottom: 15px;
-  flex-wrap: wrap; /* 화면 작을 때 자동 줄바꿈 */
+  flex-wrap: wrap; /* 화면 작을 때 줄바꿈 */
 }
-.photo-upload { 
-  cursor: pointer; 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 6px; 
-  padding: 8px 16px; 
-  border-radius: 12px; 
-  background: #f5f5f5; 
+
+.selection-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.selection-row select,
+.selection-row input[type="file"] {
+  padding: 6px 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 0.95rem;
 }
-/* 일기 입력창 가로로 넓게 */
+
+/* 사진 업로드 버튼 스타일 */
+.photo-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.photo-upload input {
+  display: none;
+}
+
+/* 일기 입력창 */
 .diary-section textarea {
   width: 100%;
-  max-width: 700px;
   height: 180px;
   padding: 14px;
   border-radius: 12px;
   border: 1px solid #ccc;
-  resize: vertical; /* 세로만 조절 가능 */
-}
-.save-section {
-  display: flex;
-  justify-content: flex-end; /* 오른쪽 끝으로 */
-  width: 100%;
-  margin-top: 10px;
+  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.5;
+  background: #fffef8;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
 }
 
-#saveBtn { 
-  padding: 10px 30px; 
-  border-radius: 10px; 
-  background: #eee; 
-  font-size: 1.1rem; 
+/* 저장 버튼 */
+.save-section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#saveBtn {
+  padding: 10px 30px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#ffb066,#ff9043);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#saveBtn:hover {
+  transform: scale(1.05);
 }
 
 /* 사용자 정보 */
