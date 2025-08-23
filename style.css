@@ -168,7 +168,6 @@ nav.nav button {
     0 0 70px #ff6ec7;
   transform: scale(1.08); /* 살짝 확대 효과 */
 }
-
 /* 작성 화면 전체 */
 #writeScreen {
   display: flex;
@@ -176,46 +175,39 @@ nav.nav button {
   align-items: center;
   width: 100%;
   max-width: 800px;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 30px 20px;
   gap: 20px;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.08);
   background: #fffaf0;
-  box-sizing: border-box;
-}
-
-/* 헤더 영역 배경 */
-.write-header {
-  width: 100%;
-  background: #fff5e6;
-  padding: 15px 20px;
   border-radius: 12px;
-  box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 0 20px rgba(0,0,0,0.08);
 }
 
-/* 감정, 날씨, 사진 선택 */
-.selection-row {
+/* 헤더 영역 (감정, 날씨, 사진) */
+.write-header {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
-/* 라벨 스타일 */
-.selection-row label {
+/* 라벨 및 드롭다운 */
+.write-header label {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 500;
   font-size: 1rem;
+  font-weight: 500;
 }
 
-.selection-row select {
-  padding: 6px 12px;
+.write-header select {
+  padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 0.95rem;
+  background: #fff;
 }
 
 /* 사진 아이콘 */
@@ -230,45 +222,37 @@ nav.nav button {
 }
 
 /* 일기 입력창 */
-.diary-wrapper {
+.diary-section textarea {
   width: 100%;
-}
-
-.diary-wrapper textarea {
-  width: 100%;
-  min-height: 250px;
+  max-width: 800px;
+  height: 250px;
   padding: 16px;
   border-radius: 12px;
   border: 1px solid #ccc;
-  resize: vertical;
   font-size: 1rem;
   line-height: 1.5;
+  resize: vertical;
   background: #fffef8;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
-  box-sizing: border-box;
 }
 
 /* 저장 버튼 */
-.save-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-#saveBtn {
-  padding: 12px 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg,#ffb066,#ff9043);
-  color: #fff;
-  font-weight: 600;
+.save-section button {
+  padding: 12px 24px;
   font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background: #ffb347;
+  color: white;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: background 0.3s;
 }
 
-#saveBtn:hover {
-  transform: scale(1.05);
+.save-section button:hover {
+  background: #ff944d;
 }
+
 
 /* 사용자 정보 */
 .user-info { 
