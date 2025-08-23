@@ -191,17 +191,17 @@ function renderCalendar() {
     // 테두리 강조 + 감정별 색상
     cell.classList.add('diary-border', emotion);
   }
-
-  // 클릭 시 모달 열기
-  cell.addEventListener('click', () => {
-    if (stored) {
-      const { date, emotion, weather, diary, photo } = JSON.parse(stored);
-      openModal(date, emotion, weather, diary, photo);
-    } else {
-      alert('저장된 일기가 없습니다 😱');
-    }
-  
-  });
+// 클릭 시 모달 열기
+cell.addEventListener('click', () => {
+  const stored = localStorage.getItem(key); // 클릭할 때 다시 가져오기
+  if(stored) {
+    const entry = JSON.parse(stored);
+    // 모달 열기
+    openModal(entry.date, entry.emotion, entry.weather, entry.diary, entry.photo);
+  } else {
+    alert('저장된 일기가 없습니다 😱');
+  }
+});
 
   calendarGrid.appendChild(cell);
 }
@@ -217,12 +217,12 @@ document.getElementById('nextMonthBtn').addEventListener('click', () => {
 });
 
 // =========== 모달 ========= //
-function openModal(date, emotion, weather, diary, photo) {
-  modalDate.textContent = `${date} ${weatherEmojiMap[weather] || ''}`; // 날짜 + 날씨
-  modalEmotion.textContent = emotionEmojiMap[emotion] || '';           // 감정 (이모지)
-  modalDiary.textContent = diary;                                       // 일기 내용
+function openModal(date, emotion, weather, diary, photo){
+  modalDate.textContent = `${date} ${weatherEmojiMap[weather] || ''}`;
+  modalEmotion.textContent = emotionEmojiMap[emotion] || '';
+  modalDiary.textContent = diary;
 
-  if (photo) {
+  if(photo){
     modalImage.src = photo;
     modalImage.style.display = 'block';
   } else {
@@ -232,10 +232,10 @@ function openModal(date, emotion, weather, diary, photo) {
   diaryModal.classList.remove('hidden'); // 모달 열기
 }
 
-// 모달 닫기
 closeModalBtn.addEventListener('click', () => {
-  diaryModal.classList.add('hidden');
+  diaryModal.classList.add('hidden'); // 모달 닫기
 });
+
 
 // ====================  저장 버튼 =========== //
 document.getElementById('saveBtn').addEventListener('click', ()=>{
