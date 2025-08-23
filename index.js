@@ -196,22 +196,27 @@ function renderCalendar(){
   }
 }
 
-// ====================
-// 모달
+// =========== 모달 ========= //
 function openModal(date, emotion, weather, diary, photo){
-  modalDate.textContent = `${date} ${weatherEmojiMap[weather]||''}`;
-  modalEmotion.textContent = emotionEmojiMap[emotion]||'';
+  // 날짜 옆에 날씨 아이콘
+  modalDate.innerHTML = `${date} ${weatherEmojiMap[weather] || ''}`;
+  
+  // 감정은 그 아래
+  modalEmotion.textContent = emotionEmojiMap[emotion] || '';
+  
+  // 일기 내용은 그 아래
   modalDiary.textContent = diary;
 
   if(photo){
     modalImage.src = photo;
-    modalImage.style.display='block';
+    modalImage.style.display = 'block';
   } else {
-    modalImage.style.display='none';
+    modalImage.style.display = 'none';
   }
 
   diaryModal.classList.remove('hidden');
 }
+
 closeModalBtn.addEventListener('click', ()=>{ diaryModal.classList.add('hidden'); });
 
 // 이전/다음 달
