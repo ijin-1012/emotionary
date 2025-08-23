@@ -129,7 +129,7 @@ showWriteBtn.addEventListener("click", () => {
 
 showHomeBtn.addEventListener("click", () => {
   writeScreen.style.display = "none";
-  calendarSection.style.display = "block";
+  calendarSection.style.display = "flex";
 });
 
 // === 달력 렌더링 ===
