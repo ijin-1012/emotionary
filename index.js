@@ -147,7 +147,7 @@ document.getElementById('emotion').addEventListener('change', ()=>{
   writeScreen.classList.add(`${selected}-theme`);
 });
 
-// 달력 렌더링
+// ========== 달력 렌더링 ========== //
 function renderCalendar(){
   calendarGrid.innerHTML='';
   const year = currentDate.getFullYear();
@@ -156,7 +156,7 @@ function renderCalendar(){
   const lastDate = new Date(year, month+1, 0).getDate();
   calendarTitle.textContent = `${year}년 ${month+1}월`;
 
-  // 빈 칸 생성 (정사각형 유지)
+  // 빈 칸 생성
   for(let i=0;i<firstDay;i++){
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
@@ -168,14 +168,14 @@ function renderCalendar(){
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
 
-    const span = document.createElement('span'); // 텍스트 + emoji
+    const span = document.createElement('span');
     const cellDate = new Date(year, month, d);
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
     if(stored){
       const { emotion } = JSON.parse(stored);
-      span.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
+      span.textContent = `${d} ${emotionEmojiMap[emotion]||''}`; // 한 줄로 표시
       cell.classList.add(emotion);
     } else {
       span.textContent = d;
@@ -198,27 +198,21 @@ function renderCalendar(){
 
 // =========== 모달 ========= //
 function openModal(date, emotion, weather, diary, photo){
-  // 날짜 옆에 날씨 아이콘
-  modalDate.innerHTML = `${date} ${weatherEmojiMap[weather] || ''}`;
-  
-  // 감정은 그 아래
-  modalEmotion.textContent = emotionEmojiMap[emotion] || '';
-  
-  // 일기 내용은 그 아래
-  modalDiary.textContent = diary;
+  modalDate.textContent = `${date} ${weatherEmojiMap[weather]||''}`; // 날짜 옆에 날씨
+  modalEmotion.textContent = emotionEmojiMap[emotion]||'';           // 감정
+  modalDiary.textContent = diary;                                     // 내용
 
   if(photo){
     modalImage.src = photo;
-    modalImage.style.display = 'block';
+    modalImage.style.display='block';
   } else {
-    modalImage.style.display = 'none';
+    modalImage.style.display='none';
   }
 
   diaryModal.classList.remove('hidden');
 }
 
 closeModalBtn.addEventListener('click', ()=>{ diaryModal.classList.add('hidden'); });
-
 // 이전/다음 달
 document.getElementById('prevMonthBtn').addEventListener('click', ()=>{
   currentDate.setMonth(currentDate.getMonth()-1);
