@@ -5,6 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Emotionary</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* 모달 스타일 */
+    .modal {
+      display: none; /* 처음엔 숨김 */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 80%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 10px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
@@ -95,14 +133,14 @@
 
   </div>
 
-  <!-- ✅ 모달: body 바로 아래 -->
-  <div id="diaryModal" class="modal hidden">
+  <!-- 모달 -->
+  <div id="diaryModal" class="modal">
     <div class="modal-content">
       <span id="closeModal" class="close">&times;</span>
-      <div id="modalDate"></div>
-      <div id="modalEmotion"></div>
-      <div id="modalDiary"></div>
-      <img id="modalImage">
+      <h2 id="modalDate"></h2>
+      <p id="modalEmotion"></p>
+      <p id="modalDiary"></p>
+      <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
     </div>
   </div>
 
@@ -112,5 +150,40 @@
 
   <!-- JS -->
   <script type="module" src="index.js"></script>
+
+  <script>
+    // 모달 동작 스크립트
+    const diaryModal = document.getElementById('diaryModal');
+    const closeModal = document.getElementById('closeModal');
+    const modalDate = document.getElementById('modalDate');
+    const modalEmotion = document.getElementById('modalEmotion');
+    const modalDiary = document.getElementById('modalDiary');
+    const modalImage = document.getElementById('modalImage');
+
+    function openModal(date, emotion, weather, diary, photo) {
+      modalDate.textContent = `${date} ${weather ? '('+weather+')' : ''}`;
+      modalEmotion.textContent = emotion ? `감정: ${emotion}` : '';
+      modalDiary.textContent = diary || '';
+      
+      if (photo) {
+        modalImage.src = photo;
+        modalImage.style.display = 'block';
+      } else {
+        modalImage.style.display = 'none';
+      }
+
+      diaryModal.style.display = 'flex';
+    }
+
+    closeModal.addEventListener('click', () => {
+      diaryModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === diaryModal) {
+        diaryModal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
