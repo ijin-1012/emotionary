@@ -199,9 +199,8 @@ function renderCalendar(){
 // ====================
 // 모달
 function openModal(date, emotion, weather, diary, photo){
-  modalDate.textContent = date;
+  modalDate.textContent = `${date} ${weatherEmojiMap[weather]||''}`;
   modalEmotion.textContent = emotionEmojiMap[emotion]||'';
-  modalWeather.textContent = weatherEmojiMap[weather]||'';
   modalDiary.textContent = diary;
 
   if(photo){
