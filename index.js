@@ -6,7 +6,8 @@ import {
   GoogleAuthProvider, 
   signOut, 
   setPersistence, 
-  browserLocalPersistence 
+  browserLocalPersistence,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 // === Firebase 설정 ===
@@ -69,7 +70,6 @@ const modalWeather = modal.querySelector("#modalWeather");
 const modalDiary = modal.querySelector("#modalDiary");
 const modalImage = modal.querySelector("#modalImage");
 
-// 배경 클릭 시 모달 닫기
 modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.classList.add("hidden");
 });
@@ -78,21 +78,15 @@ modal.addEventListener("click", (e) => {
 let currentDate = new Date();
 let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, diary, imgURL } }
 
-// === 로그인/로그아웃 ===
+// === 세션 지속성 ===
 setPersistence(auth, browserLocalPersistence)
   .then(() => console.log("세션 로컬 저장 완료"))
-  .catch((err) => console.error(err));
+  .catch(err => console.error(err));
 
+// === 로그인/로그아웃 ===
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    loginScreen.style.display = "none";
-    mainScreen.style.display = "block";
-    userName.textContent = user.displayName;
-    userPhoto.src = user.photoURL;
-    userPhoto.style.display = "inline";
-    logoutBtn.style.display = "inline";
+    await signInWithPopup(auth, provider);
   } catch (err) {
     console.error("로그인 실패:", err);
   }
@@ -101,10 +95,23 @@ googleLoginBtn.addEventListener("click", async () => {
 logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth);
-    mainScreen.style.display = "none";
-    loginScreen.style.display = "flex";
   } catch (err) {
     console.error("로그아웃 실패:", err);
+  }
+});
+
+// === 로그인 상태 감지 ===
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginScreen.style.display = "none";
+    mainScreen.style.display = "block";
+    userName.textContent = user.displayName;
+    userPhoto.src = user.photoURL;
+    userPhoto.style.display = "inline";
+    logoutBtn.style.display = "inline";
+  } else {
+    mainScreen.style.display = "none";
+    loginScreen.style.display = "flex";
   }
 });
 
@@ -128,7 +135,6 @@ function renderCalendar() {
       </div>`;
   }
 
-  // 클릭 시 모달 열기
   document.querySelectorAll(".calendar-cell").forEach(cell => {
     cell.addEventListener("click", () => {
       const date = cell.dataset.date;
@@ -158,7 +164,6 @@ saveBtn.addEventListener("click", () => {
   const dateKey = new Date().toISOString().split("T")[0];
   let imgURL = null;
 
-  // 이미지 파일 업로드
   if (photoInput.files && photoInput.files[0]) {
     const reader = new FileReader();
     reader.onload = (e) => {
