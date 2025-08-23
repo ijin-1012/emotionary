@@ -148,7 +148,7 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 });
 
 // ========== 달력 렌더링 ========== //
-function renderCalendar(){
+function renderCalendar() {
   calendarGrid.innerHTML = '';
 
   const year = currentDate.getFullYear();
@@ -156,30 +156,26 @@ function renderCalendar(){
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
 
-  // 달력 제목
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-  // 요일 행 생성
-  const weekdays = ['일','월','화','수','목','금','토'];
-  const weekdayRow = document.createElement('div');
-  weekdayRow.classList.add('calendar-weekdays');
-  weekdays.forEach(day => {
-    const dayDiv = document.createElement('div');
-    dayDiv.textContent = day;
-    weekdayRow.appendChild(dayDiv);
-  });
+ // 요일 행 생성
+const weekdays = ['일','월','화','수','목','금','토'];
+weekdays.forEach(day => {
+  const dayDiv = document.createElement('div');
+  dayDiv.textContent = day;
+  dayDiv.classList.add('weekday'); // 클래스 추가
+  calendarGrid.appendChild(dayDiv);
+});
 
-  // 기존 grid 앞에 요일 행 추가
-  calendarGrid.appendChild(weekdayRow);
-
-  // 날짜 칸 만들기
-  for(let i = 0; i < firstDay; i++){
+  // 빈 칸
+  for(let i=0;i<firstDay;i++){
     const emptyCell = document.createElement('div');
-    emptyCell.classList.add('calendar-cell','empty-cell');
+    emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  for(let d = 1; d <= lastDate; d++){
+  // 날짜 칸
+  for(let d=1; d<=lastDate; d++){
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
 
@@ -194,12 +190,6 @@ function renderCalendar(){
       cell.classList.add(emotion);
     } else {
       span.textContent = d;
-    }
-
-    // 오늘 날짜 강조
-    const today = new Date();
-    if(d === today.getDate() && month === today.getMonth() && year === today.getFullYear()){
-      cell.style.border = "2px solid #ff9043";
     }
 
     cell.appendChild(span);

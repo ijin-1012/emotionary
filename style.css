@@ -90,31 +90,12 @@ nav.nav button {
 }
 
 /* ==================== 달력 ==================== */
-.calendar-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 요일 7칸 고정 */
-  text-align: center;
-  font-weight: bold;
-  padding: 8px 0;
-  background: #f0f0f0;
-  border-bottom: 1px solid #ccc;
-}
-
-.calendar-weekdays div {
-  padding: 5px 0;
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 날짜도 7칸 */
-  gap: 2px;
-}
-
 .calendar-wrapper {
   max-width: 700px;
   margin: 0 auto;
 }
 
+/* 헤더: 연도/월 + 이전/다음 버튼 */
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -129,21 +110,38 @@ nav.nav button {
   flex: 1;
 }
 
-#calendarGrid {
+/* 요일 행 */
+.calendar-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr); /* 요일 7칸 */
+  text-align: center;
+  font-weight: bold;
+  padding: 8px 0;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+}
+
+.calendar-weekdays div {
+  padding: 5px 0;
+}
+
+/* 날짜 그리드 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7칸 고정 */
   grid-auto-rows: 1fr;
   gap: 4px;
   margin-top: 10px;
 }
 
+/* 날짜 셀 */
 .calendar-cell {
   display: flex;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 1 / 1; /* 정사각형 */
   border: 1px solid #ccc;
   border-radius: 6px;
-  aspect-ratio: 1 / 1; /* 정사각형 */
 }
 
 .calendar-cell > span {
