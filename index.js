@@ -217,21 +217,20 @@ document.getElementById('nextMonthBtn').addEventListener('click', () => {
 
 // =========== 모달 ========= //
 function openModal(date, emotion, weather, diary, photo){
-  document.getElementById('modalDate').textContent = `${date} ${weatherEmojiMap[weather]||''}`;
-  document.getElementById('modalEmotion').textContent = emotionEmojiMap[emotion]||'';
-  document.getElementById('modalDiary').textContent = diary;
-
-  const img = document.getElementById('modalImage');
+  modalDate.textContent = `${date} ${weatherEmojiMap[weather]||''}`;
+  modalEmotion.textContent = emotionEmojiMap[emotion]||'';
+  modalDiary.textContent = diary;
   if(photo){
-    img.src = photo;
-    img.style.display='block';
-  } else img.style.display='none';
-
-  document.getElementById('diaryModal').style.display = 'flex';
+    modalImage.src = photo;
+    modalImage.style.display = 'block';
+  } else {
+    modalImage.style.display = 'none';
+  }
+  diaryModal.style.display = 'flex';
 }
 
-document.getElementById('closeModal').addEventListener('click', ()=>{
-  document.getElementById('diaryModal').style.display = 'none';
+closeModalBtn.addEventListener('click', () => {
+  diaryModal.style.display = 'none';
 });
 
 
