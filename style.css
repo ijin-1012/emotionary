@@ -225,7 +225,7 @@ nav.nav button {
 .diary-section textarea {
   width: 100%;
   max-width: 800px;
-  height: 300px;
+  min-height: 300px !important;
   padding: 20px;
   border-radius: 14px;
   border: 1px solid #ccc;
