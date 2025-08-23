@@ -95,15 +95,24 @@ nav.nav button {
   margin: 0 auto;
   font-family: 'Noto Sans KR', sans-serif;
 }
-
 .calendar-header {
   display: flex;
-  justify-content: space-between; /* 좌우 버튼 */
+  justify-content: center; /* 중앙 정렬 */
   align-items: center;
-  position: relative;
+  gap: 50px; /* 좌우 버튼과 타이틀 사이 간격 */
   padding: 10px 0;
 }
 
+#prevMonthBtn, #nextMonthBtn {
+  flex: 0 0 auto; /* 버튼 크기 고정 */
+}
+
+#calendarTitle {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+  flex: 0 0 auto; /* 제목 크기 고정 */
+}
 #calendarTitle {
   position: absolute;
   left: 50%;
