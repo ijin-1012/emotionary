@@ -38,32 +38,24 @@
     <div id="todayDate" class="today-date"></div>
 
     <main class="container">
-     
-    <!-- 달력 화면 -->
-<section id="calendarSection">
-  <div class="calendar-wrapper">
-    <!-- 헤더 -->
-    <div class="calendar-header">
-      <button id="prevMonthBtn">◀</button>
-      <span id="calendarTitle"></span>
-      <button id="nextMonthBtn">▶</button>
-    </div>
 
-    <!-- 요일 행 -->
-    <div class="calendar-weekdays">
-      <div>일</div>
-      <div>월</div>
-      <div>화</div>
-      <div>수</div>
-      <div>목</div>
-      <div>금</div>
-      <div>토</div>
-    </div>
+      <!-- 달력 화면 -->
+      <section id="calendarSection">
+        <div class="calendar-wrapper">
+          <div class="calendar-header">
+            <button id="prevMonthBtn">◀</button>
+            <span id="calendarTitle"></span>
+            <button id="nextMonthBtn">▶</button>
+          </div>
 
-    <!-- 날짜 그리드 -->
-    <div id="calendarGrid" class="calendar-grid"></div>
-  </div>
-</section>
+          <div class="calendar-weekdays">
+            <div>일</div><div>월</div><div>화</div>
+            <div>수</div><div>목</div><div>금</div><div>토</div>
+          </div>
+
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </div>
+      </section>
 
       <!-- 작성 화면 -->
       <section id="writeScreen" style="display:none;">
@@ -101,24 +93,24 @@
       </section>
     </main>
 
-   <!-- 모달 -->
-<div id="diaryModal" class="modal hidden">
-  <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
-    <div id="modalDate"></div>
-    <div id="modalEmotion"></div>
-    <div id="modalDiary"></div>
-    <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
   </div>
-</div>
 
+  <!-- ✅ 모달: body 바로 아래 -->
+  <div id="diaryModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="modalDate"></div>
+      <div id="modalEmotion"></div>
+      <div id="modalDiary"></div>
+      <img id="modalImage">
+    </div>
   </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
-  <!-- index.js -->
+  <!-- JS -->
   <script type="module" src="index.js"></script>
 </body>
 </html>
