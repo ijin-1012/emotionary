@@ -14,7 +14,6 @@ const firebaseConfig = {
   appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
   measurementId: "G-Q658W4MLGJ"
 };
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
@@ -54,8 +53,9 @@ document.querySelector('.google-btn').addEventListener('click', () => {
   auth.signInWithPopup(provider)
     .then(result => {
       const user = result.user;
-      userInfoImg.src = user.photoURL;
-      userInfoName.textContent = user.displayName;
+      // 로그인 성공 시만 메인 화면에 user-info 표시
+      document.querySelector('.user-info img').src = user.photoURL;
+      document.querySelector('.user-info span').textContent = user.displayName;
       showScreen(calendarScreen);
     })
     .catch(error => {

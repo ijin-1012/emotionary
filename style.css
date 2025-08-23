@@ -23,16 +23,31 @@ button {
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg,#a8edea,#fed6e3);
+  background: linear-gradient(135deg, #89f7fe, #66a6ff); /* 좀 더 시원한 블루톤 */
+  font-family: 'Noto Sans KR', sans-serif;
 }
+
 .login-box {
   background: white;
   padding: 50px 40px;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
   width: 360px;
   text-align: center;
+  transition: transform 0.3s ease;
 }
+.login-box h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-box p {
+  margin-bottom: 30px;
+  font-size: 1rem;
+  color: #555;
+}
+
 .google-btn {
   display: flex;
   align-items: center;
@@ -41,9 +56,12 @@ button {
   padding: 14px;
   width: 100%;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
+
 .google-btn img {
   width: 22px;
   height: 22px;
