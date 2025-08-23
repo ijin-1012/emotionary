@@ -153,17 +153,17 @@ function renderCalendar(){
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month + 1, 0).getDate();
-  calendarTitle.textContent = `${year}년 ${month + 1}월`;
+  const lastDate = new Date(year, month+1, 0).getDate();
+  calendarTitle.textContent = `${year}년 ${month+1}월`;
 
-  // 빈 칸 생성
+  // 빈 칸
   for(let i=0; i<firstDay; i++){
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  // 날짜 셀 생성
+  // 날짜 칸
   for(let d=1; d<=lastDate; d++){
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
@@ -175,15 +175,17 @@ function renderCalendar(){
 
     if(stored){
       const { emotion } = JSON.parse(stored);
-      span.textContent = `${d} ${emotionEmojiMap[emotion] || ''}`;
+      span.textContent = `${d} ${emotionEmojiMap[emotion]||''}`;
       cell.classList.add(emotion);
     } else {
       span.textContent = d;
     }
 
     cell.appendChild(span);
+    calendarGrid.appendChild(cell);
 
-    cell.addEventListener('click', ()=> {
+    // 클릭 이벤트
+    cell.addEventListener('click', () => {
       if(stored){
         const { date, emotion, weather, diary, photo } = JSON.parse(stored);
         openModal(date, emotion, weather, diary, photo);
@@ -191,8 +193,6 @@ function renderCalendar(){
         alert('저장된 일기가 없습니다 😱');
       }
     });
-
-    calendarGrid.appendChild(cell);
   }
 }
 
