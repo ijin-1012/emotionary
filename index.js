@@ -193,9 +193,9 @@ function renderCalendar() {
   }
 // 클릭 시 모달 열기
 cell.addEventListener('click', () => {
-  if(stored) {
+  if(stored){
     const { date, emotion, weather, diary, photo } = JSON.parse(stored);
-    openModal(date, emotion, weather, diary, photo); // 모달 열기
+    openModal(date, emotion, weather, diary, photo);
   } else {
     alert('저장된 일기가 없습니다 😱');
   }
@@ -216,31 +216,24 @@ document.getElementById('nextMonthBtn').addEventListener('click', () => {
 });
 
 // =========== 모달 ========= //
-// 모달 열기 함수
 function openModal(date, emotion, weather, diary, photo){
-  modalDate.textContent = `${date} ${weatherEmojiMap[weather] || ''}`;
-  modalEmotion.textContent = emotionEmojiMap[emotion] || '';
-  modalDiary.textContent = diary;
+  document.getElementById('modalDate').textContent = `${date} ${weatherEmojiMap[weather]||''}`;
+  document.getElementById('modalEmotion').textContent = emotionEmojiMap[emotion]||'';
+  document.getElementById('modalDiary').textContent = diary;
 
+  const img = document.getElementById('modalImage');
   if(photo){
-    modalImage.src = photo;
-    modalImage.style.display = 'block';
-  } else {
-    modalImage.style.display = 'none';
-  }
+    img.src = photo;
+    img.style.display='block';
+  } else img.style.display='none';
 
-  diaryModal.classList.remove('hidden');
+  document.getElementById('diaryModal').style.display = 'flex';
 }
 
-// 모달 닫기
-closeModalBtn.addEventListener('click', () => {
-  diaryModal.classList.add('hidden');
+document.getElementById('closeModal').addEventListener('click', ()=>{
+  document.getElementById('diaryModal').style.display = 'none';
 });
 
-// 모달 외부 클릭 시 닫기
-diaryModal.addEventListener('click', (e) => {
-  if(e.target === diaryModal) diaryModal.classList.add('hidden');
-});
 
 // ====================  저장 버튼 =========== //
 document.getElementById('saveBtn').addEventListener('click', ()=>{
