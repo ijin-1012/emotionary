@@ -1,21 +1,55 @@
 // index.js
 
-// ========== Firebase 초기화 ==========
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } 
-from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { 
+  getAuth, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  signOut, 
+  setPersistence, 
+  browserLocalPersistence 
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
+// === Firebase 설정 ===
 const firebaseConfig = {
-  apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
+ apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
   authDomain: "emotionary-7eb12.firebaseapp.com",
+  projectId: "emotionary-7eb12",
+  storageBucket: "emotionary-7eb12.appspot.com",
+  messagingSenderId: "811615110413",
+  appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
 };
+
+// === 초기화 ===
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+// 세션 지속성 설정 (브라우저 로컬 스토리지)
 setPersistence(auth, browserLocalPersistence)
   .then(() => console.log("로그인 세션이 로컬에 저장됩니다."))
   .catch((error) => console.error("Persistence 설정 실패:", error));
+
 const provider = new GoogleAuthProvider();
 
+// === 로그인 버튼 클릭 시 ===
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log("로그인 성공:", result.user.displayName);
+  } catch (error) {
+    console.error("로그인 실패:", error);
+  }
+});
+
+// === 로그아웃 버튼 클릭 시 ===
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    console.log("로그아웃 성공");
+  } catch (error) {
+    console.error("로그아웃 실패:", error);
+  }
+});
 // ========== DOM 요소 ==========
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
