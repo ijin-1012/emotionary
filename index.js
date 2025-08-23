@@ -35,7 +35,7 @@ const weatherSelect = document.getElementById("weather");
 const diaryInput = document.getElementById("diary");
 const photoInput = document.getElementById("photo");
 
-// ========== 모달 ==========
+// 모달 생성
 const modal = document.createElement("div");
 modal.id = "diaryModal";
 modal.classList.add("modal", "hidden");
@@ -48,20 +48,14 @@ modal.innerHTML = `
     <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
   </div>
 `;
-document.body.appendChild(modal);
+ment.body.appendChild(modal);
 
+const closeModalBtn = modal.querySelector("#closeModal");
 const modalDate = modal.querySelector("#modalDate");
 const modalEmotion = modal.querySelector("#modalEmotion");
 const modalWeather = modal.querySelector("#modalWeather");
 const modalDiary = modal.querySelector("#modalDiary");
 const modalImage = modal.querySelector("#modalImage");
-
-// 배경 클릭으로 모달 닫기
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.classList.add("hidden");
-  }
-});
 
 // ========== 상태 ==========
 let currentDate = new Date();
@@ -108,14 +102,14 @@ function renderCalendar() {
   // 날짜
   for (let d = 1; d <= lastDate; d++) {
     const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-    const hasDiaryClass = diaryData[dateKey] ? "has-diary" : "";
-    calendarGrid.innerHTML += `<div class="calendar-cell ${hasDiaryClass}" data-date="${dateKey}"><div class="day">${d}</div></div>`;
+    const hasDiary = diaryData[dateKey] ? "has-diary" : "";
+    calendarGrid.innerHTML += `<div class="calendar-day ${hasDiary}" data-date="${dateKey}">${d}</div>`;
   }
 
   // 날짜 클릭 이벤트
-  document.querySelectorAll(".calendar-cell").forEach(day => {
-    day.addEventListener("click", (e) => {
-      const date = e.currentTarget.dataset.date;
+  document.querySelectorAll(".calendar-day").forEach(day => {
+    day.addEventListener("click", e => {
+      const date = e.target.dataset.date;
       openModal(date);
     });
   });
@@ -125,7 +119,6 @@ prevMonthBtn.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
 });
-
 nextMonthBtn.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
   renderCalendar();
@@ -134,27 +127,18 @@ nextMonthBtn.addEventListener("click", () => {
 // ========== 일기 저장 ==========
 saveBtn.addEventListener("click", () => {
   const dateKey = new Date().toISOString().split("T")[0];
-
-  // 데이터 저장
   diaryData[dateKey] = {
     emotion: emotionSelect.value,
     weather: weatherSelect.value,
     diary: diaryInput.value,
   };
 
-  // 작성 화면 테두리/네온 효과 반영
-  writeScreen.classList.remove("happy-theme","sad-theme","angry-theme","tired-theme");
-  if (emotionSelect.value === "happy") writeScreen.classList.add("happy-theme");
-  if (emotionSelect.value === "sad") writeScreen.classList.add("sad-theme");
-  if (emotionSelect.value === "angry") writeScreen.classList.add("angry-theme");
-  if (emotionSelect.value === "tired") writeScreen.classList.add("tired-theme");
-
   alert("저장되었습니다!");
   diaryInput.value = "";
   renderCalendar();
 });
 
-// ========== 모달 열기 ==========
+// ========== 모달 ==========
 function openModal(date) {
   const data = diaryData[date];
   if (!data) {
@@ -171,5 +155,19 @@ function openModal(date) {
   modal.classList.remove("hidden");
 }
 
+closeModalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+});
+// 모달 닫기: 배경 클릭 시 닫힘
+// 모달 닫기 (모달 배경 클릭 시 닫힘)
+window.addEventListener('click', (e) => {
+  const modal = document.getElementById('modal');
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+
+
+
 // 초기 달력 표시
-renderCalendar();
+renderCalendar(); 
