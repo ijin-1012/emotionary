@@ -48,8 +48,9 @@ modal.innerHTML = `
     <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
   </div>
 `;
-document.body.appendChild(modal);
+ment.body.appendChild(modal);
 
+const closeModalBtn = modal.querySelector("#closeModal");
 const modalDate = modal.querySelector("#modalDate");
 const modalEmotion = modal.querySelector("#modalEmotion");
 const modalWeather = modal.querySelector("#modalWeather");
@@ -146,40 +147,27 @@ function openModal(date) {
   }
 
   modalDate.textContent = date;
-
-  // 감정을 이모지로 표시
-  let emotionEmoji = "";
-  switch(data.emotion){
-    case "happy": emotionEmoji = "😊"; break;
-    case "sad": emotionEmoji = "😭"; break;
-    case "angry": emotionEmoji = "😡"; break;
-    case "tired": emotionEmoji = "😴"; break;
-  }
-  modalEmotion.textContent = `감정: ${emotionEmoji} ${data.emotion}`;
-
-  // 날씨 이모지도 표시
-  let weatherEmoji = "";
-  switch(data.weather){
-    case "sunny": weatherEmoji = "☀️"; break;
-    case "cloudy": weatherEmoji = "☁️"; break;
-    case "rainy": weatherEmoji = "☔"; break;
-    case "snowy": weatherEmoji = "❄️"; break;
-    case "windy": weatherEmoji = "💨"; break;
-  }
-  modalWeather.textContent = `날씨: ${weatherEmoji} ${data.weather}`;
-
+  modalEmotion.textContent = `감정: ${data.emotion}`;
+  modalWeather.textContent = `날씨: ${data.weather}`;
   modalDiary.textContent = data.diary;
   modalImage.style.display = "none";
 
   modal.classList.remove("hidden");
 }
 
-// 모달 배경 클릭으로 닫기
-modal.addEventListener("click", (e) => {
+closeModalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+});
+// 모달 닫기: 배경 클릭 시 닫힘
+// 모달 닫기 (모달 배경 클릭 시 닫힘)
+window.addEventListener('click', (e) => {
+  const modal = document.getElementById('modal');
   if (e.target === modal) {
-    modal.classList.add("hidden");
+    modal.style.display = 'none';
   }
 });
 
+
+
 // 초기 달력 표시
-renderCalendar();
+renderCalendar(); 
