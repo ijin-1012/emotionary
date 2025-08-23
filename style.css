@@ -90,7 +90,16 @@ nav.nav button {
 }
 
 /* ==================== 달력 ==================== */
-/* 달력 그리드 */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 6px 6px 0 0;
+  font-weight: 600;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -98,10 +107,9 @@ nav.nav button {
   margin-top: 10px;
 }
 
-/* 달력 셀 */
 .calendar-cell {
   width: 100%;
-  border: 1px solid #e0e0e0; /* 기본 연회색 테두리 */
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
   background: #fff;
   cursor: pointer;
@@ -112,7 +120,6 @@ nav.nav button {
   transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* hover 효과 */
 .calendar-cell:hover {
   transform: scale(1.05);
   background: #f9f9f9;
@@ -123,7 +130,6 @@ nav.nav button {
 .calendar-cell.sad { border: 2px solid #64b5f6; box-shadow: 0 0 8px 2px rgba(100,181,246,0.7); }
 .calendar-cell.angry { border: 2px solid #ef5350; box-shadow: 0 0 8px 2px rgba(239,83,80,0.7); }
 .calendar-cell.tired { border: 2px solid #9575cd; box-shadow: 0 0 8px 2px rgba(149,117,205,0.7); }
-
 
 /* ==================== 작성 화면 ==================== */
 #writeScreen {
@@ -233,39 +239,7 @@ nav.nav button {
 }
 
 /* ==================== 감정별 테마 ==================== */
-.happy-theme {
-  background: linear-gradient(135deg, #fff7c0, #ffe680);
-  color: #333;
-}
-
-.sad-theme {
-  background: linear-gradient(135deg, #c0dfff, #80bfff);
-  color: #333;
-}
-
-.angry-theme {
-  background: linear-gradient(135deg, #ffb3b3, #ff8080);
-  color: #333;
-}
-
-.tired-theme {
-  background: linear-gradient(135deg, #dcdcdc, #a0a0a0);
-  color: #333;
-}
-
-/* ==================== 달력 감정 표시 ==================== */
-.calendar-cell.happy {
-  background-color: #fff7c0;
-}
-
-.calendar-cell.sad {
-  background-color: #c0dfff;
-}
-
-.calendar-cell.angry {
-  background-color: #ffb3b3;
-}
-
-.calendar-cell.tired {
-  background-color: #dcdcdc;
-}
+.happy-theme { background: linear-gradient(135deg, #fff7c0, #ffe680); color: #333; }
+.sad-theme { background: linear-gradient(135deg, #c0dfff, #80bfff); color: #333; }
+.angry-theme { background: linear-gradient(135deg, #ffb3b3, #ff8080); color: #333; }
+.tired-theme { background: linear-gradient(135deg, #dcdcdc, #a0a0a0); color: #333; }
