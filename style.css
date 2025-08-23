@@ -150,9 +150,12 @@ nav.nav button {
 }
 
 .calendar-cell span {
-  display: inline-block;
   text-align: center;
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center;
 }
+
 /* 일기 있는 날 border 강조 */
 .diary-border {
   border: 2px solid #ff9043; /* 기본 테두리 */
