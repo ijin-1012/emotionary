@@ -174,10 +174,10 @@ function renderCalendar(){
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
- if(stored){
+if(stored){
   const { emotion } = JSON.parse(stored);
   span.textContent = `${d}/${emotionEmojiMap[emotion] || ''}`;
-  cell.classList.add('diary-border', emotion); // 테두리 강조 + 감정 배경색
+  cell.classList.add('diary-border'); // 테두리 강조만
 } else {
   span.textContent = d;
 }
