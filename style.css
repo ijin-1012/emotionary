@@ -170,7 +170,7 @@ nav.nav button {
 }
 /* 작성 화면 전체 */
 #writeScreen {
-  display: flex !important;
+  display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -223,18 +223,19 @@ nav.nav button {
 
 /* 일기 입력창 */
 .diary-section textarea {
-  width: 100%;
-  max-width: 800px;
-  min-height: 300px !important;
-  padding: 20px;
-  border-radius: 14px;
-  border: 1px solid #ccc;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  resize: vertical;
-  background: #fffef8;
-  box-shadow: inset 0 3px 8px rgba(0,0,0,0.05);
+  width: 100% !important;
+  max-width: 800px !important;   /* 최대 폭 늘리기 */
+  min-height: 250px !important;  /* 높이 최소값 지정 */
+  padding: 20px !important;
+  border-radius: 14px !important;
+  border: 1px solid #ccc !important;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+  resize: vertical !important;
+  background: #fffef8 !important;
+  box-shadow: inset 0 3px 8px rgba(0,0,0,0.05) !important;
 }
+
 
 /* 저장 버튼 */
 .save-section button {
