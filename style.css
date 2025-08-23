@@ -118,28 +118,24 @@ nav.nav button {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
-  background: #fff;
 }
 
-/* 정사각형 셀 */
 .calendar-cell {
   position: relative;
   width: 100%;
-  padding-top: 100%; /* 가로 비율 100%로 세로도 맞춰 정사각형 */
+  padding-top: 100%; /* width와 동일하게 height 맞춰 정사각형 */
   border: 1px solid #ccc;
   border-radius: 6px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
   overflow: hidden;
+  cursor: pointer;
 }
 
-/* 실제 내용 위치 */
 .calendar-cell > span {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 /* hover 효과 */
