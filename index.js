@@ -181,10 +181,14 @@ if(stored){
   cell.classList.add(emotion);        // 감정 색상
 } else {
   span.textContent = d;
+}if(stored){
+  const { emotion } = JSON.parse(stored);
+  // 수정: 날짜 / 감정 이모지
+  span.textContent = `${d} / ${emotionEmojiMap[emotion] || ''}`;
+  cell.classList.add('diary-border', emotion); // 감정별 테두리 색도 적용
+} else {
+  span.textContent = d;
 }
-
-    cell.appendChild(span);
-    calendarGrid.appendChild(cell);
 
     cell.addEventListener('click', ()=>{ 
       if(stored) { 

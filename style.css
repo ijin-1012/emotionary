@@ -153,17 +153,16 @@ nav.nav button {
   display: inline-block;
   text-align: center;
 }
-
 /* 일기 있는 날 border 강조 */
 .diary-border {
-  border: 2px solid #ff9043;
+  border: 2px solid #ff9043; /* 기본 테두리 */
 }
 
-/* 감정 색상 예시 */
-.happy { background-color: #ffefc1; }
-.sad { background-color: #c1e0ff; }
-.angry { background-color: #ffc1c1; }
-.tired { background-color: #d3d3d3; }
+/* 감정별 테두리 색 (선택 사항) */
+.happy.diary-border { border-color: #ffefc1; }
+.sad.diary-border { border-color: #c1e0ff; }
+.angry.diary-border { border-color: #ffc1c1; }
+.tired.diary-border { border-color: #d3d3d3; }
 
 /* 반응형 */
 @media (max-width: 500px) {
