@@ -90,11 +90,6 @@ nav.nav button {
 }
 
 /* ==================== 달력 ==================== */
-.calendar-wrapper {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
 .calendar-container {
   position: relative;
   width: 100%;
@@ -102,55 +97,44 @@ nav.nav button {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
 .calendar-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  box-sizing: border-box;
 }
 
 #calendarTitle {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   font-weight: 700;
   font-size: 1.2rem;
-  pointer-events: none;
+  text-align: center;
+  flex: 1; /* 중앙에 배치 */
 }
 
 #calendarGrid {
-  position: absolute;
-  top: 50px; /* header 높이만큼 아래 */
-  left: 0;
-  width: 100%;
-  height: calc(100% - 50px);
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  grid-auto-rows: 1fr;
   gap: 2px;
+  flex: 1; /* 남은 영역 모두 차지 */
 }
-/* 달력 셀 */
+
 .calendar-cell {
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 6px;
+  aspect-ratio: 1 / 1; /* 셀을 정사각형으로 유지 */
 }
 
 .calendar-cell > span {
   text-align: center;
-  white-space: nowrap; /* 한 줄로 유지 */
 }
 
 /* hover 효과 */

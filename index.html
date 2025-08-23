@@ -39,14 +39,15 @@
 
     <main class="container">
       <!-- 달력 화면 -->
-     <section id="calendarSection">
+   <section id="calendarSection">
   <div class="calendar-wrapper">
-    <div class="calendar-header">
-      <button id="prevMonthBtn">◀</button>
-      <span id="calendarTitle"></span>
-      <button id="nextMonthBtn">▶</button>
+    <div class="calendar-container">
+      <!-- 상단: 년도.월 중앙 표시 -->
+      <div class="calendar-title" id="calendarTitle"></div>
+      
+      <!-- 날짜 셀 그리드 -->
+      <div id="calendarGrid" class="calendar-grid"></div>
     </div>
-    <div id="calendarGrid" class="calendar-grid"></div>
   </div>
 </section>
 
