@@ -148,7 +148,6 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 });
 
 // ====================
-// 달력 렌더링
 function renderCalendar(){
   calendarGrid.innerHTML='';
   const year = currentDate.getFullYear();
@@ -157,24 +156,32 @@ function renderCalendar(){
   const lastDate = new Date(year, month+1, 0).getDate();
   calendarTitle.textContent = `${year}년 ${month+1}월`;
 
-  for(let i=0;i<firstDay;i++) calendarGrid.appendChild(document.createElement('div'));
+  // 빈 칸 생성 (정사각형 유지)
+  for(let i=0;i<firstDay;i++){
+    const emptyCell = document.createElement('div');
+    emptyCell.classList.add('calendar-cell');
+    calendarGrid.appendChild(emptyCell);
+  }
 
-  for(let d=1;d<=lastDate;d++){
+  // 날짜 칸 생성
+  for(let d=1; d<=lastDate; d++){
     const cell = document.createElement('div');
+    cell.classList.add('calendar-cell');
+
+    const span = document.createElement('span'); // 텍스트 + emoji
     const cellDate = new Date(year, month, d);
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
-    cell.classList.add('calendar-cell');
-    cell.style.cursor='pointer';
-
     if(stored){
       const { emotion } = JSON.parse(stored);
-      cell.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
+      span.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
       cell.classList.add(emotion);
     } else {
-      cell.textContent=d;
+      span.textContent = d;
     }
+
+    cell.appendChild(span);
 
     cell.addEventListener('click', ()=>{
       if(stored){
@@ -188,6 +195,7 @@ function renderCalendar(){
     calendarGrid.appendChild(cell);
   }
 }
+
 
 // ====================
 // 모달
