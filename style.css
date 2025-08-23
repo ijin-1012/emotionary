@@ -227,16 +227,13 @@ nav.nav button {
   max-width: 800px !important;
   min-height: 250px !important;
   padding: 20px !important;
-  font-size: 1.1rem !important;
-  line-height: 1.6 !important;
   border-radius: 14px !important;
   border: 1px solid #ccc !important;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
   resize: vertical !important;
   background: #fffef8 !important;
 }
-
-
-
 /* 저장 버튼 */
 .save-section button {
   padding: 12px 24px;
