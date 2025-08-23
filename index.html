@@ -1,48 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emotionary</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* 모달 스타일 */
-    .modal {
-      display: none; /* 처음엔 숨김 */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
-      width: 80%;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .modal-content h2 {
-      margin-bottom: 10px;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 28px;
-      cursor: pointer;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -52,7 +14,7 @@
       <h1>Emotionary</h1>
       <p class="login-desc">Google 계정으로 간편하게 로그인하세요</p>
       <button id="googleLoginBtn" class="google-btn">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
         Google 계정으로 로그인
       </button>
     </div>
@@ -68,7 +30,7 @@
     </nav>
 
     <div class="user-info">
-      <img id="userPhoto" style="display:none;" />
+      <img id="userPhoto" style="display:none;">
       <span id="userName"></span>
       <button id="logoutBtn" style="display:none;">로그아웃</button>
     </div>
@@ -85,19 +47,16 @@
             <span id="calendarTitle"></span>
             <button id="nextMonthBtn">▶</button>
           </div>
-
           <div class="calendar-weekdays">
             <div>일</div><div>월</div><div>화</div>
             <div>수</div><div>목</div><div>금</div><div>토</div>
           </div>
-
           <div id="calendarGrid" class="calendar-grid"></div>
         </div>
       </section>
 
       <!-- 작성 화면 -->
       <section id="writeScreen" style="display:none;">
-        <section class="write-meta"></section>
         <label for="emotion">오늘의 감정:
           <select id="emotion">
             <option value="happy">😊 기쁨</option>
@@ -130,19 +89,7 @@
         </section>
       </section>
     </main>
-
   </div>
-
-  <!-- 모달 -->
- <!-- 모달 -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <h2 id="modalDate"></h2>
-    <div id="modalEmotion"></div>
-    <div id="modalDiary"></div>
-  </div>
-</div>
-
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
@@ -150,40 +97,5 @@
 
   <!-- JS -->
   <script type="module" src="index.js"></script>
-
-  <script>
-    // 모달 동작 스크립트
-    const diaryModal = document.getElementById('diaryModal');
-    const closeModal = document.getElementById('closeModal');
-    const modalDate = document.getElementById('modalDate');
-    const modalEmotion = document.getElementById('modalEmotion');
-    const modalDiary = document.getElementById('modalDiary');
-    const modalImage = document.getElementById('modalImage');
-
-    function openModal(date, emotion, weather, diary, photo) {
-      modalDate.textContent = `${date} ${weather ? '('+weather+')' : ''}`;
-      modalEmotion.textContent = emotion ? `감정: ${emotion}` : '';
-      modalDiary.textContent = diary || '';
-      
-      if (photo) {
-        modalImage.src = photo;
-        modalImage.style.display = 'block';
-      } else {
-        modalImage.style.display = 'none';
-      }
-
-      diaryModal.style.display = 'flex';
-    }
-
-    closeModal.addEventListener('click', () => {
-      diaryModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === diaryModal) {
-        diaryModal.style.display = 'none';
-      }
-    });
-  </script>
 </body>
 </html>
