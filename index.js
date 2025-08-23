@@ -173,13 +173,13 @@ function renderCalendar(){
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
-    if(stored){
-      const { emotion } = JSON.parse(stored);
-      span.textContent = `${d} ${emotionEmojiMap[emotion]||''}`; // 한 줄로 표시
-      cell.classList.add(emotion);
-    } else {
-      span.textContent = d;
-    }
+   if(stored){
+  const { emotion } = JSON.parse(stored);
+  span.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
+} else {
+  span.textContent = d;
+}
+
 
     cell.appendChild(span);
 

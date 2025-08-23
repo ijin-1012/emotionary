@@ -91,15 +91,13 @@ nav.nav button {
 
 /* ==================== 달력 ==================== */
 .calendar-container {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding-top: 100%; /* 전체 달력 정사각형 */
+  max-width: 700px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 }
 
 .calendar-header {
@@ -108,22 +106,19 @@ nav.nav button {
   align-items: center;
   padding: 10px;
 }
-
-#calendarTitle {
+.calendarTitle {
   font-weight: 700;
   font-size: 1.2rem;
   text-align: center;
   flex: 1; /* 중앙에 배치 */
 }
-
-#calendarGrid {
+.calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 1fr;
   gap: 2px;
-  flex: 1; /* 남은 영역 모두 차지 */
+  margin-top: 10px; /* header와 공간 확보 */
 }
-
 .calendar-cell {
   display: flex;
   justify-content: center;
