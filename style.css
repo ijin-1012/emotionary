@@ -147,18 +147,27 @@ nav.nav button {
 .angry { border-color: #ffc1c1; } 
 .tired { border-color: #d3d3d3; }
 
-/* 일기 있는 날 테두리 강조 - 네온 효과 */
+/* 일기 있는 날 - 네온사인 효과 */
 .has-diary {
-  border: 2px solid #ff6ec7;
-  box-shadow: 0 0 10px #ff6ec7, 0 0 20px #ff6ec7, 0 0 30px #ff6ec7;
+  border: 2px solid #ff6ec7; /* 네온 핑크 색상 */
+  box-shadow:
+    0 0 5px #ff6ec7,
+    0 0 10px #ff6ec7,
+    0 0 20px #ff6ec7,
+    0 0 30px #ff6ec7,
+    0 0 40px #ff6ec7;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .has-diary:hover {
-  box-shadow: 0 0 15px #ff6ec7, 0 0 30px #ff6ec7, 0 0 45px #ff6ec7;
-  transform: scale(1.05);
+  box-shadow:
+    0 0 10px #ff6ec7,
+    0 0 20px #ff6ec7,
+    0 0 30px #ff6ec7,
+    0 0 50px #ff6ec7,
+    0 0 70px #ff6ec7;
+  transform: scale(1.08); /* 살짝 확대 효과 */
 }
-
 
 /* 작성 화면 */
 #writeScreen { 

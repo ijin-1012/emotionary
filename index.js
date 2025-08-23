@@ -97,8 +97,7 @@ function renderCalendar() {
   for (let i = 0; i < firstDay; i++) {
     calendarGrid.innerHTML += `<div></div>`;
   }
-
- // 날짜 렌더링 시
+// 날짜 렌더링
 for (let d = 1; d <= lastDate; d++) {
   const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
   const cell = document.createElement("div");
@@ -106,7 +105,7 @@ for (let d = 1; d <= lastDate; d++) {
   cell.dataset.date = dateKey;
   cell.textContent = d;
 
-  // 저장된 일기가 있으면 네온 효과
+  // 일기가 있으면 네온 테두리 적용
   if(diaryData[dateKey]) {
     cell.classList.add("has-diary");
   }
@@ -114,6 +113,7 @@ for (let d = 1; d <= lastDate; d++) {
   cell.addEventListener("click", () => openModal(dateKey));
   calendarGrid.appendChild(cell);
 }
+
   // 날짜 클릭 이벤트
   document.querySelectorAll(".calendar-day").forEach(day => {
     day.addEventListener("click", e => {
