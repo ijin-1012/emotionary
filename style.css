@@ -90,6 +90,7 @@ nav.nav button {
 }
 
 /* ==================== 달력 ==================== */
+/* ==================== 달력 ==================== */
 .calendar-wrapper {
   max-width: 700px;
   margin: 0 auto;
@@ -135,11 +136,13 @@ nav.nav button {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1; /* 정사각형 유지 */
   border: 1px solid #ccc;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  text-align: center;
+  flex-direction: column;
 }
 
 .calendar-cell:hover {
@@ -151,6 +154,10 @@ nav.nav button {
   text-align: center;
 }
 
+/* 일기 있는 날 border 강조 */
+.diary-border {
+  border: 2px solid #ff9043;
+}
 
 /* 감정 색상 예시 */
 .happy { background-color: #ffefc1; }

@@ -174,7 +174,14 @@ function renderCalendar(){
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
-    span.textContent = stored ? `${d} ${JSON.parse(stored).emotion}` : d;
+ if(stored){
+  const { emotion } = JSON.parse(stored);
+  span.textContent = `${d}/${emotionEmojiMap[emotion] || ''}`;
+  cell.classList.add('diary-border', emotion); // 테두리 강조 + 감정 배경색
+} else {
+  span.textContent = d;
+}
+
     cell.appendChild(span);
     calendarGrid.appendChild(cell);
 
