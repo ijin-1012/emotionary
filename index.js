@@ -147,44 +147,49 @@ document.getElementById('emotion').addEventListener('change', ()=>{
   writeScreen.classList.add(`${selected}-theme`);
 });
 
-// ====================
-function renderCalendar(){
-  calendarGrid.innerHTML='';
+// ========== 달력 렌더링 ========== //
+function renderCalendar() {
+  calendarGrid.innerHTML = ''; // 달력 초기화
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month+1, 0).getDate();
-  calendarTitle.textContent = `${year}년 ${month+1}월`;
+  const lastDate = new Date(year, month + 1, 0).getDate();
 
-  // 빈 칸 생성 (정사각형 유지)
-  for(let i=0;i<firstDay;i++){
+  calendarTitle.textContent = `${year}년 ${month + 1}월`;
+
+  // 빈칸 채우기
+  for (let i = 0; i < firstDay; i++) {
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  // 날짜 칸 생성
-  for(let d=1; d<=lastDate; d++){
+  for (let d = 1; d <= lastDate; d++) {
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
 
-    const span = document.createElement('span'); // 텍스트 + emoji
+    const dayDiv = document.createElement('div');
+    dayDiv.classList.add('day');
+    dayDiv.textContent = d;
+    cell.appendChild(dayDiv);
+
     const cellDate = new Date(year, month, d);
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
-    if(stored){
+    if (stored) {
       const { emotion } = JSON.parse(stored);
-      span.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
-      cell.classList.add(emotion);
-    } else {
-      span.textContent = d;
+
+      const emotionDiv = document.createElement('div');
+      emotionDiv.classList.add('emotion');
+      emotionDiv.textContent = emotionEmojiMap[emotion];
+      cell.appendChild(emotionDiv);
+
+      cell.classList.add('diary-border', emotion);
     }
 
-    cell.appendChild(span);
-
-    cell.addEventListener('click', ()=>{
-      if(stored){
+    cell.addEventListener('click', () => {
+      if (stored) {
         const { date, emotion, weather, diary, photo } = JSON.parse(stored);
         openModal(date, emotion, weather, diary, photo);
       } else {
@@ -193,17 +198,24 @@ function renderCalendar(){
     });
 
     calendarGrid.appendChild(cell);
-  }
-}
+  } // for문 닫힘
+} // function 닫힘
 
+// 이전/다음 달 버튼
+document.getElementById('prevMonthBtn').addEventListener('click', () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+});
+document.getElementById('nextMonthBtn').addEventListener('click', () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+});
 
-// ====================
-// 모달
+// =========== 모달 ========= //
 function openModal(date, emotion, weather, diary, photo){
-  modalDate.textContent = date;
-  modalEmotion.textContent = emotionEmojiMap[emotion]||'';
-  modalWeather.textContent = weatherEmojiMap[weather]||'';
-  modalDiary.textContent = diary;
+  modalDate.textContent = `${date} ${weatherEmojiMap[weather]||''}`; // 날짜 옆에 날씨
+  modalEmotion.textContent = emotionEmojiMap[emotion]||'';           // 감정
+  modalDiary.textContent = diary;                                     // 내용
 
   if(photo){
     modalImage.src = photo;
@@ -214,20 +226,10 @@ function openModal(date, emotion, weather, diary, photo){
 
   diaryModal.classList.remove('hidden');
 }
+
 closeModalBtn.addEventListener('click', ()=>{ diaryModal.classList.add('hidden'); });
 
-// 이전/다음 달
-document.getElementById('prevMonthBtn').addEventListener('click', ()=>{
-  currentDate.setMonth(currentDate.getMonth()-1);
-  renderCalendar();
-});
-document.getElementById('nextMonthBtn').addEventListener('click', ()=>{
-  currentDate.setMonth(currentDate.getMonth()+1);
-  renderCalendar();
-});
-
-// ====================
-// 저장 버튼
+// ====================  저장 버튼 =========== //
 document.getElementById('saveBtn').addEventListener('click', ()=>{
   const diary = document.getElementById('diary').value.trim();
   if(!diary){ alert('내용을 작성해주세요!'); return; }
@@ -257,4 +259,4 @@ document.getElementById('saveBtn').addEventListener('click', ()=>{
     reader.onload = (e) => saveEntry(e.target.result);
     reader.readAsDataURL(photoInput.files[0]);
   } else saveEntry(null);
-});
+}); 
