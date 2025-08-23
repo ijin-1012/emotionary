@@ -150,32 +150,41 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 // ====================
 // 달력 렌더링
 function renderCalendar(){
-  calendarGrid.innerHTML='';
+  calendarGrid.innerHTML = '';
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month+1, 0).getDate();
+  const lastDate = new Date(year, month + 1, 0).getDate();
   calendarTitle.textContent = `${year}년 ${month+1}월`;
 
-  for(let i=0;i<firstDay;i++) calendarGrid.appendChild(document.createElement('div'));
+  // 빈 칸 추가
+  for(let i=0; i<firstDay; i++){
+    const emptyCell = document.createElement('div');
+    calendarGrid.appendChild(emptyCell);
+  }
 
-  for(let d=1;d<=lastDate;d++){
+  for(let d=1; d<=lastDate; d++){
     const cell = document.createElement('div');
     const cellDate = new Date(year, month, d);
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
     cell.classList.add('calendar-cell');
-    cell.style.cursor='pointer';
 
     if(stored){
       const { emotion } = JSON.parse(stored);
       cell.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
       cell.classList.add(emotion);
     } else {
-      cell.textContent=d;
+      cell.textContent = d;
     }
 
+    // 정사각형 적용
+    setTimeout(() => {
+      cell.style.height = `${cell.offsetWidth}px`;
+    }, 0);
+
+    // 클릭 시 모달
     cell.addEventListener('click', ()=>{
       if(stored){
         const { date, emotion, weather, diary, photo } = JSON.parse(stored);
@@ -188,6 +197,14 @@ function renderCalendar(){
     calendarGrid.appendChild(cell);
   }
 }
+
+// 화면 크기 변경 시 정사각형 유지
+window.addEventListener('resize', ()=>{
+  const cells = document.querySelectorAll('.calendar-cell');
+  cells.forEach(cell=>{
+    cell.style.height = `${cell.offsetWidth}px`;
+  });
+});
 
 // ====================
 // 모달
