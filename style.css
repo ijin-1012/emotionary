@@ -257,6 +257,7 @@ nav.nav button {
 }
 
 /* ==================== 모달 ==================== */
+/* ==================== 모달 ==================== */
 .modal {
   position: fixed;
   top:0;
@@ -289,6 +290,30 @@ nav.nav button {
   cursor: pointer;
   font-size: 24px;
 }
+
+/* 모달 내용 줄 간격 및 폰트 */
+#modalDate,
+#modalEmotion,
+#modalDiary {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+#modalDate {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+#modalEmotion {
+  font-size: 1.2rem;
+}
+
+#modalDiary {
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+
 
 /* ==================== 감정별 테마 ==================== */
 .happy-theme { background: linear-gradient(135deg, #fff7c0, #ffe680); color: #333; }
