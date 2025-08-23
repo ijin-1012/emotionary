@@ -177,7 +177,8 @@ function renderCalendar(){
 if(stored){
   const { emotion } = JSON.parse(stored);
   span.textContent = `${d}/${emotionEmojiMap[emotion] || ''}`;
-  cell.classList.add('diary-border'); // 테두리 강조만
+  cell.classList.add('diary-border'); // 테두리 강조
+  cell.classList.add(emotion);        // 감정 색상
 } else {
   span.textContent = d;
 }
