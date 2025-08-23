@@ -147,6 +147,28 @@ nav.nav button {
 .angry { border-color: #ffc1c1; } 
 .tired { border-color: #d3d3d3; }
 
+/* 일기 있는 날 - 네온사인 효과 */
+.has-diary {
+  border: 2px solid #ff6ec7; /* 네온 핑크 색상 */
+  box-shadow:
+    0 0 5px #ff6ec7,
+    0 0 10px #ff6ec7,
+    0 0 20px #ff6ec7,
+    0 0 30px #ff6ec7,
+    0 0 40px #ff6ec7;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.has-diary:hover {
+  box-shadow:
+    0 0 10px #ff6ec7,
+    0 0 20px #ff6ec7,
+    0 0 30px #ff6ec7,
+    0 0 50px #ff6ec7,
+    0 0 70px #ff6ec7;
+  transform: scale(1.08); /* 살짝 확대 효과 */
+}
+
 /* 작성 화면 */
 #writeScreen { 
   display: flex; 
@@ -215,51 +237,43 @@ nav.nav button {
 
 /* 모달 (X버튼 제거 + 바깥 클릭 닫힘 + 가로로 넓게) */
 .hidden { display: none; }
-/* 모달 */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex; /* flex로 중앙 정렬 */
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
-
 .modal-content {
   background: #fff;
-  padding: 25px 30px;
+  padding: 30px 40px;
   border-radius: 16px;
-  width: 90%;
-  max-width: 600px; /* 가로 길게 */
-  max-height: 80%;
-  overflow-y: auto;
+  max-width: 600px;
+  width: 80%;
   text-align: center;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-  font-size: 1.1rem;
-  line-height: 1.5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
 }
-
 #modalDate {
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
 }
-
-#modalEmotion, #modalWeather {
+#modalEmotion {
   font-size: 1.2rem;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
 }
-
 #modalDiary {
   font-size: 1rem;
   white-space: pre-wrap;
-  margin-top: 10px;
+  line-height: 1.5;
+  color: #444;
 }
-
 #modalImage {
   max-width: 100%;
   margin-top: 15px;
@@ -267,6 +281,7 @@ nav.nav button {
   display: none;
 }
 
+/* 애니메이션 */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
