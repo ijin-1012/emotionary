@@ -2,7 +2,8 @@
 
 // ========== Firebase 초기화 ==========
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } 
+from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
@@ -10,6 +11,9 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence)
+  .then(() => console.log("로그인 세션이 로컬에 저장됩니다."))
+  .catch((error) => console.error("Persistence 설정 실패:", error));
 const provider = new GoogleAuthProvider();
 
 // ========== DOM 요소 ==========
