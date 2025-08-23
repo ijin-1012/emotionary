@@ -92,17 +92,18 @@ nav.nav button {
 /* ==================== 달력 ==================== */
 .calendar-wrapper {
   max-width: 700px;
-  margin: 0 auto;
+  margin: 20px auto; /* 위아래 간격 줄임 */
 }
+
 .calendar-container {
-  display: flex;
-  flex-direction: column;
+  display: grid; /* flex -> grid로 변경 */
+  grid-template-rows: auto 1fr; /* 헤더는 auto, 날짜 그리드는 남은 공간 차지 */
   width: 100%;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   overflow: hidden;
-  padding: 10px;
+  height: 500px; /* 화면 안에 다 보이도록 고정 */
 }
 .calendar-header {
   display: flex;
