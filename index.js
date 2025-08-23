@@ -159,9 +159,14 @@ closeModalBtn.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
 // 모달 닫기: 배경 클릭 시 닫힘
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) modal.classList.add("hidden");
+// 모달 닫기 (모달 배경 클릭 시 닫힘)
+window.addEventListener('click', (e) => {
+  const modal = document.getElementById('modal');
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
 });
+
 
 
 // 초기 달력 표시
