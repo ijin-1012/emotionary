@@ -39,9 +39,9 @@
 
     <main class="container">
       <!-- 달력 화면 -->
- <div class="calendar-wrapper">
-  <div class="calendar-container">
-    <!-- 상단: 이전/다음 버튼 + 년월 중앙 표시 -->
+<section id="calendarSection">
+  <div class="calendar-wrapper">
+    <!-- 상단: 년도.월 + 이전/다음 -->
     <div class="calendar-header">
       <button id="prevMonthBtn">◀</button>
       <span id="calendarTitle"></span>
@@ -49,9 +49,9 @@
     </div>
     
     <!-- 날짜 셀 그리드 -->
-    <div id="calendarGrid" class="calendar-grid"></div>
+    <div id="calendarGrid"></div>
   </div>
-</div>
+</section>
 
 
       <!-- 작성 화면 -->
