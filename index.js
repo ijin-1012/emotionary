@@ -165,36 +165,39 @@ function renderCalendar(){
   }
 
   // 날짜칸
-  for(let d=1; d<=lastDate; d++){
-    const cell = document.createElement('div');
-    cell.classList.add('calendar-cell');
+for(let d=1; d<=lastDate; d++){
+  const cell = document.createElement('div');
+  cell.classList.add('calendar-cell');
 
-    const span = document.createElement('span');
-    const cellDate = new Date(year, month, d);
-    const key = `diary-${formatDateKey(cellDate)}`;
-    const stored = localStorage.getItem(key);
+  const span = document.createElement('span');
+  const cellDate = new Date(year, month, d);
+  const key = `diary-${formatDateKey(cellDate)}`;
+  const stored = localStorage.getItem(key);
 
-if(stored){
-  const { emotion } = JSON.parse(stored);
-  // 날짜 아래에 감정 표시
-  span.innerHTML = `${d}<br>${emotionEmojiMap[emotion] || ''}`;
-  // 테두리 강조 + 감정별 색상 클래스 추가
-  cell.classList.add('diary-border', emotion);
-} else {
-  span.textContent = d;
-}
-
-
-    cell.addEventListener('click', ()=>{ 
-      if(stored) { 
-        const { date, emotion, weather, diary, photo } = JSON.parse(stored); 
-        openModal(date, emotion, weather, diary, photo); 
-      } 
-      else alert('저장된 일기가 없습니다 😱'); 
-    });
+  if(stored){
+    const { emotion } = JSON.parse(stored);
+    // 날짜 아래에 감정 표시
+    span.innerHTML = `${d}<br>${emotionEmojiMap[emotion] || ''}`;
+    // 테두리 강조 + 감정별 색상 클래스 추가
+    cell.classList.add('diary-border', emotion);
+  } else {
+    span.textContent = d;
   }
-}
 
+  // ✅ 여기서 span을 cell에 붙여야 함
+  cell.appendChild(span);
+
+  cell.addEventListener('click', ()=>{ 
+    if(stored) { 
+      const { date, emotion, weather, diary, photo } = JSON.parse(stored); 
+      openModal(date, emotion, weather, diary, photo); 
+    } 
+    else alert('저장된 일기가 없습니다 😱'); 
+  });
+
+  // cell을 달력 그리드에 붙임
+  calendarGrid.appendChild(cell);
+}
 
 // 이전/다음 달 버튼
 document.getElementById('prevMonthBtn').addEventListener('click', () => {
