@@ -148,8 +148,8 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 });
 
 // ========== 달력 렌더링 ========== //
-function renderCalendar(){
-  calendarGrid.innerHTML = '';
+function renderCalendar() {
+  calendarGrid.innerHTML = ''; // 달력 초기화
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
@@ -157,46 +157,47 @@ function renderCalendar(){
 
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-  // 빈칸
-  for(let i=0; i<firstDay; i++){
+  // 1️⃣ 빈칸 채우기
+  for (let i = 0; i < firstDay; i++) {
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  // 날짜칸
-for(let d=1; d<=lastDate; d++){
-  const cell = document.createElement('div');
-  cell.classList.add('calendar-cell');
+  // 2️⃣ 날짜칸 생성
+  for (let d = 1; d <= lastDate; d++) {
+    const cell = document.createElement('div');
+    cell.classList.add('calendar-cell');
 
-  const span = document.createElement('span');
-  const cellDate = new Date(year, month, d);
-  const key = `diary-${formatDateKey(cellDate)}`;
-  const stored = localStorage.getItem(key);
+    const span = document.createElement('span');
+    const cellDate = new Date(year, month, d);
+    const key = `diary-${formatDateKey(cellDate)}`;
+    const stored = localStorage.getItem(key);
 
-  if(stored){
-    const { emotion } = JSON.parse(stored);
-    // 날짜 아래에 감정 표시
-    span.innerHTML = `${d}<br>${emotionEmojiMap[emotion] || ''}`;
-    // 테두리 강조 + 감정별 색상 클래스 추가
-    cell.classList.add('diary-border', emotion);
-  } else {
-    span.textContent = d;
+    if (stored) {
+      const { emotion } = JSON.parse(stored);
+      // 날짜 밑으로 감정 표시
+      span.innerHTML = `${d}<br>${emotionEmojiMap[emotion] || ''}`;
+      // 테두리 강조 + 감정별 클래스 추가
+      cell.classList.add('diary-border', emotion);
+    } else {
+      span.textContent = d;
+    }
+
+    cell.appendChild(span);
+
+    // 클릭 시 모달 열기
+    cell.addEventListener('click', () => {
+      if (stored) {
+        const { date, emotion, weather, diary, photo } = JSON.parse(stored);
+        openModal(date, emotion, weather, diary, photo);
+      } else {
+        alert('저장된 일기가 없습니다 😱');
+      }
+    });
+
+    calendarGrid.appendChild(cell);
   }
-
-  // ✅ 여기서 span을 cell에 붙여야 함
-  cell.appendChild(span);
-
-  cell.addEventListener('click', ()=>{ 
-    if(stored) { 
-      const { date, emotion, weather, diary, photo } = JSON.parse(stored); 
-      openModal(date, emotion, weather, diary, photo); 
-    } 
-    else alert('저장된 일기가 없습니다 😱'); 
-  });
-
-  // cell을 달력 그리드에 붙임
-  calendarGrid.appendChild(cell);
 }
 
 // 이전/다음 달 버튼
