@@ -1,14 +1,15 @@
-// ========== Firebase 초기화 ==========
+// Firebase 초기화 (compat 방식)
 const firebaseConfig = {
   apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
   authDomain: "emotionary-7eb12.firebaseapp.com",
 };
 firebase.initializeApp(firebaseConfig);
 
+// Firebase Auth
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 
-// ========== DOM 요소 ==========
+// DOM 요소
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
 const googleLoginBtn = document.getElementById("googleLoginBtn");
@@ -16,26 +17,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 const userPhoto = document.getElementById("userPhoto");
 const userName = document.getElementById("userName");
 
-const calendarGrid = document.getElementById("calendarGrid");
-const calendarTitle = document.getElementById("calendarTitle");
-const prevMonthBtn = document.getElementById("prevMonthBtn");
-const nextMonthBtn = document.getElementById("nextMonthBtn");
-
-const showHomeBtn = document.getElementById("showHomeBtn");
-const showWriteBtn = document.getElementById("showWriteBtn");
-const calendarSection = document.getElementById("calendarSection");
-const writeScreen = document.getElementById("writeScreen");
-
-const saveBtn = document.getElementById("saveBtn");
-const emotionSelect = document.getElementById("emotion");
-const weatherSelect = document.getElementById("weather");
-const diaryInput = document.getElementById("diary");
-
-// ========== 상태 ==========
-let currentDate = new Date();
-let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, diary } }
-
-// ========== 로그인/로그아웃 ==========
+// 로그인
 googleLoginBtn.addEventListener("click", () => {
   auth.signInWithPopup(provider)
     .then(result => {
@@ -50,12 +32,37 @@ googleLoginBtn.addEventListener("click", () => {
     .catch(error => console.error(error));
 });
 
+// 로그아웃
 logoutBtn.addEventListener("click", () => {
-  auth.signOut().then(() => {
-    mainScreen.style.display = "none";
-    loginScreen.style.display = "flex";
-  });
+  auth.signOut()
+    .then(() => {
+      mainScreen.style.display = "none";
+      loginScreen.style.display = "flex";
+      userPhoto.style.display = "none";
+      userName.textContent = "";
+      logoutBtn.style.display = "none";
+    })
+    .catch(error => console.error(error));
 });
+
+// 로그인 상태 유지
+auth.onAuthStateChanged(user => {
+  if (user) {
+    loginScreen.style.display = "none";
+    mainScreen.style.display = "block";
+    userName.textContent = user.displayName;
+    userPhoto.src = user.photoURL;
+    userPhoto.style.display = "inline";
+    logoutBtn.style.display = "inline";
+  } else {
+    loginScreen.style.display = "flex";
+    mainScreen.style.display = "none";
+    userPhoto.style.display = "none";
+    userName.textContent = "";
+    logoutBtn.style.display = "none";
+  }
+});
+
 
 // ========== 달력 ==========
 function renderCalendar() {
