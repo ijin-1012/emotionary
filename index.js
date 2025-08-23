@@ -47,14 +47,28 @@ const emotionSelect = document.getElementById("emotion");
 const weatherSelect = document.getElementById("weather");
 const diaryInput = document.getElementById("diary");
 
-// 숨겨진 파일 input
-const photoInput = document.getElementById("photo");
 
-// 화면에 보여줄 📸 아이콘
-const photoIcon = document.getElementById("photoIcon"); 
+// DOM 로드 후 이벤트 연결
+document.addEventListener("DOMContentLoaded", () => {
+  const photoInput = document.getElementById("photo");
+  const photoIcon = document.getElementById("photoIcon");
 
-photoIcon.addEventListener("click", () => {
-  photoInput.click(); // 숨겨진 파일 input을 클릭
+  // 아이콘 클릭 → 파일 선택창 열기
+  photoIcon.addEventListener("click", () => {
+    photoInput.click();
+  });
+
+  // 파일 선택 후 처리 (미리보기, 저장 등)
+  photoInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return; // 파일 없으면 종료
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      console.log("선택된 이미지 URL:", event.target.result);
+      // 여기서 diaryData에 저장하거나 미리보기 img src 적용 가능
+    };
+    reader.readAsDataURL(file);
+  });
 });
 
 
