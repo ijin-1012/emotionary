@@ -149,7 +149,7 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 
 // ========== 달력 렌더링 ========== //
 function renderCalendar(){
-  calendarGrid.innerHTML = '';
+  calendarGrid.innerHTML = ''; // 기존 날짜 삭제
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
@@ -157,14 +157,14 @@ function renderCalendar(){
 
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-  // 빈 칸
+  // 빈 칸 채우기 (월 첫 날 맞추기)
   for(let i = 0; i < firstDay; i++){
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  // 날짜 칸
+  // 날짜 칸 생성
   for(let d = 1; d <= lastDate; d++){
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
@@ -185,6 +185,7 @@ function renderCalendar(){
     cell.appendChild(span);
     calendarGrid.appendChild(cell);
 
+    // 클릭 이벤트
     cell.addEventListener('click', () => {
       if(stored){
         const { date, emotion, weather, diary, photo } = JSON.parse(stored);
