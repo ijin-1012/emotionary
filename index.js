@@ -41,7 +41,6 @@ modal.id = "diaryModal";
 modal.classList.add("modal", "hidden");
 modal.innerHTML = `
   <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
     <h2 id="modalDate"></h2>
     <p id="modalEmotion"></p>
     <p id="modalWeather"></p>
@@ -49,7 +48,7 @@ modal.innerHTML = `
     <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
   </div>
 `;
-document.body.appendChild(modal);
+ment.body.appendChild(modal);
 
 const closeModalBtn = modal.querySelector("#closeModal");
 const modalDate = modal.querySelector("#modalDate");
@@ -159,9 +158,11 @@ function openModal(date) {
 closeModalBtn.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
+// 모달 닫기: 배경 클릭 시 닫힘
 modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.classList.add("hidden");
 });
+
 
 // 초기 달력 표시
 renderCalendar();
