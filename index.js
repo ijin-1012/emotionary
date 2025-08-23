@@ -157,36 +157,42 @@ function renderCalendar() {
 
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-  // 1️⃣ 빈칸 채우기
+  // 빈칸 채우기
   for (let i = 0; i < firstDay; i++) {
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  // 2️⃣ 날짜칸 생성
+  // 날짜칸 생성
   for (let d = 1; d <= lastDate; d++) {
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
 
-    const span = document.createElement('span');
+    // 날짜 표시
+    const dayDiv = document.createElement('div');
+    dayDiv.classList.add('day');
+    dayDiv.textContent = d;
+    cell.appendChild(dayDiv);
+
+    // 일기 있는 날 감정 표시
     const cellDate = new Date(year, month, d);
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
     if (stored) {
       const { emotion } = JSON.parse(stored);
-      // 날짜 밑으로 감정 표시
-      span.innerHTML = `${d}<br>${emotionEmojiMap[emotion] || ''}`;
-      // 테두리 강조 + 감정별 클래스 추가
+
+      const emotionDiv = document.createElement('div');
+      emotionDiv.classList.add('emotion');
+      emotionDiv.textContent = emotionEmojiMap[emotion]; // 이모지
+      cell.appendChild(emotionDiv);
+
+      // 테두리 강조 + 감정별 색상 클래스
       cell.classList.add('diary-border', emotion);
-    } else {
-      span.textContent = d;
     }
 
-    cell.appendChild(span);
-
-    // 클릭 시 모달 열기
+    // 클릭 시 모달
     cell.addEventListener('click', () => {
       if (stored) {
         const { date, emotion, weather, diary, photo } = JSON.parse(stored);
