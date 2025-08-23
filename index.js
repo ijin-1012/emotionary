@@ -123,14 +123,15 @@ onAuthStateChanged(auth, (user) => {
 // === 화면 전환 버튼 이벤트 ===
 showWriteBtn.addEventListener("click", () => {
   calendarSection.style.display = "none";
-  writeScreen.style.display = "flex";
+  writeScreen.style.display = "flex";  // flex로 해야 중앙 정렬 유지
   writeScreen.classList.remove("happy-theme","sad-theme","angry-theme","tired-theme");
 });
 
 showHomeBtn.addEventListener("click", () => {
   writeScreen.style.display = "none";
-  calendarSection.style.display = "flex";
+  calendarSection.style.display = "block"; // block으로 원래 달력 스타일 유지
 });
+
 
 // === 달력 렌더링 ===
 function renderCalendar() {
