@@ -42,13 +42,16 @@ const showHomeBtn = document.getElementById("showHomeBtn");
 const showWriteBtn = document.getElementById("showWriteBtn");
 const calendarSection = document.getElementById("calendarSection");
 const writeScreen = document.getElementById("writeScreen");
-
 const saveBtn = document.getElementById("saveBtn");
 const emotionSelect = document.getElementById("emotion");
 const weatherSelect = document.getElementById("weather");
 const diaryInput = document.getElementById("diary");
 
-const photoIcon = document.getElementById("photoIcon"); // 화면에 보여줄 📸 아이콘
+// 숨겨진 파일 input
+const photoInput = document.getElementById("photo");
+
+// 화면에 보여줄 📸 아이콘
+const photoIcon = document.getElementById("photoIcon"); 
 
 photoIcon.addEventListener("click", () => {
   photoInput.click(); // 숨겨진 파일 input을 클릭
