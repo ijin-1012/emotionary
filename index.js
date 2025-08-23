@@ -1,131 +1,138 @@
-// Firebase SDK 임포트 필요 (HTML에서)
-// <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-// <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
-// =========================
 // Firebase 초기화
-// =========================
 const firebaseConfig = {
   apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
   authDomain: "emotionary-7eb12.firebaseapp.com",
   projectId: "emotionary-7eb12",
   storageBucket: "emotionary-7eb12.appspot.com",
   messagingSenderId: "811615110413",
-  appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
-  measurementId: "G-Q658W4MLGJ"
+  appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
 
-// 화면 요소
-const loginScreen = document.getElementById('loginScreen');
-const calendarScreen = document.getElementById('calendarScreen');
-const writeScreen = document.getElementById('writeScreen');
-const saveBtn = document.getElementById('saveBtn');
-const modal = document.getElementById('modal');
-const modalClose = document.getElementById('modalClose');
-const writeBtn = document.getElementById('writeBtn');
-const calendarBtn = document.getElementById('calendarBtn');
-const monthYear = document.getElementById('monthYear');
-const calendarGrid = document.querySelector('.calendar-grid');
-const prevMonth = document.getElementById('prevMonth');
-const nextMonth = document.getElementById('nextMonth');
-const logoutBtn = document.getElementById('logoutBtn');
-const userInfoImg = document.querySelector('.user-info img');
-const userInfoName = document.querySelector('.user-info span');
+// DOM 요소
+const loginScreen = document.getElementById("loginScreen");
+const mainScreen = document.getElementById("mainScreen");
+const loginBtn = document.getElementById("googleLoginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+const userPhoto = document.getElementById("userPhoto");
+const todayDateDiv = document.getElementById("todayDate");
 
-// 현재 날짜
-let currentDate = new Date();
+// 감정/날씨 지도
+const emotionEmojiMap = { happy:'😊', sad:'😭', angry:'😡', tired:'😴' };
+const weatherEmojiMap = { sunny:'☀️', cloudy:'☁️', rainy:'☔', snowy:'❄️', windy:'💨' };
 
-// =========================
-// 화면 전환 함수
-// =========================
-function showScreen(screen) {
-  [loginScreen, calendarScreen, writeScreen].forEach(s => s.classList.add('hidden'));
-  screen.classList.remove('hidden');
-}
-
-// =========================
-// Firebase 로그인
-// =========================
-document.querySelector('.google-btn').addEventListener('click', () => {
-  auth.signInWithPopup(provider)
-    .then(result => {
-      const user = result.user;
-      // 로그인 성공 시만 메인 화면에 user-info 표시
-      document.querySelector('.user-info img').src = user.photoURL;
-      document.querySelector('.user-info span').textContent = user.displayName;
-      showScreen(calendarScreen);
-    })
-    .catch(error => {
-      console.error(error);
-      alert('로그인에 실패했습니다.');
-    });
+// 로그인 상태 확인
+auth.onAuthStateChanged((user) => {
+  if (user) showMainScreen(user);
+  else showLoginScreen();
 });
 
-// Firebase 로그아웃
-logoutBtn.addEventListener('click', () => {
+// 로그인
+loginBtn.addEventListener("click", () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then(res => showMainScreen(res.user))
+    .catch(err => alert("로그인 실패"));
+});
+
+// 로그아웃
+logoutBtn.addEventListener("click", () => {
   auth.signOut().then(() => {
-    showScreen(loginScreen);
+    localStorage.clear();
+    showLoginScreen();
   });
 });
 
-// =========================
-// 일기 작성 & 달력 기능
-// =========================
+// 화면 전환 함수
+function showMainScreen(user) {
+  loginScreen.style.display = "none";
+  mainScreen.style.display = "block";
+  userName.textContent = user.displayName;
+  userPhoto.src = user.photoURL;
+  userPhoto.style.display = "inline-block";
+  logoutBtn.style.display = "inline-block";
+  loginBtn.style.display = "none";
 
-// 화면 전환: 달력 / 작성
-writeBtn.addEventListener('click', () => showScreen(writeScreen));
-calendarBtn.addEventListener('click', () => showScreen(calendarScreen));
+  todayDateDiv.textContent = new Date().toLocaleDateString('ko-KR');
 
-// 모달 닫기
-modalClose.addEventListener('click', () => modal.classList.add('hidden'));
+  renderCalendar();
+}
 
-// 달력 생성
-function generateCalendar(date) {
-  calendarGrid.innerHTML = '';
-  const year = date.getFullYear();
-  const month = date.getMonth();
+// 화면 전환 버튼
+const calendarSection = document.getElementById('calendarSection');
+const writeScreen = document.getElementById('writeScreen');
+document.getElementById('showHomeBtn').addEventListener('click', () => {
+  calendarSection.style.display = 'block';
+  writeScreen.style.display = 'none';
+});
+document.getElementById('showWriteBtn').addEventListener('click', () => {
+  calendarSection.style.display = 'none';
+  writeScreen.style.display = 'block';
+});
 
-  monthYear.textContent = `${month + 1}월 ${year}`;
+// 달력 렌더링
+const calendarGrid = document.getElementById('calendarGrid');
+const calendarTitle = document.getElementById('calendarTitle');
+let currentDate = new Date();
 
+function renderCalendar() {
+  calendarGrid.innerHTML = "";
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
 
-  for (let i = 0; i < firstDay; i++) calendarGrid.appendChild(document.createElement('div'));
+  calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-  for (let day = 1; day <= lastDate; day++) {
-    const cell = document.createElement('div');
-    cell.classList.add('calendar-cell');
-    cell.textContent = day;
-
-    cell.addEventListener('click', () => showScreen(writeScreen));
+  for(let i=0;i<firstDay;i++) calendarGrid.appendChild(document.createElement('div'));
+  for(let d=1;d<=lastDate;d++){
+    const cell=document.createElement('div');
+    const key=`diary-${year}-${month+1}-${d}`;
+    const stored=localStorage.getItem(key);
+    if(stored){ 
+      const {emotion} = JSON.parse(stored);
+      cell.innerHTML=`${d}<br>${emotionEmojiMap[emotion]||''}`;
+    } else cell.textContent=d;
+    cell.addEventListener('click',()=>stored?openModal(JSON.parse(stored)):alert('기록 없음 😱'));
     calendarGrid.appendChild(cell);
   }
 }
+document.getElementById('prevMonthBtn').addEventListener('click',()=>{ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); });
+document.getElementById('nextMonthBtn').addEventListener('click',()=>{ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); });
 
-// 이전/다음 달
-prevMonth.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); generateCalendar(currentDate); });
-nextMonth.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); generateCalendar(currentDate); });
+// 모달
+const diaryModal=document.getElementById('diaryModal');
+const closeModalBtn=document.getElementById('closeModal');
+function openModal(data){
+  diaryModal.classList.remove('hidden');
+  document.getElementById('modalDate').textContent=data.date;
+  document.getElementById('modalEmotion').textContent=emotionEmojiMap[data.emotion]||'';
+  document.getElementById('modalWeather').textContent=weatherEmojiMap[data.weather]||'';
+  document.getElementById('modalDiary').textContent=data.diary;
+  const imgEl=document.getElementById('modalImage');
+  if(data.photo){ imgEl.src=data.photo; imgEl.style.display='block'; } 
+  else imgEl.style.display='none';
+}
+closeModalBtn.addEventListener('click',()=>diaryModal.classList.add('hidden'));
 
 // 일기 저장
-saveBtn.addEventListener('click', () => {
-  const textarea = writeScreen.querySelector('textarea');
-  if (!textarea.value.trim()) {
-    modal.querySelector('p').textContent = '일기를 작성해주세요!';
-    modal.classList.remove('hidden');
-    return;
+document.getElementById('saveBtn').addEventListener('click',()=>{
+  const diary=document.getElementById('diary').value.trim();
+  if(!diary){ alert('내용을 입력해주세요'); return; }
+  const emotion=document.getElementById('emotion').value;
+  const weather=document.getElementById('weather').value;
+  const photo=document.getElementById('photo').files[0];
+  const todayStr=new Date().toLocaleDateString('ko-KR');
+  const key=`diary-${todayStr}`;
+
+  if(photo){
+    const reader=new FileReader();
+    reader.onload=(e)=>{ localStorage.setItem(key,JSON.stringify({date:todayStr,emotion,weather,diary,photo:e.target.result})); alert('저장 완료!'); renderCalendar(); };
+    reader.readAsDataURL(photo);
+  } else{
+    localStorage.setItem(key,JSON.stringify({date:todayStr,emotion,weather,diary,photo:null}));
+    alert('저장 완료!'); renderCalendar();
   }
-
-  const today = new Date().toISOString().split('T')[0];
-  localStorage.setItem(today, textarea.value.trim());
-
-  modal.querySelector('p').textContent = '일기가 저장되었습니다!';
-  modal.classList.remove('hidden');
-  textarea.value = '';
 });
-
-// 초기 화면
-showScreen(loginScreen);
-generateCalendar(currentDate);

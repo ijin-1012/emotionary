@@ -1,72 +1,107 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Emotionary</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- 로그인 화면 -->
-<div class="login-wrapper" id="loginScreen">
-  <div class="login-box">
-    <h2>Emotionary 로그인</h2>
-    <p>구글 계정으로 간편하게 로그인하세요</p>
-    <button class="google-btn">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Icon">
-      구글로 로그인
-    </button>
-  </div>
-</div>
-
-<!-- 메인 화면 -->
-<header>
-  Emotionary
-  <div class="user-info">
-    <img src="user.jpg" alt="User">
-    <span>홍길동</span>
-    <button id="logoutBtn">로그아웃</button>
-  </div>
-</header>
-
-  <nav class="nav">
-    <button id="calendarBtn">달력</button>
-    <button id="writeBtn">일기 작성</button>
-  </nav>
-
-  <div class="today-date">2025년 8월 23일</div>
-
-  <div class="container" id="calendarScreen">
-    <div class="calendar-header">
-      <button id="prevMonth">&lt;</button>
-      <span id="monthYear">8월 2025</span>
-      <button id="nextMonth">&gt;</button>
-    </div>
-    <div class="calendar-grid">
-      <!-- 달력 날짜 셀은 JS로 동적 생성 -->
+  <div id="loginScreen" class="login-wrapper">
+    <div class="login-box">
+      <h1>Emotionary</h1>
+      <p class="login-desc">Google 계정으로 간편하게 로그인하세요</p>
+      <button id="googleLoginBtn" class="google-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+        Google 계정으로 로그인
+      </button>
     </div>
   </div>
 
-  <!-- 일기 작성 화면 -->
-  <div id="writeScreen" class="hidden">
-    <button class="photo-upload">사진 업로드</button>
-    <div class="diary-section">
-      <textarea placeholder="오늘의 일기를 작성하세요..."></textarea>
+  <!-- 메인 화면 -->
+  <div id="mainScreen" style="display:none;">
+    <header>⌨️ Emotionary 🖱️</header>
+
+    <nav class="nav">
+      <button id="showHomeBtn">달력 🗓️</button>
+      <button id="showWriteBtn">오늘의 하루 기록하기 ✒️</button>
+    </nav>
+
+    <div class="user-info">
+      <img id="userPhoto" style="display:none;" />
+      <span id="userName"></span>
+      <button id="logoutBtn" style="display:none;">로그아웃</button>
     </div>
-    <div class="save-section">
-      <button id="saveBtn">저장</button>
+
+    <div id="todayDate" class="today-date"></div>
+
+    <main class="container">
+      <!-- 달력 화면 -->
+      <section id="calendarSection">
+        <div class="calendar-header">
+          <button id="prevMonthBtn">◀</button>
+          <span id="calendarTitle"></span>
+          <button id="nextMonthBtn">▶</button>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
+
+      <!-- 작성 화면 -->
+      <section id="writeScreen" style="display:none;">
+        <section class="write-meta"></section>
+        <label for="emotion">오늘의 감정:
+          <select id="emotion">
+            <option value="happy">😊 기쁨</option>
+            <option value="sad">😭 슬픔</option>
+            <option value="angry">😡 분노</option>
+            <option value="tired">😴 피곤</option>
+          </select>
+        </label>
+
+        <label for="weather">오늘의 날씨:
+          <select id="weather">
+            <option value="sunny">☀️ 맑음</option>
+            <option value="cloudy">☁️ 흐림</option>
+            <option value="rainy">☔ 비</option>
+            <option value="snowy">❄️ 눈</option>
+            <option value="windy">💨 바람</option>
+          </select>
+        </label>
+
+        <label class="photo-upload" for="photo">📸
+          <input type="file" id="photo" accept="image/*">
+        </label>
+
+        <section class="diary-section">
+          <textarea id="diary" placeholder="📖 오늘의 하루를 적어주세요 ✒️"></textarea>
+        </section>
+
+        <section class="save-section">
+          <button id="saveBtn">기록하기</button>
+        </section>
+      </section>
+    </main>
+
+    <!-- 모달 -->
+    <div id="diaryModal" class="modal hidden">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modalDate"></div>
+        <div id="modalEmotion"></div>
+        <div id="modalWeather"></div>
+        <div id="modalDiary"></div>
+        <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
+      </div>
     </div>
   </div>
 
-  <!-- 모달 -->
-  <div class="modal hidden" id="modal">
-    <div class="modal-content">
-      <span class="close" id="modalClose">&times;</span>
-      <p>메시지 내용</p>
-    </div>
-  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
-  <script src="index.js"></script>
+  <!-- index.js -->
+  <script type="module" src="index.js"></script>
 </body>
 </html>
