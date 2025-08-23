@@ -113,17 +113,21 @@ nav.nav button {
 /* 요일 행 */
 .calendar-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 요일 7칸 */
+  grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-weight: bold;
-  padding: 8px 0;
-  background: #f0f0f0;
-  border-bottom: 1px solid #ccc;
+  margin: 0;
+  padding: 0;
 }
 
 .calendar-weekdays div {
-  padding: 5px 0;
+  height: 50px; /* 날짜 칸과 동일하게 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ccc; /* 날짜 칸과 이어지도록 */
 }
+
 
 /* 날짜 그리드 */
 .calendar-grid {
@@ -139,10 +143,11 @@ nav.nav button {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1 / 1; /* 정사각형 */
+  min-height: 50px;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+
 
 .calendar-cell > span {
   text-align: center;
