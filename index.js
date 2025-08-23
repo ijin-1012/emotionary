@@ -97,22 +97,13 @@ function renderCalendar() {
   for (let i = 0; i < firstDay; i++) {
     calendarGrid.innerHTML += `<div></div>`;
   }
-// 날짜 렌더링
-for (let d = 1; d <= lastDate; d++) {
-  const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-  const cell = document.createElement("div");
-  cell.classList.add("calendar-cell");
-  cell.dataset.date = dateKey;
-  cell.textContent = d;
 
-  // 일기가 있으면 네온 테두리 적용
-  if(diaryData[dateKey]) {
-    cell.classList.add("has-diary");
+  // 날짜
+  for (let d = 1; d <= lastDate; d++) {
+    const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    const hasDiary = diaryData[dateKey] ? "has-diary" : "";
+    calendarGrid.innerHTML += `<div class="calendar-day ${hasDiary}" data-date="${dateKey}">${d}</div>`;
   }
-
-  cell.addEventListener("click", () => openModal(dateKey));
-  calendarGrid.appendChild(cell);
-}
 
   // 날짜 클릭 이벤트
   document.querySelectorAll(".calendar-day").forEach(day => {
