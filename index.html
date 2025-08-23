@@ -101,31 +101,31 @@
 
       <!-- 작성 화면 -->
     <section id="writeScreen" style="display:none;">
+<div class="selection-row">
+  <label for="emotion">오늘의 감정:
+    <select id="emotion">
+      <option value="happy">😊 기쁨</option>
+      <option value="sad">😭 슬픔</option>
+      <option value="angry">😡 분노</option>
+      <option value="tired">😴 피곤</option>
+    </select>
+  </label>
 
-  <div class="selection-row">
-    <label for="emotion">오늘의 감정:
-      <select id="emotion">
-        <option value="happy">😊 기쁨</option>
-        <option value="sad">😭 슬픔</option>
-        <option value="angry">😡 분노</option>
-        <option value="tired">😴 피곤</option>
-      </select>
-    </label>
+  <label for="weather">오늘의 날씨:
+    <select id="weather">
+      <option value="sunny">☀️ 맑음</option>
+      <option value="cloudy">☁️ 흐림</option>
+      <option value="rainy">☔ 비</option>
+      <option value="snowy">❄️ 눈</option>
+      <option value="windy">💨 바람</option>
+    </select>
+  </label>
 
-    <label for="weather">오늘의 날씨:
-      <select id="weather">
-        <option value="sunny">☀️ 맑음</option>
-        <option value="cloudy">☁️ 흐림</option>
-        <option value="rainy">☔ 비</option>
-        <option value="snowy">❄️ 눈</option>
-        <option value="windy">💨 바람</option>
-      </select>
-    </label>
+  <!-- 사진 선택 버튼 제거, 아이콘만 -->
+  <span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span>
+  <input type="file" id="photo" accept="image/*" style="display:none;">
+</div>
 
-    <label class="photo-upload" for="photo">📸 사진 선택
-      <input type="file" id="photo" accept="image/*">
-    </label>
-  </div>
 
   <section class="diary-section">
     <textarea id="diary" placeholder="오늘의 하루를 적어주세요 ✒️"></textarea>

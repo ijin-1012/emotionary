@@ -47,7 +47,13 @@ const saveBtn = document.getElementById("saveBtn");
 const emotionSelect = document.getElementById("emotion");
 const weatherSelect = document.getElementById("weather");
 const diaryInput = document.getElementById("diary");
-const photoInput = document.getElementById("photo");
+
+const photoIcon = document.getElementById("photoIcon"); // 화면에 보여줄 📸 아이콘
+
+photoIcon.addEventListener("click", () => {
+  photoInput.click(); // 숨겨진 파일 input을 클릭
+});
+
 
 // === 모달 생성 ===
 const modal = document.createElement("div");

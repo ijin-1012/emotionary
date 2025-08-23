@@ -183,13 +183,13 @@ nav.nav button {
   background: #fffaf0;
 }
 
-/* 감정, 날씨, 파일 선택 한 줄 중앙 정렬 */
+/* 감정, 날씨, 사진 선택 한 줄 중앙 정렬 */
 .selection-row {
   display: flex;
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: center;  /* 중앙 정렬 */
   align-items: center;
   gap: 20px;
-  flex-wrap: wrap;         /* 화면 작을 때 줄바꿈 */
+  flex-wrap: nowrap;        /* 한 줄 유지 */
 }
 
 /* 라벨 스타일 */
@@ -201,35 +201,30 @@ nav.nav button {
   font-size: 1rem;
 }
 
-/* 선택창 & 파일 input */
-.selection-row select,
-.selection-row input[type="file"] {
+/* 선택창 & 사진 아이콘 */
+.selection-row select {
   padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 0.95rem;
 }
 
-/* 파일 업로드 버튼 */
-.photo-upload {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 8px;
-  background: #f0f0f0;
-  border: 1px solid #ccc;
+/* 사진 아이콘 */
+.photo-icon {
+  font-size: 1.5rem;
   cursor: pointer;
-  font-size: 0.95rem;
+  transition: transform 0.2s;
 }
 
-.photo-upload input {
-  display: none;
+.photo-icon:hover {
+  transform: scale(1.2);
 }
 
 /* 일기 입력창 가로로 길게 */
 .diary-section textarea {
-  width: 100%;        /* 부모 기준 100% */
+  width: 100%;          /* 부모 기준 100% */
+  max-width: 800px;     /* 최대 폭 */
+  min-width: 300px;     /* 최소 폭 */
   height: 200px;
   padding: 16px;
   border-radius: 12px;
@@ -239,8 +234,8 @@ nav.nav button {
   line-height: 1.5;
   background: #fffef8;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
-  max-width: 100%;    /* 최대 폭 제한 제거 */
 }
+
 
 /* 저장 버튼 중앙 정렬 */
 .save-section {
