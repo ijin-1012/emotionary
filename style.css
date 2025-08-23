@@ -92,10 +92,22 @@ nav.nav button {
 /* ==================== 달력 ==================== */
 .calendar-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr); /* 요일 7칸 고정 */
   text-align: center;
   font-weight: bold;
-  margin-bottom: 4px;
+  padding: 8px 0;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+}
+
+.calendar-weekdays div {
+  padding: 5px 0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 날짜도 7칸 */
+  gap: 2px;
 }
 
 .calendar-wrapper {
