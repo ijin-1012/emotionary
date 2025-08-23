@@ -109,10 +109,27 @@ onAuthStateChanged(auth, (user) => {
     userPhoto.src = user.photoURL;
     userPhoto.style.display = "inline";
     logoutBtn.style.display = "inline";
+
+    // 초기 화면 설정
+    calendarSection.style.display = "block";
+    writeScreen.style.display = "none";
+
   } else {
     mainScreen.style.display = "none";
     loginScreen.style.display = "flex";
   }
+});
+
+// === 화면 전환 버튼 이벤트 ===
+showWriteBtn.addEventListener("click", () => {
+  calendarSection.style.display = "none";
+  writeScreen.style.display = "flex";
+  writeScreen.classList.remove("happy-theme","sad-theme","angry-theme","tired-theme");
+});
+
+showHomeBtn.addEventListener("click", () => {
+  writeScreen.style.display = "none";
+  calendarSection.style.display = "block";
 });
 
 // === 달력 렌더링 ===
@@ -196,16 +213,6 @@ function updateUIAfterSave() {
   photoInput.value = "";
   renderCalendar();
 }
+
 // === 초기 렌더링 ===
 renderCalendar();
-
-// === 화면 전환 버튼 이벤트 ===
-showWriteBtn.addEventListener("click", () => {
-  calendarSection.style.display = "none";
-  writeScreen.style.display = "flex";
-});
-
-showHomeBtn.addEventListener("click", () => {
-  writeScreen.style.display = "none";
-  calendarSection.style.display = "block";
-});
