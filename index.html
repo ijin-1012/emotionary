@@ -4,44 +4,50 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Emotionary</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
-    /* 모달 스타일 */
-    .modal {
-      display: none; /* 처음엔 숨김 */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+    /* 기본 스타일 */
+    html, body { margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; background:#fff; color:#222; }
+    button { cursor:pointer; border:none; outline:none; transition: all .2s ease; }
 
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
-      width: 80%;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
+    /* 로그인 화면 */
+    .login-wrapper { display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg, #a8edea, #fed6e3); }
+    .login-box { background:white; padding:50px 40px; border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,.15); width:360px; text-align:center; }
+    .google-btn { display:flex; align-items:center; justify-content:center; gap:12px; padding:14px; width:100%; border:1px solid #ddd; border-radius:8px; background:#fff; }
+    .google-btn img { width:22px; height:22px; }
 
-    .modal-content h2 {
-      margin-bottom: 10px;
-    }
+    /* 메인 화면 */
+    header { text-align:center; padding:20px; font-size:1.8rem; font-weight:bold; border-bottom:2px solid #ddd; }
+    nav.nav { text-align:center; margin:15px 0; }
+    nav.nav button { background:#f5f5f5; border-radius:12px; padding:10px 20px; margin:0 8px; font-size:1.1rem; }
+    .user-info { position:absolute; top:16px; right:24px; display:flex; align-items:center; gap:12px; }
+    .user-info img { width:40px; height:40px; border-radius:50%; object-fit:cover; }
+    .user-info span { font-weight:600; font-size:1rem; }
+    .user-info button { padding:6px 14px; border-radius:10px; background:linear-gradient(135deg,#ffb066,#ff9043); color:#fff; font-weight:600; }
 
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 28px;
-      cursor: pointer;
-    }
+    .today-date { text-align:center; margin:10px 0; font-size:1.2rem; }
+    .container { max-width:700px; margin:0 auto; padding:15px; }
+
+    /* 달력 */
+    .calendar-wrapper { max-width:700px; margin:0 auto; }
+    .calendar-header { display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-weight:700; font-size:1.2rem; }
+    .calendar-weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-weight:bold; padding:8px 0; background:#f0f0f0; border-bottom:1px solid #ccc; }
+    .calendar-weekdays div { padding:5px 0; }
+    .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:5px; }
+    .calendar-cell { aspect-ratio:1/1; display:flex; justify-content:center; align-items:center; border:1px solid #ccc; border-radius:6px; cursor:pointer; font-weight:500; transition: all .2s; }
+    .calendar-cell:hover { background:#f9f9f9; transform:translateY(-2px); }
+
+    /* 작성 화면 */
+    #writeScreen { display:flex; flex-direction:column; align-items:center; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,.05); }
+    .diary-section textarea { width:100%; max-width:600px; height:140px; padding:14px; border-radius:12px; border:1px solid #ccc; }
+    .save-section { display:flex; justify-content:center; margin-top:20px; }
+    #saveBtn { padding:10px 30px; border-radius:10px; background:#eee; font-size:1.1rem; }
+
+    /* 모달 */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
+    .modal-content { background:#fff; padding:20px; border-radius:12px; max-width:400px; width:80%; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2); }
+    .modal-content img { max-width:100%; margin-top:15px; border-radius:10px; display:none; }
+    .close { position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; }
+
   </style>
 </head>
 <body>
@@ -50,10 +56,10 @@
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
       <h1>Emotionary</h1>
-      <p class="login-desc">Google 계정으로 간편하게 로그인하세요</p>
+      <p class="login-desc">Google 계정으로 로그인</p>
       <button id="googleLoginBtn" class="google-btn">
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
-        Google 계정으로 로그인
+        Google 로그인
       </button>
     </div>
   </div>
@@ -64,11 +70,11 @@
 
     <nav class="nav">
       <button id="showHomeBtn">달력 🗓️</button>
-      <button id="showWriteBtn">오늘의 하루 기록하기 ✒️</button>
+      <button id="showWriteBtn">오늘 기록 ✒️</button>
     </nav>
 
     <div class="user-info">
-      <img id="userPhoto" style="display:none;" />
+      <img id="userPhoto" style="display:none;">
       <span id="userName"></span>
       <button id="logoutBtn" style="display:none;">로그아웃</button>
     </div>
@@ -85,19 +91,16 @@
             <span id="calendarTitle"></span>
             <button id="nextMonthBtn">▶</button>
           </div>
-
           <div class="calendar-weekdays">
             <div>일</div><div>월</div><div>화</div>
             <div>수</div><div>목</div><div>금</div><div>토</div>
           </div>
-
           <div id="calendarGrid" class="calendar-grid"></div>
         </div>
       </section>
 
       <!-- 작성 화면 -->
       <section id="writeScreen" style="display:none;">
-        <section class="write-meta"></section>
         <label for="emotion">오늘의 감정:
           <select id="emotion">
             <option value="happy">😊 기쁨</option>
@@ -122,15 +125,15 @@
         </label>
 
         <section class="diary-section">
-          <textarea id="diary" placeholder="📖 오늘의 하루를 적어주세요 ✒️"></textarea>
+          <textarea id="diary" placeholder="오늘의 하루를 적어주세요 ✒️"></textarea>
         </section>
 
         <section class="save-section">
           <button id="saveBtn">기록하기</button>
         </section>
       </section>
-    </main>
 
+    </main>
   </div>
 
   <!-- 모달 -->
@@ -140,7 +143,7 @@
       <h2 id="modalDate"></h2>
       <p id="modalEmotion"></p>
       <p id="modalDiary"></p>
-      <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
+      <img id="modalImage">
     </div>
   </div>
 
@@ -151,39 +154,5 @@
   <!-- JS -->
   <script type="module" src="index.js"></script>
 
-  <script>
-    // 모달 동작 스크립트
-    const diaryModal = document.getElementById('diaryModal');
-    const closeModal = document.getElementById('closeModal');
-    const modalDate = document.getElementById('modalDate');
-    const modalEmotion = document.getElementById('modalEmotion');
-    const modalDiary = document.getElementById('modalDiary');
-    const modalImage = document.getElementById('modalImage');
-
-    function openModal(date, emotion, weather, diary, photo) {
-      modalDate.textContent = `${date} ${weather ? '('+weather+')' : ''}`;
-      modalEmotion.textContent = emotion ? `감정: ${emotion}` : '';
-      modalDiary.textContent = diary || '';
-      
-      if (photo) {
-        modalImage.src = photo;
-        modalImage.style.display = 'block';
-      } else {
-        modalImage.style.display = 'none';
-      }
-
-      diaryModal.style.display = 'flex';
-    }
-
-    closeModal.addEventListener('click', () => {
-      diaryModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === diaryModal) {
-        diaryModal.style.display = 'none';
-      }
-    });
-  </script>
 </body>
 </html>
