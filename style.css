@@ -105,20 +105,24 @@ nav.nav button {
 
 /* ==================== 달력 헤더 중앙 정렬 ==================== */
 .calendar-header {
+  position: relative;
   display: flex;
-  justify-content: space-between; /* 버튼 양쪽 */
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 6px 6px 0 0;
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
 .calendar-header span#calendarTitle {
-  flex: 1;               /* 중앙 공간 차지 */
-  text-align: center;    /* 중앙 정렬 */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-weight: 700;
   font-size: 1.2rem;
 }
+
 
 .calendar-grid {
   flex: 1;
