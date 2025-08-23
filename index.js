@@ -149,7 +149,7 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 
 // ========== 달력 렌더링 ========== //
 function renderCalendar(){
-  calendarGrid.innerHTML = ''; // 기존 날짜 삭제
+  calendarGrid.innerHTML = '';
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
@@ -157,15 +157,15 @@ function renderCalendar(){
 
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-  // 빈 칸 채우기 (월 첫 날 맞추기)
-  for(let i = 0; i < firstDay; i++){
+  // 빈칸
+  for(let i=0; i<firstDay; i++){
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
-  // 날짜 칸 생성
-  for(let d = 1; d <= lastDate; d++){
+  // 날짜칸
+  for(let d=1; d<=lastDate; d++){
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
 
@@ -174,28 +174,20 @@ function renderCalendar(){
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
-    if(stored){
-      const { emotion } = JSON.parse(stored);
-      span.textContent = `${d} ${emotionEmojiMap[emotion] || ''}`;
-      cell.classList.add(emotion);
-    } else {
-      span.textContent = d;
-    }
-
+    span.textContent = stored ? `${d} ${JSON.parse(stored).emotion}` : d;
     cell.appendChild(span);
     calendarGrid.appendChild(cell);
 
-    // 클릭 이벤트
-    cell.addEventListener('click', () => {
-      if(stored){
-        const { date, emotion, weather, diary, photo } = JSON.parse(stored);
-        openModal(date, emotion, weather, diary, photo);
-      } else {
-        alert('저장된 일기가 없습니다 😱');
-      }
+    cell.addEventListener('click', ()=>{ 
+      if(stored) { 
+        const { date, emotion, weather, diary, photo } = JSON.parse(stored); 
+        openModal(date, emotion, weather, diary, photo); 
+      } 
+      else alert('저장된 일기가 없습니다 😱'); 
     });
   }
 }
+
 
 // 이전/다음 달 버튼
 document.getElementById('prevMonthBtn').addEventListener('click', () => {

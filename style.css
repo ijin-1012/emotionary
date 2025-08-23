@@ -93,32 +93,21 @@ nav.nav button {
 .calendar-wrapper {
   max-width: 700px;
   margin: 0 auto;
-  font-family: 'Noto Sans KR', sans-serif;
 }
+
 .calendar-header {
   display: flex;
   justify-content: center; /* 중앙 정렬 */
   align-items: center;
-  gap: 50px; /* 좌우 버튼과 타이틀 사이 간격 */
-  padding: 10px 0;
-}
-
-#prevMonthBtn, #nextMonthBtn {
-  flex: 0 0 auto; /* 버튼 크기 고정 */
+  gap: 20px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
 }
 
 #calendarTitle {
-  font-weight: 700;
-  font-size: 1.2rem;
   text-align: center;
-  flex: 0 0 auto; /* 제목 크기 고정 */
-}
-#calendarTitle {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 700;
-  font-size: 1.2rem;
+  flex: 1;
 }
 
 .calendar-weekdays {
@@ -126,34 +115,36 @@ nav.nav button {
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-weight: bold;
+  padding: 8px 0;
   background: #f0f0f0;
   border-bottom: 1px solid #ccc;
 }
 
 .calendar-weekdays div {
-  padding: 8px 0;
+  padding: 5px 0;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 .calendar-cell {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1 / 1; /* 정사각형 */
+  aspect-ratio: 1/1;
   border: 1px solid #ccc;
   border-radius: 6px;
-  transition: 0.2s;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .calendar-cell:hover {
-  background-color: #e0f7fa;
+  background-color: #f9f9f9;
+  transform: translateY(-2px);
 }
 
 .calendar-cell span {
