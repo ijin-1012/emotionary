@@ -176,19 +176,14 @@ function renderCalendar(){
 
 if(stored){
   const { emotion } = JSON.parse(stored);
-  span.textContent = `${d}/${emotionEmojiMap[emotion] || ''}`;
-  cell.classList.add('diary-border'); // 테두리 강조
-  cell.classList.add(emotion);        // 감정 색상
-} else {
-  span.textContent = d;
-}if(stored){
-  const { emotion } = JSON.parse(stored);
-  // 수정: 날짜 / 감정 이모지
-  span.textContent = `${d} / ${emotionEmojiMap[emotion] || ''}`;
-  cell.classList.add('diary-border', emotion); // 감정별 테두리 색도 적용
+  // 날짜 아래에 감정 표시
+  span.innerHTML = `${d}<br>${emotionEmojiMap[emotion] || ''}`;
+  // 테두리 강조 + 감정별 색상 클래스 추가
+  cell.classList.add('diary-border', emotion);
 } else {
   span.textContent = d;
 }
+
 
     cell.addEventListener('click', ()=>{ 
       if(stored) { 
