@@ -42,26 +42,10 @@ const weatherEmojiMap = { sunny:'☀️', cloudy:'☁️', rainy:'☔', snowy:'�
 
 // 감정별 응원 메시지
 const emotionMessages = {
-  happy: [
-    "행복이란 만들어가는 거야! 🐸",
-    "작은 행복도 놓치지 말자! 🐹",
-    "오늘 하루도 즐겁게 보내자! 🐭"
-  ],
-  sad: [
-    "지금 힘들어도 괜찮아, 천천히 나아가자 🐴",
-    "슬플 때는 울어도 돼, 마음이 가벼워질 거야 🐱",
-    "조금만 힘내, 밝은 날이 올 거야 🐸"
-  ],
-  angry: [
-    "화가 날 땐 심호흡! 🦭",
-    "이 또한 지나갈 거야, 마음을 진정시키자 🐘",
-    "조금 쉬었다 가는 것도 좋아 🦫"
-  ],
-  tired: [
-    "오늘도 수고했어, 푹 쉬자 ⛄",
-    "조금 쉬어가도 돼, 내일을 위해 🐔",
-    "작은 휴식이 큰 힘이 돼 🌻"
-  ]
+  happy: ["행복이란 만들어가는 거야! 🐸","작은 행복도 놓치지 말자! 🐹","오늘 하루도 즐겁게 보내자! 🐭"],
+  sad: ["지금 힘들어도 괜찮아, 천천히 나아가자 🐴","슬플 때는 울어도 돼, 마음이 가벼워질 거야 🐱","조금만 힘내, 밝은 날이 올 거야 🐸"],
+  angry: ["화가 날 땐 심호흡! 🦭","이 또한 지나갈 거야, 마음을 진정시키자 🐘","조금 쉬었다 가는 것도 좋아 🦫"],
+  tired: ["오늘도 수고했어, 푹 쉬자 ⛄","조금 쉬어가도 돼, 내일을 위해 🐔","작은 휴식이 큰 힘이 돼 🌻"]
 };
 
 // ====================
@@ -88,7 +72,7 @@ auth.onAuthStateChanged(user => {
 loginBtn.addEventListener("click", ()=>{
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
-      .then(res=>showMainScreen(res.user))
+      .then(res => showMainScreen(res.user))
       .catch(()=>alert("로그인 실패"));
 });
 
@@ -176,23 +160,29 @@ function renderCalendar(){
   for(let i=0;i<firstDay;i++) calendarGrid.appendChild(document.createElement('div'));
 
   for(let d=1;d<=lastDate;d++){
-    const cell=document.createElement('div');
+    const cell = document.createElement('div');
     const cellDate = new Date(year, month, d);
     const key = `diary-${formatDateKey(cellDate)}`;
     const stored = localStorage.getItem(key);
 
-    if(stored){
-      const {emotion} = JSON.parse(stored);
-      cell.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
-      cell.classList.add('calendar-cell', emotion);
-    } else cell.textContent=d;
-
+    cell.classList.add('calendar-cell');
     cell.style.cursor='pointer';
+
+    if(stored){
+      const { emotion } = JSON.parse(stored);
+      cell.innerHTML = `${d}<br>${emotionEmojiMap[emotion]||''}`;
+      cell.classList.add(emotion);
+    } else {
+      cell.textContent=d;
+    }
+
     cell.addEventListener('click', ()=>{
       if(stored){
-        const {date, emotion, weather, diary, photo} = JSON.parse(stored);
+        const { date, emotion, weather, diary, photo } = JSON.parse(stored);
         openModal(date, emotion, weather, diary, photo);
-      } else alert('이 날짜에는 기록된 일기가 없습니다 😱');
+      } else {
+        alert('저장된 일기가 없습니다 😱');
+      }
     });
 
     calendarGrid.appendChild(cell);
@@ -210,7 +200,9 @@ function openModal(date, emotion, weather, diary, photo){
   if(photo){
     modalImage.src = photo;
     modalImage.style.display='block';
-  } else modalImage.style.display='none';
+  } else {
+    modalImage.style.display='none';
+  }
 
   diaryModal.classList.remove('hidden');
 }
@@ -235,25 +227,26 @@ document.getElementById('saveBtn').addEventListener('click', ()=>{
   const emotion = document.getElementById('emotion').value;
   const weather = document.getElementById('weather').value;
   const photoInput = document.getElementById('photo');
-  const todayStr = formatDateKey(new Date());
-  const key = window.editingKey || `diary-${todayStr}`;
 
-  const saveEntry = (photoDataUrl=null)=>{
+  const todayStr = formatDateKey(new Date());
+  const key = `diary-${todayStr}`;
+
+  const saveEntry = (photoDataUrl = null) => {
     const entry = { date: todayStr, emotion, weather, diary, photo: photoDataUrl };
     localStorage.setItem(key, JSON.stringify(entry));
 
-    // 감정별 랜덤 응원 메시지
+    // 랜덤 응원 메시지
     const messages = emotionMessages[emotion] || ["오늘 하루도 수고했어요! 🤗"];
-    const randomMsg = messages[Math.floor(Math.random()*messages.length)];
+    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
     alert(randomMsg);
 
     clearWriteForm();
     renderCalendar();
   };
 
-  if(photoInput.files.length>0){
+  if(photoInput.files.length > 0){
     const reader = new FileReader();
-    reader.onload = (e)=> saveEntry(e.target.result);
+    reader.onload = (e) => saveEntry(e.target.result);
     reader.readAsDataURL(photoInput.files[0]);
   } else saveEntry(null);
 });
