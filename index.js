@@ -148,9 +148,8 @@ document.getElementById('emotion').addEventListener('change', ()=>{
 });
 
 // ========== 달력 렌더링 ========== //
-function renderCalendar() {
+function renderCalendar(){
   calendarGrid.innerHTML = '';
-
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
@@ -158,24 +157,15 @@ function renderCalendar() {
 
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
- // 요일 행 생성
-const weekdays = ['일','월','화','수','목','금','토'];
-weekdays.forEach(day => {
-  const dayDiv = document.createElement('div');
-  dayDiv.textContent = day;
-  dayDiv.classList.add('weekday'); // 클래스 추가
-  calendarGrid.appendChild(dayDiv);
-});
-
   // 빈 칸
-  for(let i=0;i<firstDay;i++){
+  for(let i = 0; i < firstDay; i++){
     const emptyCell = document.createElement('div');
     emptyCell.classList.add('calendar-cell');
     calendarGrid.appendChild(emptyCell);
   }
 
   // 날짜 칸
-  for(let d=1; d<=lastDate; d++){
+  for(let d = 1; d <= lastDate; d++){
     const cell = document.createElement('div');
     cell.classList.add('calendar-cell');
 
@@ -186,7 +176,7 @@ weekdays.forEach(day => {
 
     if(stored){
       const { emotion } = JSON.parse(stored);
-      span.textContent = `${d} ${emotionEmojiMap[emotion]||''}`;
+      span.textContent = `${d} ${emotionEmojiMap[emotion] || ''}`;
       cell.classList.add(emotion);
     } else {
       span.textContent = d;
@@ -195,7 +185,6 @@ weekdays.forEach(day => {
     cell.appendChild(span);
     calendarGrid.appendChild(cell);
 
-    // 클릭 이벤트
     cell.addEventListener('click', () => {
       if(stored){
         const { date, emotion, weather, diary, photo } = JSON.parse(stored);
