@@ -90,34 +90,37 @@ nav.nav button {
 }
 
 /* ==================== 달력 ==================== */
+.calendar-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+}
 .calendar-container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 700px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  padding: 10px;
 }
-
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  margin-bottom: 10px;
 }
-.calendarTitle {
+#calendarTitle {
   font-weight: 700;
   font-size: 1.2rem;
   text-align: center;
-  flex: 1; /* 중앙에 배치 */
+  flex: 1;
 }
-.calendar-grid {
+#calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 1fr;
   gap: 2px;
-  margin-top: 10px; /* header와 공간 확보 */
 }
 .calendar-cell {
   display: flex;
@@ -125,13 +128,13 @@ nav.nav button {
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 6px;
-  aspect-ratio: 1 / 1; /* 셀을 정사각형으로 유지 */
+  aspect-ratio: 1 / 1; /* 정사각형 유지 */
 }
 
 .calendar-cell > span {
   text-align: center;
+  white-space: nowrap;
 }
-
 /* hover 효과 */
 .calendar-cell:hover {
   transform: scale(1.05);
@@ -142,17 +145,14 @@ nav.nav button {
   border: 2px solid #ffe680;
   box-shadow: 0 0 8px #ffe680;
 }
-
 .calendar-cell.sad {
   border: 2px solid #80bfff;
   box-shadow: 0 0 8px #80bfff;
 }
-
 .calendar-cell.angry {
   border: 2px solid #ff8080;
   box-shadow: 0 0 8px #ff8080;
 }
-
 .calendar-cell.tired {
   border: 2px solid #b580ff;
   box-shadow: 0 0 8px #b580ff;
