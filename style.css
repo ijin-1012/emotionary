@@ -277,6 +277,37 @@ nav.nav button {
   font-size: 1rem;
   white-space: pre-wrap; /* 내용 줄바꿈 유지 */
 }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
 
 /* ==================== 감정별 테마 ==================== */
 .happy-theme { background: linear-gradient(135deg, #fff7c0, #ffe680); color: #333; }
