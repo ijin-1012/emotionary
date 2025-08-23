@@ -176,7 +176,7 @@ nav.nav button {
   align-items: center;
   width: 100%;
   max-width: 800px;
-  padding: 30px 20px;
+  padding: 20px;
   gap: 20px;
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(0,0,0,0.08);
@@ -184,14 +184,22 @@ nav.nav button {
   box-sizing: border-box;
 }
 
-/* 헤더: 오늘의 감정, 날씨, 사진 */
+/* 헤더 영역 배경 */
+.write-header {
+  width: 100%;
+  background: #fff5e6;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* 감정, 날씨, 사진 선택 */
 .selection-row {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  width: 100%;
 }
 
 /* 라벨 스타일 */
@@ -203,7 +211,6 @@ nav.nav button {
   font-size: 1rem;
 }
 
-/* 선택창 스타일 */
 .selection-row select {
   padding: 6px 12px;
   border-radius: 8px;
@@ -222,27 +229,23 @@ nav.nav button {
   transform: scale(1.2);
 }
 
-/* 일기 입력창 영역 */
-.diary-section {
+/* 일기 입력창 */
+.diary-wrapper {
   width: 100%;
-  background: #fffef8;
-  border-radius: 12px;
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
-  padding: 0; /* padding 제거 */
-  box-sizing: border-box;
 }
 
-.diary-section textarea {
+.diary-wrapper textarea {
   width: 100%;
-  height: 250px;
+  min-height: 250px;
   padding: 16px;
   border-radius: 12px;
   border: 1px solid #ccc;
   resize: vertical;
   font-size: 1rem;
   line-height: 1.5;
-  background: transparent;
-  box-sizing: border-box; /* padding 포함 */
+  background: #fffef8;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+  box-sizing: border-box;
 }
 
 /* 저장 버튼 */
@@ -266,7 +269,6 @@ nav.nav button {
 #saveBtn:hover {
   transform: scale(1.05);
 }
-
 
 /* 사용자 정보 */
 .user-info { 
