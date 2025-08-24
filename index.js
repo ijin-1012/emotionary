@@ -187,12 +187,17 @@ onAuthStateChanged(auth, async (user) => {
 
 // === 화면 전환 ===
 showWriteBtn.addEventListener("click",() => { 
-  calendarSection.style.display="none"; 
-  writeScreen.style.display="flex"; 
+  // 먼저 모달을 닫아준다
+  modal.style.display = "none"; 
+  
+  // 그 후 기록 화면으로 전환
+  calendarSection.style.display = "none"; 
+  writeScreen.style.display = "flex"; 
 });
+
 showHomeBtn.addEventListener("click",() => { 
-  writeScreen.style.display="none"; 
-  calendarSection.style.display="block"; 
+  writeScreen.style.display = "none"; 
+  calendarSection.style.display = "block"; 
 });
 
 // === 사진 선택 ===
@@ -260,7 +265,7 @@ function renderCalendar(){
 cell.addEventListener("click", () => {
   const data = diaryData[dateKey];
   if (!data) {
-    alert("이 날에는 일기 안 썼어요 .. 🥺");  
+    alert("이 날에는 일기 안 썼어요 .. 😲");  
     return;
   }
 
