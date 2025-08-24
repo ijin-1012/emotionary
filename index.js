@@ -267,7 +267,6 @@ saveBtn.addEventListener("click", async () => {
   writeScreen.style.display = "none";
   calendarSection.style.display = "block";
   renderCalendar();
-});
 
   // 감정별 랜덤 메시지
   const messages = {
@@ -293,6 +292,6 @@ saveBtn.addEventListener("click", async () => {
         "스스로 결단을 내리고, 인생을 개척해 왔기에 지금의 내가 있는 게 아니겠어 ? 그 결과가 어떻든 말이야... 🐸",
         "지금의 나는 마치 겨울에 놓고 간 분실물 같은 느낌이랑께요 ... ⛄"]
   };
-
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg);
+});
