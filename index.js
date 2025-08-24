@@ -204,8 +204,8 @@ function renderCalendar(){
 
   // 모달에 내용 채우기
  // 모달에 내용을 채우는 코드
-document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지를 설정
 document.getElementById('modalDateText').textContent = dateKey; // 날짜 텍스트를 설정
+document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지를 설정
 
 // 감정 이모지를 설정
 document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
