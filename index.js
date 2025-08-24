@@ -201,12 +201,19 @@ function renderCalendar(){
         alert("아무것도 기록하지 않았습니다 !! 😱");
         return;
       }
+// 요일 이름 배열
+const weekdays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 
-  // 모달에 내용 채우기
  // 모달에 내용을 채우는 코드
-document.getElementById('modalDateText').textContent = dateKey; // 날짜 텍스트를 설정
-document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지를 설정
+ // Date 객체를 사용하여 요일 계산
+const date = new Date(dateKey);
+const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
+const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
 
+// 날짜와 요일을 함께 설정
+document.getElementById('modalDateText').textContent = `${dateKey} (${weekdayName})`;
+// 날씨 이모지를 설정
+document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather);
 // 감정 이모지를 설정
 document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
 
