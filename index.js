@@ -198,24 +198,25 @@ for (let d = 1; d <= lastDate; d++) {
 
   // 클릭 시 모달 띄우기
   cell.addEventListener("click", () => {
-    const data = diaryData[dateKey];
-    if (!data) {
-      alert("아무것도 기록하지 않았습니다 !! 😱");
-      return;
-    }
+  const data = diaryData[dateKey];
+  if (!data) {
+    alert("아무것도 기록하지 않았습니다 !! 😱");
+    return;
+  }
 
-    // 모달에 내용 채우기
-    modalDate.textContent = dateKey;
-    modalWeatherEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`;
-    modalDiary.textContent = data.text;
-    if (data.photoURL) {
-      modalImage.src = data.photoURL;
-      modalImage.style.display = "block";
-    } else {
-      modalImage.style.display = "none";
-    }
-    modal.style.display = "flex";
-  });
+  // 모달에 내용 채우기
+  modalDate.textContent = dateKey;
+  modalWeatherEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`;
+  modalDiary.textContent = data.text;
+  if (data.photoURL) {
+    modalImage.src = data.photoURL;
+    modalImage.style.display = "block";
+  } else {
+    modalImage.style.display = "none";
+  }
+  modal.style.display = "flex"; // 모달을 보이게 함
+});
+
 
   calendarGrid.appendChild(cell);
 }
