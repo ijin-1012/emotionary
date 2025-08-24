@@ -29,6 +29,7 @@ const firebaseConfig = {
   messagingSenderId: "811615110413",
   appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -255,17 +256,16 @@ function renderCalendar(){
       cell.innerHTML = `${d}<br>${emotionEmoji}`;
     }
 
-    // 클릭 시 모달 띄우기
-    cell.addEventListener("click", () => {
-      const data = diaryData[dateKey];
-      if (!data) {
-        alert("이 날에는 일기 안 썼습니다 .. 🥺");
-        return;
-      }
+// 클릭 시 모달 띄우기
+cell.addEventListener("click", () => {
+  const data = diaryData[dateKey];
+  if (!data) {
+    alert("이 날에는 일기 안 썼습니다 .. 🥺");
+    return;
+  }
 // 요일 이름 배열
 const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
- // 모달에 내용을 채우는 코드
  // Date 객체를 사용하여 요일 계산
 const date = new Date(dateKey);
 const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
@@ -277,22 +277,20 @@ document.getElementById('modalDateText').textContent = `${dateKey} ${weekdayName
 document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather);
 // 감정 이모지를 설정
 document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
-
 // 모달의 일기 내용 요소에 데이터를 설정
-modalDiary.textContent = data.text;
+document.getElementById('modalDiary').textContent = data.text;
 
 // 데이터에 사진 URL이 있는 경우
-if (data.photoURL) {
-  modalImage.src = data.photoURL; // 이미지 요소의 src 속성에 사진 URL을 설정
-  modalImage.style.display = "block"; // 이미지 요소를 표시
-} else {
-  modalImage.style.display = "none"; // 이미지 요소를 숨김
-}
+  if (data.photoURL) {
+    document.getElementById('modalImage').src = data.photoURL;
+    document.getElementById('modalImage').style.display = "block";
+  } else {
+    document.getElementById('modalImage').style.display = "none";
+  }
 
 // 모달을 화면에 표시 (플렉스 박스로 설정하여 중앙에 위치하도록 함)
-modal.style.display = "flex";
-
-    });
+  modal.style.display = "flex";
+});
     // 캘린더 그리드에 셀 요소를 추가
     calendarGrid.appendChild(cell);
   }
