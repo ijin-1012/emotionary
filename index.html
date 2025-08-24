@@ -26,11 +26,12 @@
 
     .today-date { text-align:center; margin:10px 0; font-size:1.2rem; }
     .container { max-width:700px; margin:0 auto; padding:15px; }
-/* 달력 전체를 감싸는 컨테이너 */
-.calendar-wrapper {
-  max-width: 700px; /* 최대 너비 700px */
-  margin: 0 auto; /* 수평 중앙 정렬 */
-}
+
+    /* 달력 전체를 감싸는 컨테이너 */
+    .calendar-wrapper {
+      max-width: 700px; /* 최대 너비 700px */
+      margin: 0 auto; /* 수평 중앙 정렬 */
+    }
 
 /* 달력 헤더 (월, 년도, 네비게이션 버튼 등) */
 .calendar-header {
@@ -127,7 +128,7 @@
 
   /* 일기 작성 섹션의 텍스트 영역 스타일 */
   .diary-section textarea {
-    width: 100%; /* 가로 폭을 부모 요소에 맞춤 */
+    width: 150%; /* 가로 폭을 부모 요소에 맞춤 */
     max-width: 800px; /* 최대 너비 설정 */
     min-height: 80px; /* 최소 높이 설정 */
     padding: 14px; /* 내부 여백 */
@@ -275,7 +276,7 @@
 
 <!-- 일기 작성 영역 -->
 <div class="diary-section">
-  <textarea id="diary" placeholder="🤖 오늘은 어땠나요?"></textarea>
+  <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea>
   <!-- 일기를 작성할 수 있는 텍스트 영역 (사용자가 일기를 입력하는 곳) -->
 </div>
 
