@@ -217,18 +217,18 @@ nav.nav button {
 }
 
 .diary-section {
-    width: 100%;
-    max-width: 1000px; /* 원하는 최대 너비로 설정 */
-    margin: 0 auto; /* 가운데 정렬 */
+  max-width: none;
+    display: flex; /* 또는 다른 레이아웃으로 변경 */
+    flex-direction: column; /* 수직 정렬 */
+    align-items: center; /* 가로 정렬 */
 }
 
 .diary-section textarea {
-    width: 100%; /* 부모 요소에 맞게 입력창 크기 조정 */
-    box-sizing: border-box; /* padding과 border를 포함하여 너비 계산 */
-    padding: 14px;
-    border: 1px solid #ccc;
-    max-width: 100%; /* 최대 너비도 100%로 설정 */
+    width: 100%; /* 부모의 너비에 맞춰 확장 */
+    max-width: 1000px; /* 최대 너비 설정 */
+    box-sizing: border-box; /* 패딩 포함하여 너비 계산 */
 }
+
 
 /* 저장 버튼 */
 .save-section button {
