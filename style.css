@@ -8,6 +8,135 @@ html, body {
   background: #fff; 
   color: #222;
 }
+
+/* 예시: 기본 폰트 크기 */
+body {
+  font-size: 1rem; /* 기본 글자 크기 */
+}
+
+/* 모바일 화면 (최대 600px) */
+@media (max-width: 600px) {
+  header {
+    font-size: 1.4rem; /* 모바일에서 header 크기 줄임 */
+  }
+}  
+  /* 로그인 화면 */
+  .login-box {
+    width: 90%;
+    padding: 40px;
+    margin: 0 auto; /* 화면 중앙에 배치 */
+  }
+  /* 버튼 크기 조정 */
+  .google-btn {
+    padding: 16px 20px;
+  }
+
+  /* 달력 */
+  .calendar-wrapper {
+    width: 100%;
+    padding: 10px;
+  }
+  .calendar-header {
+    font-size: 1.2rem;
+  }
+  #calendarTitle {
+    font-size: 1.2rem;
+  }
+  .calendar-weekdays {
+    font-size: 0.9rem;
+  }
+
+  .calendar-cell {
+    font-size: 1rem; 
+    padding: 12px;
+  }
+
+  /* 작성 화면 */
+  #writeScreen {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .write-header {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 20px;
+     flex-wrap: wrap;
+     width: 100%;
+  }
+  .write-header label {
+    font-size: 1rem;
+  }
+
+  .write-header select {
+    font-size: 1rem;
+    padding: 6px;
+  }
+
+  .diary-section textarea {
+    max-width: 100%;
+    min-height: 120px;
+  }
+
+ .save-section button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  height: auto;
+  margin-top: 10px; /* 위쪽 여백 추가 */
+  }
+
+  /* 사용자 정보 */
+  .user-info {
+    top: 10px;
+    right: 10px;
+  }
+
+  /* 모달 */
+  .modal-content {
+    padding: 20px;
+    max-width: 90%;
+    width: 90%;
+  }
+
+/* 태블릿 화면 (최대 1024px) */
+@media (max-width: 1024px) {
+  .calendar-header {
+    font-size: 1.4rem;
+  }
+
+  .calendar-weekdays {
+    font-size: 1rem;
+  }
+
+  .calendar-cell {
+    font-size: 16px; /* 글자 크기 다소 키우기 */
+  }
+
+  .write-header {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .write-header label {
+    font-size: 1rem;
+  }
+
+  .write-header select {
+    font-size: 1rem;
+  }
+
+  .diary-section textarea {
+    max-width: 100%;
+    min-height: 150px;
+  }
+
+  .save-section button {
+    width: 80%;
+    padding: 14px;
+  }
+}
+
 button { 
   cursor: pointer; 
   border: none; 
