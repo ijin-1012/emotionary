@@ -176,21 +176,27 @@
             </select>
           </label>
 
-          <span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span>
-          <input type="file" id="photo" accept="image/*" style="display:none;">
-        </div>
+         <!-- 사진 아이콘과 파일 입력 (사진 선택) -->
+<span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span> 
+<!-- 사진 아이콘으로 사용자가 클릭하여 사진을 선택할 수 있도록 함 -->
 
-        <div class="diary-section">
-          <textarea id="diary" placeholder="🤖 오늘은 어땠나요?"></textarea>
-        </div>
+<input type="file" id="photo" accept="image/*" style="display:none;">
+<!-- 파일 입력 요소로, 사용자가 사진 파일을 선택할 수 있게 하며, 기본적으로 숨겨져 있음 (아이콘 클릭 시 나타남) -->
 
-        <div class="save-section">
-          <button id="saveBtn">저장하기</button>
-        </div>
-      </section>
+</div>
 
-    </main>
-  </div>
+<!-- 일기 작성 영역 -->
+<div class="diary-section">
+  <textarea id="diary" placeholder="🤖 오늘은 어땠나요?"></textarea>
+  <!-- 일기를 작성할 수 있는 텍스트 영역 (사용자가 일기를 입력하는 곳) -->
+</div>
+
+<!-- 저장 버튼 영역 -->
+<div class="save-section">
+  <button id="saveBtn">저장하기</button>
+  <!-- 일기를 저장할 수 있는 버튼 -->
+</div>
+
 
   <!-- 모달 -->
 <div id="diaryModal" class="modal">

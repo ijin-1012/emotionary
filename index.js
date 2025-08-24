@@ -39,32 +39,85 @@ const storage = getStorage(app);
 let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, text, photoURL } }
 
 // === DOM ===
+
+// 로그인 화면을 나타내는 요소
 const loginScreen = document.getElementById("loginScreen");
+
+// 메인 화면을 나타내는 요소
 const mainScreen = document.getElementById("mainScreen");
+
+// 구글 로그인 버튼
 const googleLoginBtn = document.getElementById("googleLoginBtn");
+
+// 로그아웃 버튼
 const logoutBtn = document.getElementById("logoutBtn");
+
+// 사용자 프로필 사진을 표시하는 요소
 const userPhoto = document.getElementById("userPhoto");
+
+// 사용자 이름을 표시하는 요소
 const userName = document.getElementById("userName");
+
+// 달력 섹션을 감싸는 요소
 const calendarSection = document.getElementById("calendarSection");
+
+// 작성 화면을 감싸는 요소 (일기 작성 화면)
 const writeScreen = document.getElementById("writeScreen");
+
+// 홈 화면으로 돌아가는 버튼
 const showHomeBtn = document.getElementById("showHomeBtn");
+
+// 일기 작성 화면으로 이동하는 버튼
 const showWriteBtn = document.getElementById("showWriteBtn");
+
+// 달력 그리드 (날짜 셀을 배치하는 그리드)
 const calendarGrid = document.getElementById("calendarGrid");
+
+// 달력 제목 (월/년 표시)
 const calendarTitle = document.getElementById("calendarTitle");
+
+// 이전 달로 이동하는 버튼
 const prevMonthBtn = document.getElementById("prevMonthBtn");
+
+// 다음 달로 이동하는 버튼
 const nextMonthBtn = document.getElementById("nextMonthBtn");
+
+// 감정 선택 드롭다운
 const emotionSelect = document.getElementById("emotion");
+
+// 날씨 선택 드롭다운
 const weatherSelect = document.getElementById("weather");
+
+// 일기 입력 필드
 const diaryInput = document.getElementById("diary");
+
+// 사진 파일 입력 (사용자가 선택한 이미지를 업로드할 수 있는 input)
 const photoInput = document.getElementById("photo");
+
+// 사진 아이콘 (사진 선택을 트리거하는 아이콘)
 const photoIcon = document.getElementById("photoIcon");
+
+// 저장 버튼 (작성한 일기를 저장하는 버튼)
 const saveBtn = document.getElementById("saveBtn");
+
+// 다이어리 모달 창 (일기 내용을 보여주는 팝업)
 const modal = document.getElementById("diaryModal");
+
+// 모달을 닫는 버튼 (X 버튼)
 const closeModal = document.getElementById("closeModal");
+
+// 모달에서 날짜를 표시하는 요소
 const modalDate = document.getElementById("modalDate");
+
+// 모달에서 감정을 표시하는 요소
 const modalEmotion = document.getElementById("modalEmotion");
+
+// 모달에서 일기 내용을 표시하는 요소
 const modalDiary = document.getElementById("modalDiary");
+
+// 모달에서 이미지 표시 영역
 const modalImage = document.getElementById("modalImage");
+
 
 // === 세션 유지 ===
 setPersistence(auth, browserLocalPersistence).catch(console.error);
@@ -142,10 +195,18 @@ showHomeBtn.addEventListener("click",() => {
 });
 
 // === 사진 선택 ===
-photoIcon.addEventListener("click",() => photoInput.click());
+
+// 사진 아이콘을 클릭했을 때, 사진 입력(input) 창을 트리거하는 이벤트 리스너
+photoIcon.addEventListener("click", () => photoInput.click());
+
+// 파일 입력(input) 요소에서 파일이 변경될 때 발생하는 이벤트 리스너
 photoInput.addEventListener("change", e => { 
-  if(e.target.files[0]) console.log("선택된 이미지:", e.target.files[0].name); 
+  // 사용자가 파일을 선택한 경우, 선택된 파일의 이름을 콘솔에 출력
+  if(e.target.files[0]) {
+    console.log("선택된 이미지:", e.target.files[0].name);
+  }
 });
+
 
 // === 모달 닫기 ===
 closeModal.addEventListener("click", () => modal.style.display="none");
@@ -198,11 +259,11 @@ function renderCalendar(){
     cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
       if (!data) {
-        alert("아무것도 기록하지 않았습니다 !! 😱");
+        alert("이 날에는 일기 안 썼습니다 .. 🥺");
         return;
       }
 // 요일 이름 배열
-const weekdays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
  // 모달에 내용을 채우는 코드
  // Date 객체를 사용하여 요일 계산
@@ -211,7 +272,7 @@ const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 �
 const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
 
 // 날짜와 요일을 함께 설정
-document.getElementById('modalDateText').textContent = `${dateKey} (${weekdayName})`;
+document.getElementById('modalDateText').textContent = `${dateKey} ${weekdayName}`;
 // 날씨 이모지를 설정
 document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather);
 // 감정 이모지를 설정
