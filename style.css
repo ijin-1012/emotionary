@@ -216,23 +216,18 @@ nav.nav button {
   transform: scale(1.2);
 }
 
-/* 일기 입력창 */
 .diary-section {
-    width: 100%; /* 부모 요소가 화면의 100% 너비를 차지 */
-    max-width: none; /* 부모 요소에 최대 너비 제한을 제거 */
+    width: 100%;
+    max-width: 1000px; /* 원하는 최대 너비로 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
 }
 
 .diary-section textarea {
-  width: 100% !important;
-  max-width: 1000px !important;
-  min-height: 300px !important;
-  padding: 20px !important;
-  border-radius: 14px !important;
-  border: 1px solid #ccc !important;
-  font-size: 1.1rem !important;
-  line-height: 1.6 !important;
-  resize: vertical !important;
-  background: #fffef8 !important;
+    width: 100%; /* 부모 요소에 맞게 입력창 크기 조정 */
+    box-sizing: border-box; /* padding과 border를 포함하여 너비 계산 */
+    padding: 14px;
+    border: 1px solid #ccc;
+    max-width: 100%; /* 최대 너비도 100%로 설정 */
 }
 
 /* 저장 버튼 */
