@@ -269,13 +269,14 @@ cell.addEventListener("click", () => {
     return;
   }
 
-  // 요일 이름 배열
-  const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+// 요일 이름 배열
+const weekdays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 
-  // Date 객체를 사용하여 요일 계산
-  const date = new Date(dateKey);
-  const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
-  const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
+// 모달에 내용을 채우는 코드
+// Date 객체를 사용하여 요일 계산
+const date = new Date(dateKey);
+const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
+const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
 
 // 날짜와 요일을 함께 설정
 document.getElementById('modalDateText').textContent = `${dateKey} (${weekdayName})`; // 날짜와 요일 텍스트를 설정
@@ -288,6 +289,7 @@ document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.em
 
 // 모달의 일기 내용 요소에 데이터를 설정
 modalDiary.textContent = data.text;
+
 
 // 데이터에 사진 URL이 있는 경우
 if (data.photoURL) {
