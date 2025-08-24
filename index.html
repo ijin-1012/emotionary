@@ -144,15 +144,21 @@
   </div>
 
   <!-- 모달 -->
-  <div id="diaryModal" class="modal">
-    <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
-      <h2 id="modalDate"></h2>
-      <p id="modalEmotion"></p>
-      <p id="modalDiary"></p>
-      <img id="modalImage">
-    </div>
+<div id="diaryModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <!-- 날짜와 날씨 이모지를 함께 표시할 h2 요소 -->
+    <h2 id="modalDate">
+      <span id="modalWeatherEmoji"></span> <!-- 날씨 이모지를 위한 span 요소 -->
+      <span id="modalDateText"></span> <!-- 날짜 텍스트를 위한 span 요소 -->
+    </h2>
+    <!-- 감정 이모지를 표시할 span 요소 추가 -->
+    <p id="modalEmotionEmoji"></p>
+    <p id="modalDiary"></p>
+    <img id="modalImage">
   </div>
+</div>
+
   <!-- JS -->
   <script type="module" src="index.js"></script>
 
