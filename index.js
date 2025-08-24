@@ -265,7 +265,7 @@ function renderCalendar(){
 cell.addEventListener("click", () => {
   const data = diaryData[dateKey];
   if (!data) {
-    alert("이 날에는 일기 안 썼어요 .. 😲");  
+    alert("이 날에는 일기 안 썼어요 .. 🥺");  
     return;
   }
 
@@ -284,7 +284,7 @@ cell.addEventListener("click", () => {
   // 감정 이모지를 설정
   document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
   // 모달의 일기 내용 요소에 데이터를 설정
-  document.getElementById('modalDiary').textContent = data.text;
+  modalDiary.textContent = data.text;
 
   // 데이터에 사진 URL이 있는 경우
   if (data.photoURL) {
