@@ -260,7 +260,7 @@ function renderCalendar(){
 cell.addEventListener("click", () => {
   const data = diaryData[dateKey];
   if (!data) {
-    alert("이 날에는 일기 안 쓰셨어요 .. 🥺");  
+    alert("이 날에는 일기 안 썼어요 .. 🥺");  
     return;
   }
 
@@ -290,6 +290,7 @@ cell.addEventListener("click", () => {
   }
 
   // 모달을 화면에 표시 (플렉스 박스로 설정하여 중앙에 위치하도록 함)
+  const modal = document.getElementById('diaryModal');
   modal.style.display = "flex";
 });
 
