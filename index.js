@@ -260,27 +260,28 @@ function renderCalendar(){
 cell.addEventListener("click", () => {
   const data = diaryData[dateKey];
   if (!data) {
-    alert("이 날에는 일기 안 썼습니다 .. 🥺");
+    alert("이 날에는 일기 안 쓰셨어요 .. 🥺");  
     return;
   }
-// 요일 이름 배열
-const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
- // Date 객체를 사용하여 요일 계산
-const date = new Date(dateKey);
-const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
-const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
+  // 요일 이름 배열
+  const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
-// 날짜와 요일을 함께 설정
-document.getElementById('modalDateText').textContent = `${dateKey} ${weekdayName}`;
-// 날씨 이모지를 설정
-document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather);
-// 감정 이모지를 설정
-document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
-// 모달의 일기 내용 요소에 데이터를 설정
-document.getElementById('modalDiary').textContent = data.text;
+  // Date 객체를 사용하여 요일 계산
+  const date = new Date(dateKey);
+  const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
+  const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
 
-// 데이터에 사진 URL이 있는 경우
+  // 날짜와 요일을 함께 설정
+  document.getElementById('modalDateText').textContent = `${dateKey} ${weekdayName}`;
+  // 날씨 이모지를 설정
+  document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather);
+  // 감정 이모지를 설정
+  document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
+  // 모달의 일기 내용 요소에 데이터를 설정
+  document.getElementById('modalDiary').textContent = data.text;
+
+  // 데이터에 사진 URL이 있는 경우
   if (data.photoURL) {
     document.getElementById('modalImage').src = data.photoURL;
     document.getElementById('modalImage').style.display = "block";
@@ -288,9 +289,10 @@ document.getElementById('modalDiary').textContent = data.text;
     document.getElementById('modalImage').style.display = "none";
   }
 
-// 모달을 화면에 표시 (플렉스 박스로 설정하여 중앙에 위치하도록 함)
+  // 모달을 화면에 표시 (플렉스 박스로 설정하여 중앙에 위치하도록 함)
   modal.style.display = "flex";
 });
+
     // 캘린더 그리드에 셀 요소를 추가
     calendarGrid.appendChild(cell);
   }
