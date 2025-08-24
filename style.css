@@ -290,30 +290,31 @@ nav.nav button {
   z-index: 1000;
 }
 .modal-content {
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 16px;
-  max-width: 600px;
-  width: 80%;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease-in-out;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  max-width:400px;
+  width:80%;
+  text-align:center;
+  box-shadow:0 4px 8px rgba(0,0,0,0.2);
+  position:relative;
 }
+
 #modalDate {
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
-#modalEmotion {
+
+#modalWeatherEmotion {
   font-size: 1.2rem;
-  margin-bottom: 15px;
+  margin-top: 5px;
 }
+
 #modalDiary {
   font-size: 1rem;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  color: #444;
+  margin-top: 10px;
 }
+
 #modalImage {
   max-width: 100%;
   margin-top: 15px;

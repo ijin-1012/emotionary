@@ -173,49 +173,53 @@ function renderCalendar(){
   // 빈 칸 채우기
   for(let i = 0; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
   
-  for(let d = 1; d <= lastDate; d++){
-    const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    const cell = document.createElement("div");
-    cell.className = "calendar-cell";
-    cell.dataset.date = dateKey;
-    cell.textContent = d;
+  // 달력에 날짜 셀 추가
+for (let d = 1; d <= lastDate; d++) {
+  const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+  const cell = document.createElement("div");
+  cell.className = "calendar-cell";
+  cell.dataset.date = dateKey;
+  cell.textContent = d;
 
-    // 감정 이모지와 날짜만 표시
-    if (diaryData[dateKey]) {
-      const emotion = diaryData[dateKey].emotion;
-      const color = emotionColor[emotion] || "#fff";
-      cell.style.border = `2px solid ${color}`;
-      cell.style.boxShadow = `0 0 8px ${color}`;
-      cell.style.transition = "0.3s";
+  // 감정 이모지와 날짜만 표시
+  if (diaryData[dateKey]) {
+    const data = diaryData[dateKey];
+    const emotion = data.emotion;
+    const color = emotionColor[emotion] || "#fff";
+    cell.style.border = `2px solid ${color}`;
+    cell.style.boxShadow = `0 0 8px ${color}`;
+    cell.style.transition = "0.3s";
     
-      // 감정 이모지 추가
-      const emotionEmoji = getEmotionEmoji(emotion);
-      cell.innerHTML = `${d}<br>${emotionEmoji}`;
+    // 감정 이모지와 날씨 이모지 추가
+    const weatherEmoji = getWeatherEmoji(data.weather);
+    const emotionEmoji = getEmotionEmoji(emotion);
+    cell.innerHTML = `${d}<br>${weatherEmoji} ${emotionEmoji}`; // 날짜, 날씨, 감정 이모지 추가
+  }
+
+  // 클릭 시 모달 띄우기
+  cell.addEventListener("click", () => {
+    const data = diaryData[dateKey];
+    if (!data) {
+      alert("아무것도 기록하지 않았습니다 !! 😱");
+      return;
     }
 
-    // 클릭 시 모달 띄우기
-    cell.addEventListener("click", () => {
-      const data = diaryData[dateKey];
-      if (!data) {
-        alert("저장된 일기가 없습니다.");
-        return;
-      }
+    // 모달에 내용 채우기
+    modalDate.textContent = dateKey;
+    modalWeatherEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`;
+    modalDiary.textContent = data.text;
+    if (data.photoURL) {
+      modalImage.src = data.photoURL;
+      modalImage.style.display = "block";
+    } else {
+      modalImage.style.display = "none";
+    }
+    modal.style.display = "flex";
+  });
 
-  // 모달에 내용 채우기
-      modalDate.textContent = dateKey;
-      modalEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`;
-      modalDiary.textContent = data.text;
-      if (data.photoURL) {
-        modalImage.src = data.photoURL;
-        modalImage.style.display = "block";
-      } else {
-        modalImage.style.display = "none";
-      }
-      modal.style.display = "flex";
-    });
+  calendarGrid.appendChild(cell);
+}
 
-    calendarGrid.appendChild(cell);
-  }
 }
 // === 감정 이모지 함수 ===
 function getEmotionEmoji(emotion) {
@@ -233,8 +237,8 @@ function getWeatherEmoji(weather) {
   const emojis = {
     sunny: "☀️",
     cloudy: "☁️",
-    rainy: "🌧️",
-    snowy: "❄️",
+    rainy: "☔",
+    snowy: "⛄",
     windy: "💨"
   };
   return emojis[weather] || "🌤️";
