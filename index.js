@@ -1,20 +1,10 @@
 // index.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { 
-  getAuth, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  signOut, 
-  setPersistence, 
-  browserLocalPersistence,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-// Firestore import 추가
-import { getFirestore, collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, Timestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
-// === Firebase 설정 ===
+// === Firebase 초기화 ===
 const firebaseConfig = {
   apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
   authDomain: "emotionary-7eb12.firebaseapp.com",
@@ -23,60 +13,226 @@ const firebaseConfig = {
   messagingSenderId: "811615110413",
   appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
 };
-
-// == 초기화 ==
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// 사진 업로드 함수
+// === 상태 ===
+let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, diary, imgURL } }
+
+// === DOM 요소 ===
+const loginScreen = document.getElementById("loginScreen");
+const mainScreen = document.getElementById("mainScreen");
+const googleLoginBtn = document.getElementById("googleLoginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userPhoto = document.getElementById("userPhoto");
+const userName = document.getElementById("userName");
+
+const calendarSection = document.getElementById("calendarSection");
+const writeScreen = document.getElementById("writeScreen");
+const showHomeBtn = document.getElementById("showHomeBtn");
+const showWriteBtn = document.getElementById("showWriteBtn");
+
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarTitle = document.getElementById("calendarTitle");
+const prevMonthBtn = document.getElementById("prevMonthBtn");
+const nextMonthBtn = document.getElementById("nextMonthBtn");
+
+const emotionSelect = document.getElementById("emotion");
+const weatherSelect = document.getElementById("weather");
+const diaryInput = document.getElementById("diary");
+const photoInput = document.getElementById("photo");
+const photoIcon = document.getElementById("photoIcon");
+const saveBtn = document.getElementById("saveBtn");
+
+const modal = document.getElementById("diaryModal");
+const closeModal = document.getElementById("closeModal");
+const modalDate = document.getElementById("modalDate");
+const modalEmotion = document.getElementById("modalEmotion");
+const modalDiary = document.getElementById("modalDiary");
+const modalImage = document.getElementById("modalImage");
+
+// === 세션 유지 ===
+setPersistence(auth, browserLocalPersistence).catch(err => console.error(err));
+
+// === 로그인/로그아웃 ===
+googleLoginBtn.addEventListener("click", async () => {
+  try { await signInWithPopup(auth, provider); } 
+  catch(err) { console.error("로그인 실패:", err); }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  try { await signOut(auth); } 
+  catch(err) { console.error("로그아웃 실패:", err); }
+});
+
+// 로그인 상태 감지
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    loginScreen.style.display = "none";
+    mainScreen.style.display = "block";
+    userName.textContent = user.displayName;
+    userPhoto.src = user.photoURL;
+    userPhoto.style.display = "inline";
+    logoutBtn.style.display = "inline";
+    calendarSection.style.display = "block";
+    writeScreen.style.display = "none";
+
+    // --- Firestore에서 현재 유저 일기 불러오기 ---
+    diaryData = {}; // 초기화
+    const q = collection(db, "diaries");
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.userId === user.uid) {
+        const dateKey = data.createdAt.toDate().toISOString().split("T")[0];
+        diaryData[dateKey] = {
+          emotion: data.emotion,
+          weather: data.weather,
+          diary: data.text,
+          imgURL: data.photo || null
+        };
+      }
+    });
+
+    renderCalendar();
+  } else {
+    loginScreen.style.display = "flex";
+    mainScreen.style.display = "none";
+  }
+});
+
+// === 화면 전환 ===
+showWriteBtn.addEventListener("click", () => {
+  calendarSection.style.display = "none";
+  writeScreen.style.display = "flex";
+});
+
+showHomeBtn.addEventListener("click", () => {
+  writeScreen.style.display = "none";
+  calendarSection.style.display = "block";
+});
+
+// === 사진 선택 ===
+photoIcon.addEventListener("click", () => photoInput.click());
+photoInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (file) console.log("선택된 이미지:", file.name);
+});
+
+// === 모달 닫기 ===
+closeModal.addEventListener("click", () => modal.style.display = "none");
+modal.addEventListener("click", e => { if(e.target === modal) modal.style.display = "none"; });
+
+// === Firestore 사진 업로드 ===
 async function uploadPhoto(file) {
   if (!file) return "";
   const storageRef = ref(storage, `diaryPhotos/${auth.currentUser.uid}_${Date.now()}_${file.name}`);
   await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  return url;
+  return await getDownloadURL(storageRef);
 }
 
-// 일기 저장 함수
+// === Firestore 일기 저장 ===
 async function saveDiary(diaryText, emotion, weather, photoFile) {
-  try {
-    const photoUrl = await uploadPhoto(photoFile);
+  const photoUrl = photoFile ? await uploadPhoto(photoFile) : null;
+  const docRef = await addDoc(collection(db, "diaries"), {
+    text: diaryText,
+    emotion, weather,
+    photo: photoUrl,
+    createdAt: Timestamp.now(),
+    userId: auth.currentUser.uid
+  });
+  console.log("일기 저장:", docRef.id);
+  return { id: docRef.id, photoUrl };
+}
 
-    const docRef = await addDoc(collection(db, "diaries"), {
-      text: diaryText,
-      emotion: emotion,
-      weather: weather,
-      photo: photoUrl,
-      createdAt: Timestamp.now(),
-      userId: auth.currentUser ? auth.currentUser.uid : null
+// === 달력 렌더링 ===
+let currentDate = new Date();
+function renderCalendar() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  calendarTitle.textContent = `${year}년 ${month + 1}월`;
+  calendarGrid.innerHTML = "";
+
+  // 감정별 색상 정의
+  const emotionColor = {
+    happy: "#ffe066",  // 노랑
+    sad: "#74c0fc",    // 하늘
+    angry: "#ff6b6b",  // 빨강
+    tired: "#c9a0dc"   // 보라
+  };
+
+  // 빈칸 채우기
+  for (let i = 0; i < firstDay; i++) calendarGrid.innerHTML += `<div></div>`;
+
+  for (let d = 1; d <= lastDate; d++) {
+    const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    const cell = document.createElement("div");
+    cell.className = "calendar-cell";
+    cell.dataset.date = dateKey;
+    cell.textContent = d;
+
+    // 일기가 있는 날짜 색상 & 네온 효과
+    if (diaryData[dateKey]) {
+      const emotion = diaryData[dateKey].emotion;
+      const color = emotionColor[emotion] || "#fff";
+      cell.style.border = `2px solid ${color}`;
+      cell.style.boxShadow = `0 0 8px ${color}`;
+      cell.style.transition = "0.3s";
+    }
+
+    // 클릭하면 모달 표시
+    cell.addEventListener("click", () => {
+      const data = diaryData[dateKey];
+      if (!data) {
+        alert("저장된 일기가 없습니다.");
+        return;
+      }
+      modalDate.textContent = dateKey;
+      modalEmotion.textContent = `감정: ${data.emotion}`;
+      modalDiary.textContent = data.diary;
+      if (data.imgURL) {
+        modalImage.src = data.imgURL;
+        modalImage.style.display = "block";
+      } else {
+        modalImage.style.display = "none";
+      }
+      modal.style.display = "flex";
     });
 
-    console.log("일기 저장 성공:", docRef.id);
-    return docRef.id;
-  } catch (error) {
-    console.error("일기 저장 실패:", error);
+    calendarGrid.appendChild(cell);
   }
 }
 
-// save 버튼 클릭 이벤트
-document.getElementById("saveBtn").addEventListener("click", async () => {
-  const diaryText = document.getElementById("diary").value;
-  const emotion = document.getElementById("emotion").value;
-  const weather = document.getElementById("weather").value;
-  const photoFile = document.getElementById("photo").files[0]; // 파일 가져오기
+    calendarGrid.appendChild(cell);
+  }
+}
 
-// === 일기 저장 및 랜덤 메시지 + 화면 전환 ===
+prevMonthBtn.addEventListener("click", () => { currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); });
+nextMonthBtn.addEventListener("click", () => { currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); });
+
 saveBtn.addEventListener("click", async () => {
   const diaryText = diaryInput.value;
   const emotion = emotionSelect.value;
   const weather = weatherSelect.value;
   const photoFile = photoInput.files[0];
 
-  // Firestore 저장
-  await saveDiary(diaryText, emotion, weather, photoFile);
+  const { photoUrl } = await saveDiary(diaryText, emotion, weather, photoFile);
+
+  const dateKey = new Date().toISOString().split("T")[0];
+  diaryData[dateKey] = { emotion, weather, diary: diaryText, imgURL: photoUrl };
+  
+  diaryInput.value = "";
+  photoInput.value = "";
+  writeScreen.style.display = "none";
+  calendarSection.style.display = "block";
+
+  renderCalendar();
 
   // 감정별 랜덤 메시지
   const messages = {
@@ -102,238 +258,6 @@ saveBtn.addEventListener("click", async () => {
         "스스로 결단을 내리고, 인생을 개척해 왔기에 지금의 내가 있는 게 아니겠어 ? 그 결과가 어떻든 말이야... 🐸",
         "지금의 나는 마치 겨울에 놓고 간 분실물 같은 느낌이랑께요 ... ⛄"]
   };
-
-  const randomMessage = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
-  alert(randomMessage);
-
-  // 입력창 초기화
-  diaryInput.value = "";
-  photoInput.value = "";
-
-  // 메인 화면으로 전환
-  writeScreen.style.display = "none";
-  calendarSection.style.display = "block";
-
-  // 테마 초기화
-  writeScreen.classList.remove("happy-theme","sad-theme","angry-theme","tired-theme");
-
-  // 달력 새로 렌더링
-  renderCalendar();
+const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
+  alert(randomMsg);
 });
-
-  
-// === DOM 요소 ===
-const loginScreen = document.getElementById("loginScreen");
-const mainScreen = document.getElementById("mainScreen");
-const googleLoginBtn = document.getElementById("googleLoginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const userPhoto = document.getElementById("userPhoto");
-const userName = document.getElementById("userName");
-
-const calendarGrid = document.getElementById("calendarGrid");
-const calendarTitle = document.getElementById("calendarTitle");
-const prevMonthBtn = document.getElementById("prevMonthBtn");
-const nextMonthBtn = document.getElementById("nextMonthBtn");
-
-const showHomeBtn = document.getElementById("showHomeBtn");
-const showWriteBtn = document.getElementById("showWriteBtn");
-const calendarSection = document.getElementById("calendarSection");
-const writeScreen = document.getElementById("writeScreen");
-const saveBtn = document.getElementById("saveBtn");
-const emotionSelect = document.getElementById("emotion");
-const weatherSelect = document.getElementById("weather");
-const diaryInput = document.getElementById("diary");
-
-
-// DOM 로드 후 이벤트 연결
-document.addEventListener("DOMContentLoaded", () => {
-  const photoInput = document.getElementById("photo");
-  const photoIcon = document.getElementById("photoIcon");
-
-  // 아이콘 클릭 → 파일 선택창 열기
-  photoIcon.addEventListener("click", () => {
-    photoInput.click();
-  });
-
-  // 파일 선택 후 처리 (미리보기, 저장 등)
-  photoInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return; // 파일 없으면 종료
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      console.log("선택된 이미지 URL:", event.target.result);
-      // 여기서 diaryData에 저장하거나 미리보기 img src 적용 가능
-    };
-    reader.readAsDataURL(file);
-  });
-});
-
-
-// === 모달 생성 ===
-const modal = document.createElement("div");
-modal.id = "diaryModal";
-modal.classList.add("modal", "hidden");
-modal.innerHTML = `
-  <div class="modal-content">
-    <h2 id="modalDate"></h2>
-    <p id="modalEmotion"></p>
-    <p id="modalWeather"></p>
-    <p id="modalDiary"></p>
-    <img id="modalImage" style="max-width:100%; margin-top:15px; border-radius:10px; display:none;">
-  </div>
-`;
-document.body.appendChild(modal);
-
-const modalDate = modal.querySelector("#modalDate");
-const modalEmotion = modal.querySelector("#modalEmotion");
-const modalWeather = modal.querySelector("#modalWeather");
-const modalDiary = modal.querySelector("#modalDiary");
-const modalImage = modal.querySelector("#modalImage");
-
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) modal.classList.add("hidden");
-});
-
-// === 상태 ===
-let currentDate = new Date();
-let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, diary, imgURL } }
-
-// === 세션 지속성 ===
-setPersistence(auth, browserLocalPersistence)
-  .then(() => console.log("세션 로컬 저장 완료"))
-  .catch(err => console.error(err));
-
-// === 로그인/로그아웃 ===
-googleLoginBtn.addEventListener("click", async () => {
-  try {
-    await signInWithPopup(auth, provider);
-  } catch (err) {
-    console.error("로그인 실패:", err);
-  }
-});
-
-logoutBtn.addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-  } catch (err) {
-    console.error("로그아웃 실패:", err);
-  }
-});
-
-// === 로그인 상태 감지 ===
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginScreen.style.display = "none";
-    mainScreen.style.display = "block";
-    userName.textContent = user.displayName;
-    userPhoto.src = user.photoURL;
-    userPhoto.style.display = "inline";
-    logoutBtn.style.display = "inline";
-
-    // 초기 화면 설정
-    calendarSection.style.display = "block";
-    writeScreen.style.display = "none";
-
-  } else {
-    mainScreen.style.display = "none";
-    loginScreen.style.display = "flex";
-  }
-});
-
-// === 화면 전환 버튼 이벤트 ===
-showWriteBtn.addEventListener("click", () => {
-  calendarSection.style.display = "none";
-  writeScreen.style.display = "flex";  // flex로 해야 중앙 정렬 유지
-  writeScreen.classList.remove("happy-theme","sad-theme","angry-theme","tired-theme");
-});
-
-showHomeBtn.addEventListener("click", () => {
-  writeScreen.style.display = "none";
-  calendarSection.style.display = "block"; // block으로 원래 달력 스타일 유지
-});
-
-
-// === 달력 렌더링 ===
-function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month + 1, 0).getDate();
-
-  calendarTitle.textContent = `${year}년 ${month + 1}월`;
-  calendarGrid.innerHTML = "";
-
-  for (let i = 0; i < firstDay; i++) calendarGrid.innerHTML += `<div></div>`;
-  for (let d = 1; d <= lastDate; d++) {
-    const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    const hasDiaryClass = diaryData[dateKey] ? "has-diary" : "";
-    calendarGrid.innerHTML += `
-      <div class="calendar-cell ${hasDiaryClass}" data-date="${dateKey}">
-        <div class="day">${d}</div>
-      </div>`;
-  }
-
-  document.querySelectorAll(".calendar-cell").forEach(cell => {
-    cell.addEventListener("click", () => {
-      const date = cell.dataset.date;
-      const data = diaryData[date];
-      if (!data) {
-        alert("이 날짜에는 저장된 일기가 없습니다.");
-        return;
-      }
-      modalDate.textContent = date;
-      modalEmotion.textContent = `감정: ${data.emotion}`;
-      modalWeather.textContent = `날씨: ${data.weather}`;
-      modalDiary.textContent = data.diary;
-      if (data.imgURL) {
-        modalImage.src = data.imgURL;
-        modalImage.style.display = "block";
-      } else modalImage.style.display = "none";
-      modal.classList.remove("hidden");
-    });
-  });
-}
-
-prevMonthBtn.addEventListener("click", () => { currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); });
-nextMonthBtn.addEventListener("click", () => { currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); });
-
-// === 일기 저장 ===
-saveBtn.addEventListener("click", () => {
-  const dateKey = new Date().toISOString().split("T")[0];
-  let imgURL = null;
-
-  if (photoInput.files && photoInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      imgURL = e.target.result;
-      diaryData[dateKey] = {
-        emotion: emotionSelect.value,
-        weather: weatherSelect.value,
-        diary: diaryInput.value,
-        imgURL
-      };
-      updateUIAfterSave();
-    };
-    reader.readAsDataURL(photoInput.files[0]);
-  } else {
-    diaryData[dateKey] = {
-      emotion: emotionSelect.value,
-      weather: weatherSelect.value,
-      diary: diaryInput.value,
-      imgURL
-    };
-    updateUIAfterSave();
-  }
-});
-
-function updateUIAfterSave() {
-  writeScreen.classList.remove("happy-theme","sad-theme","angry-theme","tired-theme");
-  writeScreen.classList.add(emotionSelect.value + "-theme");
-  alert("저장되었습니다!");
-  diaryInput.value = "";
-  photoInput.value = "";
-  renderCalendar();
-}
-
-// === 초기 렌더링 ===
-renderCalendar();
