@@ -169,43 +169,86 @@ function renderCalendar(){
     angry: "#ff6b6b", 
     tired: "#c9a0dc" 
   };
+
+  // 빈 칸 채우기
   for(let i = 0; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
+  
   for(let d = 1; d <= lastDate; d++){
     const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
     const cell = document.createElement("div");
     cell.className = "calendar-cell";
     cell.dataset.date = dateKey;
     cell.textContent = d;
-    if(diaryData[dateKey]){
-      const color = emotionColor[diaryData[dateKey].emotion] || "#fff";
+
+    // 감정 이모지와 날짜만 표시
+    if (diaryData[dateKey]) {
+      const emotion = diaryData[dateKey].emotion;
+      const color = emotionColor[emotion] || "#fff";
       cell.style.border = `2px solid ${color}`;
       cell.style.boxShadow = `0 0 8px ${color}`;
+      cell.style.transition = "0.3s";
+    
+      // 감정 이모지 추가
+      const emotionEmoji = getEmotionEmoji(emotion);
+      cell.innerHTML = `${d}<br>${emotionEmoji}`;
     }
+
+    // 클릭 시 모달 띄우기
     cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
-      if(!data){ alert("저장된 일기가 없습니다."); return; }
+      if (!data) {
+        alert("저장된 일기가 없습니다.");
+        return;
+      }
+
+  // 모달에 내용 채우기
       modalDate.textContent = dateKey;
-      modalEmotion.textContent = `감정: ${data.emotion}`;
+      modalEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`;
       modalDiary.textContent = data.text;
-      if(data.photoURL){ 
-        modalImage.src = data.photoURL; 
-        modalImage.style.display = "block"; 
-      } else { 
-        modalImage.style.display = "none"; 
+      if (data.photoURL) {
+        modalImage.src = data.photoURL;
+        modalImage.style.display = "block";
+      } else {
+        modalImage.style.display = "none";
       }
       modal.style.display = "flex";
     });
+
     calendarGrid.appendChild(cell);
   }
 }
+// === 감정 이모지 함수 ===
+function getEmotionEmoji(emotion) {
+  const emojis = {
+    happy: "😊",
+    sad: "😭",
+    angry: "😡",
+    tired: "😴"
+  };
+  return emojis[emotion] || "🙂";
+}
 
-prevMonthBtn.addEventListener("click", () => { 
-  currentDate.setMonth(currentDate.getMonth() - 1); 
-  renderCalendar(); 
+// === 날씨 이모지 함수 ===
+function getWeatherEmoji(weather) {
+  const emojis = {
+    sunny: "☀️",
+    cloudy: "☁️",
+    rainy: "🌧️",
+    snowy: "❄️",
+    windy: "💨"
+  };
+  return emojis[weather] || "🌤️";
+}
+
+// === 이전/다음 월 버튼 ===
+prevMonthBtn.addEventListener("click", () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
 });
-nextMonthBtn.addEventListener("click", () => { 
-  currentDate.setMonth(currentDate.getMonth() + 1); 
-  renderCalendar(); 
+
+nextMonthBtn.addEventListener("click", () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
 });
 
 // === 일기 저장 ===
@@ -224,6 +267,7 @@ saveBtn.addEventListener("click", async () => {
   writeScreen.style.display = "none";
   calendarSection.style.display = "block";
   renderCalendar();
+});
 
   // 감정별 랜덤 메시지
   const messages = {
@@ -252,4 +296,3 @@ saveBtn.addEventListener("click", async () => {
 
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg);
-});
