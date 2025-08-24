@@ -112,7 +112,7 @@ async function loadDiaries(){
 }
 
 // === 로그인 상태 감지 ===
-onAuthStateChanged(auth, async user => {
+onAuthStateChanged(auth, async (user) => {
   if(user){
     loginScreen.style.display="none";
     mainScreen.style.display="block";
@@ -132,58 +132,84 @@ onAuthStateChanged(auth, async user => {
 });
 
 // === 화면 전환 ===
-showWriteBtn.addEventListener("click",()=>{ calendarSection.style.display="none"; writeScreen.style.display="flex"; });
-showHomeBtn.addEventListener("click",()=>{ writeScreen.style.display="none"; calendarSection.style.display="block"; });
+showWriteBtn.addEventListener("click",() => { 
+  calendarSection.style.display="none"; 
+  writeScreen.style.display="flex"; 
+});
+showHomeBtn.addEventListener("click",() => { 
+  writeScreen.style.display="none"; 
+  calendarSection.style.display="block"; 
+});
 
 // === 사진 선택 ===
-photoIcon.addEventListener("click",()=>photoInput.click());
-photoInput.addEventListener("change", e=>{ if(e.target.files[0]) console.log("선택된 이미지:",e.target.files[0].name); });
+photoIcon.addEventListener("click",() => photoInput.click());
+photoInput.addEventListener("change", e => { 
+  if(e.target.files[0]) console.log("선택된 이미지:", e.target.files[0].name); 
+});
 
 // === 모달 닫기 ===
-closeModal.addEventListener("click",()=>modal.style.display="none");
-modal.addEventListener("click", e=>{ if(e.target===modal) modal.style.display="none"; });
+closeModal.addEventListener("click", () => modal.style.display="none");
+modal.addEventListener("click", e => { 
+  if(e.target === modal) modal.style.display="none"; 
+});
 
 // === 달력 렌더링 ===
 let currentDate = new Date();
 function renderCalendar(){
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const firstDay = new Date(year,month,1).getDay();
-  const lastDate = new Date(year,month+1,0).getDate();
-  calendarTitle.textContent = `${year}년 ${month+1}월`;
-  calendarGrid.innerHTML="";
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+  calendarTitle.textContent = `${year}년 ${month + 1}월`;
+  calendarGrid.innerHTML = "";
 
-  const emotionColor = { happy:"#ffe066", sad:"#74c0fc", angry:"#ff6b6b", tired:"#c9a0dc" };
-  for(let i=0;i<firstDay;i++) calendarGrid.innerHTML+="<div></div>";
-  for(let d=1; d<=lastDate; d++){
-    const dateKey = `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  const emotionColor = { 
+    happy: "#ffe066", 
+    sad: "#74c0fc", 
+    angry: "#ff6b6b", 
+    tired: "#c9a0dc" 
+  };
+  for(let i = 0; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
+  for(let d = 1; d <= lastDate; d++){
+    const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
     const cell = document.createElement("div");
-    cell.className="calendar-cell";
-    cell.dataset.date=dateKey;
-    cell.textContent=d;
+    cell.className = "calendar-cell";
+    cell.dataset.date = dateKey;
+    cell.textContent = d;
     if(diaryData[dateKey]){
-      const color = emotionColor[diaryData[dateKey].emotion]||"#fff";
-      cell.style.border=`2px solid ${color}`;
-      cell.style.boxShadow=`0 0 8px ${color}`;
+      const color = emotionColor[diaryData[dateKey].emotion] || "#fff";
+      cell.style.border = `2px solid ${color}`;
+      cell.style.boxShadow = `0 0 8px ${color}`;
     }
-    cell.addEventListener("click",()=>{
+    cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
       if(!data){ alert("저장된 일기가 없습니다."); return; }
-      modalDate.textContent=dateKey;
-      modalEmotion.textContent=`감정: ${data.emotion}`;
-      modalDiary.textContent=data.text;
-      if(data.photoURL){ modalImage.src=data.photoURL; modalImage.style.display="block"; } 
-      else{ modalImage.style.display="none"; }
-      modal.style.display="flex";
+      modalDate.textContent = dateKey;
+      modalEmotion.textContent = `감정: ${data.emotion}`;
+      modalDiary.textContent = data.text;
+      if(data.photoURL){ 
+        modalImage.src = data.photoURL; 
+        modalImage.style.display = "block"; 
+      } else { 
+        modalImage.style.display = "none"; 
+      }
+      modal.style.display = "flex";
     });
     calendarGrid.appendChild(cell);
   }
 }
-prevMonthBtn.addEventListener("click",()=>{ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); });
-nextMonthBtn.addEventListener("click",()=>{ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); });
+
+prevMonthBtn.addEventListener("click", () => { 
+  currentDate.setMonth(currentDate.getMonth() - 1); 
+  renderCalendar(); 
+});
+nextMonthBtn.addEventListener("click", () => { 
+  currentDate.setMonth(currentDate.getMonth() + 1); 
+  renderCalendar(); 
+});
 
 // === 일기 저장 ===
-saveBtn.addEventListener("click", async()=>{
+saveBtn.addEventListener("click", async () => {
   const diaryText = diaryInput.value;
   const emotion = emotionSelect.value;
   const weather = weatherSelect.value;
@@ -193,10 +219,10 @@ saveBtn.addEventListener("click", async()=>{
   const dateKey = new Date().toISOString().split("T")[0];
   diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL };
 
-  diaryInput.value="";
-  photoInput.value="";
-  writeScreen.style.display="none";
-  calendarSection.style.display="block";
+  diaryInput.value = "";
+  photoInput.value = "";
+  writeScreen.style.display = "none";
+  calendarSection.style.display = "block";
   renderCalendar();
 
   // 감정별 랜덤 메시지
@@ -223,6 +249,7 @@ saveBtn.addEventListener("click", async()=>{
         "스스로 결단을 내리고, 인생을 개척해 왔기에 지금의 내가 있는 게 아니겠어 ? 그 결과가 어떻든 말이야... 🐸",
         "지금의 나는 마치 겨울에 놓고 간 분실물 같은 느낌이랑께요 ... ⛄"]
   };
-const randomMsg = messages[emotion][Math.floor(Math.random()*messages[emotion].length)];
+
+  const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg);
 });
