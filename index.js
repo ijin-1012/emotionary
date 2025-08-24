@@ -265,7 +265,7 @@ function renderCalendar(){
 cell.addEventListener("click", () => {
   const data = diaryData[dateKey];
   if (!data) {
-    alert("이 날에는 일기 안 썼능데 .. 🥺");  
+    alert("이 날에는 일기 안 썼는데 .. 🥺");  
     return;
   }
 
