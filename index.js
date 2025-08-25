@@ -216,9 +216,19 @@ function renderCalendar() {
         alert("이 날은 일기 안 썼어 . . 🥹"); // 일기가 없는 날 클릭 시 알림
         return;
       }
+// 요일을 반환하는 함수
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return daysOfWeek[date.getDay()];
+}
 
 // 모달에 내용 채우기
 modalDate.textContent = dateKey; // 날짜 표시
+
+// 요일 계산 및 표시
+const modalDayElement = document.getElementById('modalDay'); // 요일을 표시할 요소
+modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
 
 // 날씨 이모지를 별도의 요소에 표시
 const weatherEmojiElement = document.getElementById('weatherEmoji'); // 날씨 이모지 표시할 요소
@@ -238,11 +248,9 @@ if (data.photoURL) {
 }
 
 modal.style.display = "flex"; // 모달 표시
+});
 
-
-    });
-
-    calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
+calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
   }
 }
 
