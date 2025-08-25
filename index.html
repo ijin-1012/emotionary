@@ -76,16 +76,28 @@
     cursor: pointer; /* 마우스 포인터를 클릭 가능한 손 모양으로 변경 */
   }
 
-  /* 일기 작성 섹션의 텍스트 영역 스타일 */
-  .diary-section textarea {
-    width: 150%; /* 가로 폭을 부모 요소의 150%로 설정 */
-    max-width: 800px; /* 최대 너비 설정 */
-    min-height: 80px; /* 최소 높이 설정 */
-    padding: 14px; /* 내부 여백 */
-    border-radius: 12px; /* 모서리를 둥글게 */
-    border: 1px solid #ccc; /* 연한 회색 테두리 */
-    resize: none; /* 크기 조절 불가 */
-  }
+/* 일기 작성 섹션 스타일 */
+.diary-section {
+  display: flex; /* Flexbox 레이아웃을 사용 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  padding: 20px; /* 내부 여백 */
+  width: 100%; /* 부모 요소의 가로폭을 100%로 설정 */
+}
+
+/* 일기 작성 섹션의 텍스트 영역 스타일 */
+.diary-section textarea {
+  width: 700%; /* 가로 폭을 부모 요소에 맞춤 */
+  max-width: none; /* 최대 너비 제한을 없앰 */
+  min-height: 80px; /* 최소 높이 설정 */
+  padding: 14px; /* 내부 여백 */
+  border-radius: 12px; /* 모서리를 둥글게 */
+  border: 1px solid #ccc; /* 연한 회색 테두리 */
+  resize: none; /* 크기 조절 불가 */
+}
+
+
+
   
    /* 저장 버튼 섹션 스타일 */
    .save-section {
@@ -183,7 +195,7 @@
         </div>
 
         <div class="diary-section">
-          <textarea id="diary" placeholder="🤖 오늘 하루를 적어주세요"></textarea>
+          <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea>
         </div>
 
         <div class="save-section">
