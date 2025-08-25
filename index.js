@@ -218,24 +218,16 @@ function renderCalendar() {
       }
 
       // 모달에 내용 채우기
-      modalDate.textContent = dateKey; // 모달의 날짜 요소에 dateKey 값을 설정
-      // 날씨 이모지 설정
-      weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather);
-      // 감정 이모지 설정
-      emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion);
-      // 모달의 일기 내용 요소에 데이터를 설정
-      modalDiary.textContent = data.text;
-      
-      // 데이터에 사진 URL이 있는 경우
+      modalDate.textContent = dateKey; // 날짜 표시
+      modalEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`; // 날씨와 감정 이모지 표시
+      modalDiary.textContent = data.text; // 일기 텍스트 표시
       if (data.photoURL) {
         modalImage.src = data.photoURL; // 사진 표시
-        modalImage.style.display = "block"; // 이미지 요소를 표시
+        modalImage.style.display = "block";
       } else {
         modalImage.style.display = "none"; // 사진이 없으면 숨기기
       }
-      
-      // 모달을 화면에 표시 (플렉스 박스로 설정하여 중앙에 위치하도록 함)
-      modal.style.display = "flex"; 
+      modal.style.display = "flex"; // 모달 표시
     });
 
     calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
