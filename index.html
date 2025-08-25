@@ -244,14 +244,20 @@
         <input type="file" id="photo" accept="image/*" style="display:none;"> <!-- 파일 입력 필드 -->
       </div>
 
-      <div class="diary-section">
-        <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea> <!-- 일기 작성 텍스트 영역 -->
-      </div>
+  <!-- 사진 미리보기 이미지 요소 추가 -->
+    <div id="photoPreviewWrapper" style="display:none;">
+      <img id="photoPreview" style="max-width: 100%; margin-top: 10px; border-radius: 10px;"/>
+    </div>
+  </div>
+  
+  <div class="diary-section">
+    <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea>
+  </div>
 
-      <div class="save-section">
-        <button id="saveBtn">저장하기</button> <!-- 저장 버튼 -->
-      </div>
-    </section>
+  <div class="save-section">
+    <button id="saveBtn">저장하기</button>
+  </div>
+</section>
 
   </main>
 </div>
