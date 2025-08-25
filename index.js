@@ -75,9 +75,10 @@ logoutBtn.addEventListener("click", async () => {
 });
 
 
-async function saveDiary(diaryText, emotion, weather, photoFile){
-  const photoURL = photoFile ? await uploadPhoto(photoFile) : null;
-  const docRef = await addDoc(collection(db,"diaries"),{
+// Firestore에 일기 저장 함수
+async function saveDiary(diaryText, emotion, weather) {
+  // Firestore에 데이터 저장
+  const docRef = await addDoc(collection(db, "diaries"), {
     userId: auth.currentUser.uid,
     date: new Date().toISOString().split("T")[0],
     text: diaryText,
@@ -92,12 +93,13 @@ async function loadDiaries(){
   const q = query(collection(db,"diaries"), where("userId","==",auth.currentUser.uid));
   const snapshot = await getDocs(q);
   const diaries = {};
-  snapshot.forEach(doc=>{
+  snapshot.forEach(doc => {
     const data = doc.data();
-    diaries[data.date] = { text: data.text, emotion: data.emotion, weather: data.weather, photoURL: data.photoURL };
+    diaries[data.date] = { text: data.text, emotion: data.emotion, weather: data.weather };
   });
   return diaries;
 }
+
 
 // === 로그인 상태 감지 ===
 onAuthStateChanged(auth, async (user) => {
@@ -136,13 +138,48 @@ modal.addEventListener("click", e => {
   if(e.target === modal) modal.style.display="none"; 
 });
 
-// === 달력 렌더링 ===
+// === 초기화 ===
 let currentDate = new Date();
-function renderCalendar(){
+
+// === 요일을 반환하는 함수 ===
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return daysOfWeek[date.getDay()];
+}
+
+// === 감정 이모지 함수 ===
+function getEmotionEmoji(emotion) {
+  const emojis = {
+    happy: "😊",
+    sad: "😭",
+    angry: "😡",
+    tired: "😴",
+    soso: "😌"
+  };
+  return emojis[emotion] || "🙂";
+}
+
+// === 날씨 이모지 함수 ===
+function getWeatherEmoji(weather) {
+  const emojis = {
+    sunny: "☀️",
+    cloudy: "☁️",
+    rainy: "☔",
+    snowy: "❄️",
+    windy: "💨"
+  };
+  return emojis[weather] || "🌤️";
+}
+
+// === 달력 렌더링 ===
+function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
+  const calendarTitle = document.getElementById('calendarTitle');
+  const calendarGrid = document.getElementById('calendarGrid');
   calendarTitle.textContent = `${year}년 ${month + 1}월`;
   calendarGrid.innerHTML = "";
 
@@ -155,10 +192,10 @@ function renderCalendar(){
   };
 
   // 빈 칸 채우기
-  for(let i = 0; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
+  for (let i = 0; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
   
-  for(let d = 1; d <= lastDate; d++){
-    const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  for (let d = 1; d <= lastDate; d++) {
+    const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
     const cell = document.createElement("div");
     cell.className = "calendar-cell";
     cell.dataset.date = dateKey;
@@ -185,67 +222,40 @@ function renderCalendar(){
         return;
       }
 
-  // 요일을 반환하는 함수
-function getDayOfWeek(dateString) {
-  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const date = new Date(dateString);
-  return daysOfWeek[date.getDay()];
-}
+      // 모달에 내용 채우기
+      const modal = document.getElementById('diaryModal');
+      const modalDate = document.getElementById('modalDate');
+      const modalDayElement = document.getElementById('modalDay');
+      const weatherEmojiElement = document.getElementById('weatherEmoji');
+      const emotionEmojiElement = document.getElementById('emotionEmoji');
+      const modalDiary = document.getElementById('modalDiary');
+      const modalImage = document.getElementById('modalImage');
 
-// 모달에 내용 채우기
-modalDate.textContent = dateKey; // 날짜 표시
+      modalDate.textContent = dateKey; // 날짜 표시
+      modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
+      weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
+      emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
+      modalDiary.textContent = data.text; // 일기 텍스트 표시
 
-// 요일 계산 및 표시
-const modalDayElement = document.getElementById('modalDay'); // 요일을 표시할 요소
-modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
+      if (data.photoURL) {
+        modalImage.src = data.photoURL; // 사진 표시
+        modalImage.style.display = "block";
+      } else {
+        modalImage.style.display = "none"; // 사진이 없으면 숨기기
+      }
 
-// 날씨 이모지를 별도의 요소에 표시
-const weatherEmojiElement = document.getElementById('weatherEmoji'); // 날씨 이모지 표시할 요소
-weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
-
-// 감정 이모지를 별도의 요소에 표시
-const emotionEmojiElement = document.getElementById('emotionEmoji'); // 감정 이모지 표시할 요소
-emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
-
-modalDiary.textContent = data.text; // 일기 텍스트 표시
-
-if (data.photoURL) {
-  modalImage.src = data.photoURL; // 사진 표시
-  modalImage.style.display = "block";
-} else {
-  modalImage.style.display = "none"; // 사진이 없으면 숨기기
-}
-
-modal.style.display = "flex"; // 모달 표시
-
+      modal.style.display = "flex"; // 모달 표시
     });
 
     calendarGrid.appendChild(cell);
   }
 }
-// === 감정 이모지 함수 ===
-function getEmotionEmoji(emotion) {
-  const emojis = {
-    happy: "😊",
-    sad: "😭",
-    angry: "😡",
-    tired: "😴",
-    soso: "😌"
-  };
-  return emojis[emotion] || "🙂";
-}
 
-// === 날씨 이모지 함수 ===
-function getWeatherEmoji(weather) {
-  const emojis = {
-    sunny: "☀️",
-    cloudy: "☁️",
-    rainy: "☔",
-    snowy: "❄️",
-    windy: "💨"
-  };
-  return emojis[weather] || "🌤️";
-}
+// DOM이 완전히 로드된 후에 코드 실행
+document.addEventListener('DOMContentLoaded', () => {
+  renderCalendar();
+});
+
 
 // === 이전/다음 월 버튼 ===
 prevMonthBtn.addEventListener("click", () => {
@@ -258,20 +268,24 @@ nextMonthBtn.addEventListener("click", () => {
   renderCalendar();
 });
 
-// === 일기 저장 ===
+// 일기 저장 이벤트 리스너
 saveBtn.addEventListener("click", async () => {
   const diaryText = diaryInput.value;
   const emotion = emotionSelect.value;
   const weather = weatherSelect.value;
-  const { photoURL } = await saveDiary(diaryText, emotion, weather, photoFile);
 
-  const dateKey = new Date().toISOString().split("T")[0];
-  diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL };
+  // 일기 데이터를 Firestore에 저장
+  await saveDiary(diaryText, emotion, weather);
 
+  // Firestore에서 데이터를 불러와 diaryData 업데이트
+  diaryData = await loadDiaries();
+
+  // 화면 초기화 및 달력 렌더링
   diaryInput.value = "";
   writeScreen.style.display = "none";
   calendarSection.style.display = "block";
   renderCalendar();
+
 
   // 감정별 랜덤 메시지
   const messages = {
