@@ -122,19 +122,19 @@ body {
     font-size: 1rem;
   }
 
- /* 일기 작성 섹션 스타일 */
+/* 일기 작성 섹션 스타일 */
 .diary-section {
   display: flex; /* Flexbox 레이아웃을 사용 */
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   padding: 20px; /* 내부 여백 */
-  width: 300%; 
+  width: 100%;
 }
 
 /* 일기 작성 섹션의 텍스트 영역 스타일 */
 .diary-section textarea {
-  width: 800%; /* 가로 폭을 부모 요소에 맞춤 */
-  max-width: none; /* 최대 너비 제한을 없앰 */
+  width: 300%;
+  max-width: 700px; /* 최대 너비 설정 */
   min-height: 80px; /* 최소 높이 설정 */
   padding: 14px; /* 내부 여백 */
   border-radius: 12px; /* 모서리를 둥글게 */
