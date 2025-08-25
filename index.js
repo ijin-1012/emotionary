@@ -74,7 +74,6 @@ logoutBtn.addEventListener("click", async () => {
   try { await signOut(auth); } catch(err){ console.error("로그아웃 실패:", err); }
 });
 
-
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
   // Firestore에 데이터 저장
@@ -99,7 +98,6 @@ async function loadDiaries(){
   });
   return diaries;
 }
-
 
 // === 로그인 상태 감지 ===
 onAuthStateChanged(auth, async (user) => {
@@ -131,6 +129,31 @@ showHomeBtn.addEventListener("click",() => {
   calendarSection.style.display="block"; 
 });
 
+// === 모달 열기 함수 ===
+function openModal(data) {
+  const modal = document.getElementById('diaryModal');
+  const modalDate = document.getElementById('modalDate');
+  const modalDayElement = document.getElementById('modalDay');
+  const weatherEmojiElement = document.getElementById('weatherEmoji');
+  const emotionEmojiElement = document.getElementById('emotionEmoji');
+  const modalDiary = document.getElementById('modalDiary');
+  const modalImage = document.getElementById('modalImage');
+
+  modalDate.textContent = data.date; // 날짜 표시
+  modalDayElement.textContent = getDayOfWeek(data.date); // 요일 표시
+  weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
+  emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
+  modalDiary.textContent = data.text; // 일기 텍스트 표시
+
+  if (data.photoURL) {
+    modalImage.src = data.photoURL; // 사진 표시
+    modalImage.style.display = "block";
+  } else {
+    modalImage.style.display = "none"; // 사진이 없으면 숨기기
+  }
+
+  modal.style.display = "flex"; // 모달 표시
+}
 
 // === 모달 닫기 ===
 closeModal.addEventListener("click", () => modal.style.display="none");
@@ -222,29 +245,13 @@ function renderCalendar() {
         return;
       }
 
-      // 모달에 내용 채우기
-      const modal = document.getElementById('diaryModal');
-      const modalDate = document.getElementById('modalDate');
-      const modalDayElement = document.getElementById('modalDay');
-      const weatherEmojiElement = document.getElementById('weatherEmoji');
-      const emotionEmojiElement = document.getElementById('emotionEmoji');
-      const modalDiary = document.getElementById('modalDiary');
-      const modalImage = document.getElementById('modalImage');
-
-      modalDate.textContent = dateKey; // 날짜 표시
-      modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
-      weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
-      emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
-      modalDiary.textContent = data.text; // 일기 텍스트 표시
-
-      if (data.photoURL) {
-        modalImage.src = data.photoURL; // 사진 표시
-        modalImage.style.display = "block";
-      } else {
-        modalImage.style.display = "none"; // 사진이 없으면 숨기기
-      }
-
-      modal.style.display = "flex"; // 모달 표시
+      openModal({
+        date: dateKey,
+        text: data.text,
+        emotion: data.emotion,
+        weather: data.weather,
+        photoURL: data.photoURL
+      });
     });
 
     calendarGrid.appendChild(cell);
@@ -255,7 +262,6 @@ function renderCalendar() {
 document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
 });
-
 
 // === 이전/다음 월 버튼 ===
 prevMonthBtn.addEventListener("click", () => {
@@ -322,4 +328,4 @@ saveBtn.addEventListener("click", async () => {
   };
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg);
-});  
+});
