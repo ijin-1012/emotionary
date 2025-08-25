@@ -260,7 +260,7 @@ function renderCalendar(){
     cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
       if (!data) {
-        alert("이 날에는 일기 안 썼다구 .. 🥺");
+        alert("이 날에는 일기 안 썼다구요 .. 🥺");
         return;
       }
 // 요일 이름 배열
@@ -272,11 +272,9 @@ const date = new Date(dateKey);
 const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
 const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
 
-// 날짜와 요일을 함께 설정
-document.getElementById('modalDateText').textContent = `${dateKey} (${weekdayName})`; // 날짜와 요일 텍스트를 설정
-
-// 날씨 이모지를 설정
-document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather); 
+// 모달에 내용을 채우는 코드
+document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지를 설정
+document.getElementById('modalDateText').textContent = dateKey; // 날짜 텍스트를 설정
 
 // 감정 이모지를 설정
 document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
@@ -294,6 +292,7 @@ if (data.photoURL) {
 
 // 모달을 화면에 표시 (플렉스 박스로 설정하여 중앙에 위치하도록 함)
 modal.style.display = "flex";
+
 
     });
     // 캘린더 그리드에 셀 요소를 추가
