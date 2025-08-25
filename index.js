@@ -137,33 +137,29 @@ function openModal(data) {
   const weatherEmojiElement = document.getElementById('weatherEmoji');
   const emotionEmojiElement = document.getElementById('emotionEmoji');
   const modalDiary = document.getElementById('modalDiary');
-  const modalImage = document.getElementById('modalImage');
 
   modalDate.textContent = data.date; // 날짜 표시
   modalDayElement.textContent = getDayOfWeek(data.date); // 요일 표시
   weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
   emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
   modalDiary.textContent = data.text; // 일기 텍스트 표시
-
-  if (data.photoURL) {
-    modalImage.src = data.photoURL; // 사진 표시
-    modalImage.style.display = "block";
-  } else {
-    modalImage.style.display = "none"; // 사진이 없으면 숨기기
-  }
-
- 
-  // 모달을 열 때 콘솔 로그 추가
-  console.log("모달을 엽니다:", data); // 데이터 확인용 로그
-  modal.style.display = "flex"; // 모달 표시
+   
+// 모달 표시
+  modal.style.display = "flex"; 
+  console.log("모달이 열렸습니다."); // 모달이 열리는지 로그 확인
 }
 
 // === 모달 닫기 ===
-closeModal.addEventListener("click", () => modal.style.display="none");
-modal.addEventListener("click", e => { 
-  if(e.target === modal) modal.style.display="none"; 
+closeModal.addEventListener("click", () => {
+  modal.style.display = "none";
+  console.log("모달이 닫혔습니다."); // 모달이 닫히는지 로그 확인
 });
-
+modal.addEventListener("click", e => { 
+  if (e.target === modal) {
+    modal.style.display = "none"; 
+    console.log("모달이 외부 클릭으로 닫혔습니다."); // 외부 클릭 시 모달 닫힘 확인
+  }
+});
 // === 초기화 ===
 let currentDate = new Date();
 
