@@ -108,7 +108,7 @@ async function saveDiary(diaryText, emotion, weather, photoFile) {
     createdAt: Timestamp.now() // 생성 시간
   });
   console.log("일기 저장 ID:", docRef.id); // 저장된 일기의 ID 출력
-  return { photoURL }; // photoURL 반환
+  return { photoURL };
 }
 
 // Firestore에서 다이어리 데이터 로드 함수
@@ -178,11 +178,11 @@ function renderCalendar() {
   calendarGrid.innerHTML = ""; // 달력 그리드 초기화
 
   const emotionColor = {
-    happy: "#ffe066", // 행복
-    sad: "#74c0fc", // 슬픔
-    angry: "#ff6b6b", // 화남
-    tired: "#c9a0dc", // 피곤
-    soso: "#a0dcb2ff" // 그냥
+    happy: "#ffe066",
+    sad: "#74c0fc",
+    angry: "#ff6b6b",
+    tired: "#c9a0dc",
+    soso: "#a0dcb2ff"
   };
 
   // 빈 칸 채우기
@@ -216,18 +216,41 @@ function renderCalendar() {
         alert("이 날은 일기 안 썼어 . . 🥹"); // 일기가 없는 날 클릭 시 알림
         return;
       }
-      // 모달에 내용 채우기
-      modalDate.textContent = dateKey; // 날짜 표시
+// 요일을 반환하는 함수
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return daysOfWeek[date.getDay()];
+}
 
-      // 감정 및 날씨 이모지 표시
-      modalEmotion.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
-      modalDiary.textContent = data.text; // 일기 텍스트 표시
-      modalImage.src = data.photoURL || ""; // 사진 표시
+// 모달에 내용 채우기
+modalDate.textContent = dateKey; // 날짜 표시
 
-      modal.style.display = "flex"; // 모달 표시
-    });
+// 요일 계산 및 표시
+const modalDayElement = document.getElementById('modalDay'); // 요일을 표시할 요소
+modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
 
-    calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
+// 날씨 이모지를 별도의 요소에 표시
+const weatherEmojiElement = document.getElementById('weatherEmoji'); // 날씨 이모지 표시할 요소
+weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
+
+// 감정 이모지를 별도의 요소에 표시
+const emotionEmojiElement = document.getElementById('emotionEmoji'); // 감정 이모지 표시할 요소
+emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
+
+modalDiary.textContent = data.text; // 일기 텍스트 표시
+
+if (data.photoURL) {
+  modalImage.src = data.photoURL; // 사진 표시
+  modalImage.style.display = "block";
+} else {
+  modalImage.style.display = "none"; // 사진이 없으면 숨기기
+}
+
+modal.style.display = "flex"; // 모달 표시
+});
+
+calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
   }
 }
 
@@ -319,11 +342,10 @@ saveBtn.addEventListener("click", async () => {
       "젖어서 감기 걸리지 않도록 조심하이소 🦔",
       "우산 든 소녀는 평소보다 두 배 예뻐보인다고 잡지에서 봤어 ! 🐱",
       "우선 이상과 현실을 정확히 구분하는 판단력을 키워 보세요 🐻",
-      "그래 ~ ! 좋아, 나 결정했어 ~ 오늘 간식은 풀코스다아 ! 🐿️"]
+      "그래 ~ ! 좋아, 나 결정했어 ~ 오늘 간식은 풀코스다아 ! 🐿️"]    
   };
 
   // 감정별 랜덤 메시지 중 하나를 선택해서 알림 표시
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg); // 선택된 메시지 표시
 });
-
