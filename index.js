@@ -72,12 +72,7 @@ setPersistence(auth, browserLocalPersistence).catch(console.error); // 브라우
 // 구글 로그인 처리
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    const result = await signInWithPopup(auth, provider); // Google 로그인 팝업
-    const user = result.user; // 로그인한 사용자 정보
-    // 사용자 정보를 화면에 표시
-    displayUserInfo(user);
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('mainScreen').style.display = 'block';
+    await signInWithPopup(auth, provider); // Google 로그인 팝업
   } catch (err) {
     console.error("로그인 실패:", err); // 로그인 실패 시 에러 출력
   }
@@ -87,38 +82,10 @@ googleLoginBtn.addEventListener("click", async () => {
 logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth); // 로그아웃
-    // 로그아웃 후 화면 전환
-    document.getElementById('loginScreen').style.display = 'block';
-    document.getElementById('mainScreen').style.display = 'none';
   } catch (err) {
     console.error("로그아웃 실패:", err); // 로그아웃 실패 시 에러 출력
   }
 });
-
-// 로그인 상태 변경 시 처리
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // 로그인 상태일 때, 사용자 정보를 화면에 표시
-    displayUserInfo(user);
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('mainScreen').style.display = 'block';
-  } else {
-    // 로그인 상태가 아니면 로그인 화면 표시
-    document.getElementById('loginScreen').style.display = 'block';
-    document.getElementById('mainScreen').style.display = 'none';
-  }
-});
-
-// 사용자 정보 화면에 표시
-function displayUserInfo(user) {
-  const userName = document.getElementById('userName');
-  const userPhoto = document.getElementById('userPhoto');
-  userName.textContent = user.displayName;
-  userPhoto.src = user.photoURL;
-  userPhoto.style.display = 'block';
-  document.getElementById('logoutBtn').style.display = 'block';
-}
-
 
 // Firestore에 일기 저장 함수 (storage 요금제 이슈로 사진저장 기능 비활성화)
 async function uploadPhoto(file) {
@@ -396,21 +363,6 @@ saveBtn.addEventListener("click", async () => {
       "그래 ~ ! 좋아, 나 결정했어 ~ 오늘 간식은 풀코스다아 ! 🐿️"]    
   };
 
- const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
-
-// 메시지 표시를 위한 div 요소 생성
-const messageDiv = document.createElement("div");
-messageDiv.textContent = randomMsg;
-messageDiv.style.position = "fixed";
-messageDiv.style.bottom = "20px";
-messageDiv.style.left = "50%";
-messageDiv.style.transform = "translateX(-50%)";
-messageDiv.style.padding = "10px 20px";
-messageDiv.style.backgroundColor = "#333";
-messageDiv.style.color = "#fff";
-messageDiv.style.borderRadius = "5px";
-messageDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
-messageDiv.style.fontSize = "16px";
-
-// 메시지 표시
-document.body.appendChild(messageDiv);
+  // 감정별 랜덤 메시지 중 하나를 선택해서 알림 표시
+  const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
+  alert(randomMsg); // 선택된 메시지 표시
