@@ -49,49 +49,11 @@
     .save-section { display:flex; justify-content:center; }
     #saveBtn { padding:10px 30px; border-radius:10px; background:#eee; font-size:1.1rem; }
 
-    /* 모달의 기본 스타일 */
-.modal { 
-  display: none; /* 기본적으로 모달을 숨김 */
-  position: fixed; /* 화면에 고정 위치 */
-  top: 0; /* 상단에 위치 */
-  left: 0; /* 좌측에 위치 */
-  width: 100%; /* 전체 너비 */
-  height: 100%; /* 전체 높이 */
-  background-color: rgba(0,0,0,0.6); /* 반투명 검은색 배경 */
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-  z-index: 1000; /* 가장 위에 표시 */
-}
-
-/* 모달 콘텐츠의 스타일 */
-.modal-content { 
-  background: #fff; /* 흰색 배경 */
-  padding: 20px; /* 내부 여백 */
-  border-radius: 12px; /* 둥근 모서리 */
-  max-width: 400px; /* 최대 너비 400px */
-  width: 80%; /* 너비 80% */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 그림자 효과 */
-  position: relative; /* 상대 위치 */
-}
-
-/* 모달 내 이미지의 스타일 */
-.modal-content img { 
-  max-width: 100%; /* 최대 너비 100% */
-  margin-top: 15px; /* 상단 여백 */
-  border-radius: 10px; /* 둥근 모서리 */
-  display: none; /* 기본적으로 이미지를 숨김 */
-}
-
-/* 닫기 버튼의 스타일 */
-.close { 
-  position: absolute; /* 절대 위치 */
-  top: 10px; /* 상단에서 10px */
-  right: 15px; /* 우측에서 15px */
-  font-size: 28px; /* 글꼴 크기 28px */
-  cursor: pointer; /* 커서를 포인터로 변경 */
-}
-
+    /* 모달 */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
+    .modal-content { background:#fff; padding:20px; border-radius:12px; max-width:400px; width:80%; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2); position:relative; }
+    .modal-content img { max-width:100%; margin-top:15px; border-radius:10px; display:none; }
+    .close { position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -112,7 +74,7 @@
     <header>⌨️ Emotionary 🖱️</header>
 
     <nav class="nav">
-      <button id="showHomeBtn">캘린더 🗓️</button>
+      <button id="showHomeBtn">달력 🗓️</button>
       <button id="showWriteBtn">기록하기 ✒️</button>
     </nav>
 
@@ -147,62 +109,52 @@
         <div class="write-header">
           <label for="emotion">오늘의 감정:
             <select id="emotion">
-              <option value="happy">😊 기분 좋아 ~ !</option>
-              <option value="sad">😭 눈물이 찔찔</option>
-              <option value="angry">😡 짜증나 ! !</option>
-              <option value="tired">😴 피곤해 . .</option>
-              <option value="soso">😌 그저그려 ~</option>
+              <option value="happy">😊 행복해</option>
+              <option value="sad">😭 눈물나</option>
+              <option value="angry">😡 짜증나</option>
+              <option value="tired">😴 피곤해</option>
+              <option value="soso">😌 그저그럼</option>
             </select>
           </label>
 
           <label for="weather">오늘의 날씨:
             <select id="weather">
-              <option value="sunny">☀️ 해가 쨍하잖아 !</option>
-              <option value="cloudy">☁️ 흐리네 . .</option>
-              <option value="rainy">☔ 우산을 챙겨요</option>
-              <option value="snowy">❄️ 눈온다 ! 신난다 !</option>
-              <option value="windy">💨 바람에 날라가겠어</option>
+              <option value="sunny">☀️ 쨍쨍해</option>
+              <option value="cloudy">☁️ 흐리네</option>
+              <option value="rainy">☔ 비온다</option>
+              <option value="snowy">❄️ 눈이야</option>
+              <option value="windy">💨 바람불어</option>
             </select>
           </label>
 
-<!-- 사진 아이콘 -->
-<span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span>
-<!-- 파일 입력 요소 (숨겨져 있음) -->
-<input type="file" id="photo" accept="image/*" style="display:none;">
+          <span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span>
+          <input type="file" id="photo" accept="image/*" style="display:none;">
+        </div>
 
+        <div class="diary-section">
+          <textarea id="diary" placeholder="🤖 오늘의 하루를 적어주세요 🤖"></textarea>
+        </div>
 
-</div>
+        <div class="save-section">
+          <button id="saveBtn">기록하기</button>
+        </div>
+      </section>
 
-<!-- 일기 작성 영역 -->
-<div class="diary-section">
-  <textarea id="diary" placeholder="🤖 오늘은 어땠나요?"></textarea>
-  <!-- 일기를 작성할 수 있는 텍스트 영역 (사용자가 일기를 입력하는 곳) -->
-</div>
-
-<!-- 저장 버튼 영역 -->
-<div class="save-section">
-  <button id="saveBtn">저장하기</button>
-  <!-- 일기를 저장할 수 있는 버튼 -->
-</div>
-
-<!-- 모달 -->
-<div id="diaryModal" class="modal">
-  <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
-    <!-- 날짜와 날씨 이모지를 함께 표시할 h2 요소 -->
-    <h2 id="modalDate">
-      <span id="modalWeatherEmoji"></span> <!-- 날씨 이모지를 위한 span 요소 -->
-      <span id="modalDateText"></span> <!-- 날짜 텍스트를 위한 span 요소 -->
-    </h2>
-    <!-- 감정 이모지를 표시할 span 요소 추가 -->
-    <p id="modalEmotionEmoji"></p>
-    <p id="modalDiary"></p>
-    <img id="modalImage">
+    </main>
   </div>
-</div>
 
+  <!-- 모달 -->
+  <div id="diaryModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2 id="modalDate"></h2>
+      <p id="modalEmotion"></p>
+      <p id="modalDiary"></p>
+      <img id="modalImage">
+    </div>
+  </div>
   <!-- JS -->
   <script type="module" src="index.js"></script>
 
 </body>
-</html> 
+</html>
