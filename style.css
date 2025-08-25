@@ -139,12 +139,12 @@ body {
   max-width: 300px;         /* 최대 너비 설정 */
 }
 
-/* 사진을 표시할 img 태그 스타일 */
+/* 사진을 표시할 img 태그 스타일 
 #modalImage {
-  margin-top: 20px;         /* 위쪽 여백 */
-  max-width: 100%;          /* 최대 너비 설정 */
-  display: none;            /* 기본적으로 숨김 처리 */
-}
+  margin-top: 20px;        
+  max-width: 100%;         
+  display: none;           
+}*/ 
 
 /* 태블릿 화면 (최대 1024px) */
 @media (max-width: 1024px) {

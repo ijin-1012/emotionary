@@ -72,7 +72,12 @@ setPersistence(auth, browserLocalPersistence).catch(console.error); // 브라우
 // 구글 로그인 처리
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    await signInWithPopup(auth, provider); // Google 로그인 팝업
+    const result = await signInWithPopup(auth, provider); // Google 로그인 팝업
+    const user = result.user; // 로그인한 사용자 정보
+    // 사용자 정보를 화면에 표시
+    displayUserInfo(user);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'block';
   } catch (err) {
     console.error("로그인 실패:", err); // 로그인 실패 시 에러 출력
   }
@@ -82,34 +87,63 @@ googleLoginBtn.addEventListener("click", async () => {
 logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth); // 로그아웃
+    // 로그아웃 후 화면 전환
+    document.getElementById('loginScreen').style.display = 'block';
+    document.getElementById('mainScreen').style.display = 'none';
   } catch (err) {
     console.error("로그아웃 실패:", err); // 로그아웃 실패 시 에러 출력
   }
 });
 
-// Firestore에 일기 저장 함수
-async function uploadPhoto(file) {
-  if (!file) return null; // 파일이 없으면 null 반환
-  const storageRef = ref(storage, `diaryPhotos/${auth.currentUser.uid}_${Date.now()}_${file.name}`); // 사진 파일 경로 설정
-  await uploadBytes(storageRef, file); // Firebase Storage에 업로드
-  return await getDownloadURL(storageRef); // 업로드 후 다운로드 URL 반환
+// 로그인 상태 변경 시 처리
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // 로그인 상태일 때, 사용자 정보를 화면에 표시
+    displayUserInfo(user);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'block';
+  } else {
+    // 로그인 상태가 아니면 로그인 화면 표시
+    document.getElementById('loginScreen').style.display = 'block';
+    document.getElementById('mainScreen').style.display = 'none';
+  }
+});
+
+// 사용자 정보 화면에 표시
+function displayUserInfo(user) {
+  const userName = document.getElementById('userName');
+  const userPhoto = document.getElementById('userPhoto');
+  userName.textContent = user.displayName;
+  userPhoto.src = user.photoURL;
+  userPhoto.style.display = 'block';
+  document.getElementById('logoutBtn').style.display = 'block';
 }
 
-// 다이어리 저장 함수
+
+// Firestore에 일기 저장 함수 (storage 요금제 이슈로 사진저장 기능 비활성화)
+async function uploadPhoto(file) {
+  if (!file) return null; // 파일이 없으면 null 반환
+  // const storageRef = ref(storage, `diaryPhotos/${auth.currentUser.uid}_${Date.now()}_${file.name}`); // 사진 파일 경로 설정
+  // await uploadBytes(storageRef, file); // Firebase Storage에 업로드
+  // return await getDownloadURL(storageRef); // 업로드 후 다운로드 URL 반환
+  return null; // 사진 업로드를 하지 않음
+}
+
 async function saveDiary(diaryText, emotion, weather, photoFile) {
-  const photoURL = photoFile ? await uploadPhoto(photoFile) : null; // 사진이 있으면 업로드하고 URL 반환
+  // const photoURL = photoFile ? await uploadPhoto(photoFile) : null; // 사진이 있으면 업로드하고 URL 반환
   const docRef = await addDoc(collection(db, "diaries"), { // Firestore에 새로운 다이어리 추가
     userId: auth.currentUser.uid,
     date: new Date().toISOString().split("T")[0], // 현재 날짜
     text: diaryText,
     emotion,
     weather,
-    photoURL,
+    photoURL: null, // 사진 URL은 null로 저장
     createdAt: Timestamp.now() // 생성 시간
   });
   console.log("일기 저장 ID:", docRef.id); // 저장된 일기의 ID 출력
-  return { photoURL };
+  return { photoURL: null }; // 사진 URL을 null로 반환
 }
+
 
 // Firestore에서 다이어리 데이터 로드 함수
 async function loadDiaries() {
@@ -163,16 +197,17 @@ photoInput.addEventListener("change", e => {
     const file = e.target.files[0]; // 선택된 파일
     console.log("선택된 이미지:", file.name); // 선택된 이미지 파일 출력
 
-    // FileReader 객체를 사용하여 이미지를 미리보기
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const imgElement = document.getElementById("photoPreview"); // 미리보기 이미지 요소
-      imgElement.src = event.target.result; // 미리보기 이미지 설정
-      document.getElementById("photoPreviewWrapper").style.display = "block"; // 미리보기 이미지 보이기
-    };
-    reader.readAsDataURL(file); // 이미지 파일을 DataURL로 읽기
+    // 사진 미리보기 코드 비활성화
+    // const reader = new FileReader();
+    // reader.onload = function(event) {
+    //   const imgElement = document.getElementById("photoPreview"); // 미리보기 이미지 요소
+    //   imgElement.src = event.target.result; // 미리보기 이미지 설정
+    //   document.getElementById("photoPreviewWrapper").style.display = "block"; // 미리보기 이미지 보이기
+    // };
+    // reader.readAsDataURL(file); // 이미지 파일을 DataURL로 읽기
   }
 });
+
 
 // 모달 닫기
 closeModal.addEventListener("click", () => modal.style.display = "none"); // 모달 닫기 버튼 클릭 시 모달 숨기기
@@ -309,17 +344,18 @@ saveBtn.addEventListener("click", async () => {
   const diaryText = diaryInput.value; // 일기 텍스트 가져오기
   const emotion = emotionSelect.value; // 선택된 감정 가져오기
   const weather = weatherSelect.value; // 선택된 날씨 가져오기
-  const photoFile = photoInput.files[0]; // 선택된 사진 파일 가져오기
-  const { photoURL } = await saveDiary(diaryText, emotion, weather, photoFile); // 일기 저장
+  // const photoFile = photoInput.files[0]; // 선택된 사진 파일 가져오기
+  const { photoURL } = await saveDiary(diaryText, emotion, weather, null); // 일기 저장 (사진 파일을 전달하지 않음)
 
   const dateKey = new Date().toISOString().split("T")[0]; // 오늘 날짜를 키로 사용
-  diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL }; // diaryData 객체에 저장
+  diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL: null }; // diaryData 객체에 저장
 
   diaryInput.value = ""; // 일기 입력 필드 초기화
-  photoInput.value = ""; // 사진 입력 필드 초기화
+  // photoInput.value = ""; // 사진 입력 필드 초기화 (비활성화)
   writeScreen.style.display = "none"; // 일기 작성 화면 숨기기
   calendarSection.style.display = "block"; // 달력 화면 보이기
   renderCalendar(); // 달력 다시 렌더링
+});
 
   // 감정별 랜덤 메시지 표시
   const messages = {
@@ -360,7 +396,21 @@ saveBtn.addEventListener("click", async () => {
       "그래 ~ ! 좋아, 나 결정했어 ~ 오늘 간식은 풀코스다아 ! 🐿️"]    
   };
 
-  // 감정별 랜덤 메시지 중 하나를 선택해서 알림 표시
-  const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
-  alert(randomMsg); // 선택된 메시지 표시
-});
+ const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
+
+// 메시지 표시를 위한 div 요소 생성
+const messageDiv = document.createElement("div");
+messageDiv.textContent = randomMsg;
+messageDiv.style.position = "fixed";
+messageDiv.style.bottom = "20px";
+messageDiv.style.left = "50%";
+messageDiv.style.transform = "translateX(-50%)";
+messageDiv.style.padding = "10px 20px";
+messageDiv.style.backgroundColor = "#333";
+messageDiv.style.color = "#fff";
+messageDiv.style.borderRadius = "5px";
+messageDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
+messageDiv.style.fontSize = "16px";
+
+// 메시지 표시
+document.body.appendChild(messageDiv);
