@@ -87,30 +87,29 @@ logoutBtn.addEventListener("click", async () => {
   }
 });
 
-// Firestore에 일기 저장 함수 (storage 요금제 이슈로 사진저장 기능 비활성화)
+// Firestore에 일기 저장 함수
 async function uploadPhoto(file) {
   if (!file) return null; // 파일이 없으면 null 반환
-  // const storageRef = ref(storage, `diaryPhotos/${auth.currentUser.uid}_${Date.now()}_${file.name}`); // 사진 파일 경로 설정
-  // await uploadBytes(storageRef, file); // Firebase Storage에 업로드
-  // return await getDownloadURL(storageRef); // 업로드 후 다운로드 URL 반환
-  return null; // 사진 업로드를 하지 않음
+  const storageRef = ref(storage, `diaryPhotos/${auth.currentUser.uid}_${Date.now()}_${file.name}`); // 사진 파일 경로 설정
+  await uploadBytes(storageRef, file); // Firebase Storage에 업로드
+  return await getDownloadURL(storageRef); // 업로드 후 다운로드 URL 반환
 }
 
+// 다이어리 저장 함수
 async function saveDiary(diaryText, emotion, weather, photoFile) {
-  // const photoURL = photoFile ? await uploadPhoto(photoFile) : null; // 사진이 있으면 업로드하고 URL 반환
+  const photoURL = photoFile ? await uploadPhoto(photoFile) : null; // 사진이 있으면 업로드하고 URL 반환
   const docRef = await addDoc(collection(db, "diaries"), { // Firestore에 새로운 다이어리 추가
     userId: auth.currentUser.uid,
     date: new Date().toISOString().split("T")[0], // 현재 날짜
     text: diaryText,
     emotion,
     weather,
-    photoURL: null, // 사진 URL은 null로 저장
+    photoURL,
     createdAt: Timestamp.now() // 생성 시간
   });
   console.log("일기 저장 ID:", docRef.id); // 저장된 일기의 ID 출력
-  return { photoURL: null }; // 사진 URL을 null로 반환
+  return { photoURL };
 }
-
 
 // Firestore에서 다이어리 데이터 로드 함수
 async function loadDiaries() {
@@ -158,31 +157,15 @@ showHomeBtn.addEventListener("click", () => {
 
 // 사진 선택 처리
 photoIcon.addEventListener("click", () => photoInput.click()); // 사진 아이콘 클릭 시 파일 선택창 열기
-
 photoInput.addEventListener("change", e => {
-  if (e.target.files[0]) {
-    const file = e.target.files[0]; // 선택된 파일
-    console.log("선택된 이미지:", file.name); // 선택된 이미지 파일 출력
-
-    // 사진 미리보기 코드 비활성화
-    // const reader = new FileReader();
-    // reader.onload = function(event) {
-    //   const imgElement = document.getElementById("photoPreview"); // 미리보기 이미지 요소
-    //   imgElement.src = event.target.result; // 미리보기 이미지 설정
-    //   document.getElementById("photoPreviewWrapper").style.display = "block"; // 미리보기 이미지 보이기
-    // };
-    // reader.readAsDataURL(file); // 이미지 파일을 DataURL로 읽기
-  }
+  if (e.target.files[0]) console.log("선택된 이미지:", e.target.files[0].name); // 선택된 이미지 파일 출력
 });
-
 
 // 모달 닫기
 closeModal.addEventListener("click", () => modal.style.display = "none"); // 모달 닫기 버튼 클릭 시 모달 숨기기
 modal.addEventListener("click", e => {
   if (e.target === modal) modal.style.display = "none"; // 모달 외부 클릭 시 모달 숨기기
 });
-
-
 
 // 달력 렌더링 함수
 let currentDate = new Date(); // 현재 날짜
@@ -233,41 +216,21 @@ function renderCalendar() {
         alert("이 날은 일기 안 썼어 . . 🥹"); // 일기가 없는 날 클릭 시 알림
         return;
       }
-// 요일을 반환하는 함수
-function getDayOfWeek(dateString) {
-  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const date = new Date(dateString);
-  return daysOfWeek[date.getDay()];
-}
 
-// 모달에 내용 채우기
-modalDate.textContent = dateKey; // 날짜 표시
+      // 모달에 내용 채우기
+      modalDate.textContent = dateKey; // 날짜 표시
+      modalEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`; // 날씨와 감정 이모지 표시
+      modalDiary.textContent = data.text; // 일기 텍스트 표시
+      if (data.photoURL) {
+        modalImage.src = data.photoURL; // 사진 표시
+        modalImage.style.display = "block";
+      } else {
+        modalImage.style.display = "none"; // 사진이 없으면 숨기기
+      }
+      modal.style.display = "flex"; // 모달 표시
+    });
 
-// 요일 계산 및 표시
-const modalDayElement = document.getElementById('modalDay'); // 요일을 표시할 요소
-modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
-
-// 날씨 이모지를 별도의 요소에 표시
-const weatherEmojiElement = document.getElementById('weatherEmoji'); // 날씨 이모지 표시할 요소
-weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
-
-// 감정 이모지를 별도의 요소에 표시
-const emotionEmojiElement = document.getElementById('emotionEmoji'); // 감정 이모지 표시할 요소
-emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
-
-modalDiary.textContent = data.text; // 일기 텍스트 표시
-
-if (data.photoURL) {
-  modalImage.src = data.photoURL; // 사진 표시
-  modalImage.style.display = "block";
-} else {
-  modalImage.style.display = "none"; // 사진이 없으면 숨기기
-}
-
-modal.style.display = "flex"; // 모달 표시
-});
-
-calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
+    calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
   }
 }
 
@@ -311,18 +274,17 @@ saveBtn.addEventListener("click", async () => {
   const diaryText = diaryInput.value; // 일기 텍스트 가져오기
   const emotion = emotionSelect.value; // 선택된 감정 가져오기
   const weather = weatherSelect.value; // 선택된 날씨 가져오기
-  // const photoFile = photoInput.files[0]; // 선택된 사진 파일 가져오기
-  const { photoURL } = await saveDiary(diaryText, emotion, weather, null); // 일기 저장 (사진 파일을 전달하지 않음)
+  const photoFile = photoInput.files[0]; // 선택된 사진 파일 가져오기
+  const { photoURL } = await saveDiary(diaryText, emotion, weather, photoFile); // 일기 저장
 
   const dateKey = new Date().toISOString().split("T")[0]; // 오늘 날짜를 키로 사용
-  diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL: null }; // diaryData 객체에 저장
+  diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL }; // diaryData 객체에 저장
 
   diaryInput.value = ""; // 일기 입력 필드 초기화
-  // photoInput.value = ""; // 사진 입력 필드 초기화 (비활성화)
+  photoInput.value = ""; // 사진 입력 필드 초기화
   writeScreen.style.display = "none"; // 일기 작성 화면 숨기기
   calendarSection.style.display = "block"; // 달력 화면 보이기
   renderCalendar(); // 달력 다시 렌더링
-});
 
   // 감정별 랜덤 메시지 표시
   const messages = {
@@ -366,3 +328,4 @@ saveBtn.addEventListener("click", async () => {
   // 감정별 랜덤 메시지 중 하나를 선택해서 알림 표시
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg); // 선택된 메시지 표시
+});

@@ -187,7 +187,7 @@
   <header>⌨️ Emotionary 🖱️</header> <!-- 메인 화면 헤더 -->
 
   <nav class="nav">
-    <button id="showHomeBtn">캘린더 🗓️</button> <!-- 달력 보기 버튼 -->
+    <button id="showHomeBtn">달력 🗓️</button> <!-- 달력 보기 버튼 -->
     <button id="showWriteBtn">기록하기 ✒️</button> <!-- 기록하기 버튼 -->
   </nav>
 
@@ -240,24 +240,15 @@
           </select>
         </label>
 
-  <!-- 사진 선택 아이콘 스타일 
-    <span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span>
-    <input type="file" id="photo" accept="image/*" style="display:none;">
-  </div> -->
+      <div class="diary-section">
+        <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea> <!-- 일기 작성 텍스트 영역 -->
+      </div>
 
-  <div class="diary-section">
-    <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea>
-  </div>
+      <div class="save-section">
+        <button id="saveBtn">저장하기</button> <!-- 저장 버튼 -->
+      </div>
+    </section>
 
-  <!-- 사진 미리보기 이미지 요소 추가 
-  <div id="photoPreviewWrapper" style="display:none; margin-top: 10px;">
-    <img id="photoPreview" style="max-width: 100%; border-radius: 10px;"/>
-  </div> -->
-
-  <div class="save-section">
-    <button id="saveBtn">저장하기</button>
-  </div>
-</section>
   </main>
 </div>
 
@@ -274,8 +265,7 @@
       <span id="emotionEmoji" style="font-size: 1.5em;"></span> <!-- 감정 이모지 -->
     </div>
     <p id="modalDiary"></p> <!-- 일기 내용 -->
-    <!-- 이미지 
-    <img id="modalImage"> --> 
+    <img id="modalImage"> <!-- 이미지 -->
   </div>
 </div>
 
