@@ -5,74 +5,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <title>Emotionary</title>
+  <title>Emotionary</title> <!-- 웹 페이지 제목 설정 -->
   
   <style>
     /* 기본 스타일 */
     html, body { 
-      margin:0; padding:0; font-family:'Noto Sans KR',sans-serif; background:#fff; color:#222; 
+      margin:0; padding:0; font-family:'Noto Sans KR',sans-serif; background:#fff; color:#222; /* 기본 폰트, 배경 및 색상 설정 */
     }
     
     /* 버튼 기본 스타일 */
     button { 
-      cursor:pointer; border:none; outline:none; transition: all .2s ease; 
+      cursor:pointer; border:none; outline:none; transition: all .2s ease; /* 버튼에 커서와 애니메이션 효과 추가 */
     }
 
     /* 로그인 화면 스타일 */
     .login-wrapper { 
-      display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg,#a8edea,#fed6e3); 
+      display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg,#a8edea,#fed6e3); /* 로그인 화면 중앙 배치 */
     }
     .login-box { 
-      background:white; padding:50px 40px; border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,.15); width:360px; text-align:center; 
+      background:white; padding:50px 40px; border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,.15); width:360px; text-align:center; /* 로그인 박스 스타일 */
     }
     .google-btn { 
-      display:flex; align-items:center; justify-content:center; gap:12px; padding:14px; width:100%; border:1px solid #ddd; border-radius:8px; background:#fff; 
+      display:flex; align-items:center; justify-content:center; gap:12px; padding:14px; width:100%; border:1px solid #ddd; border-radius:8px; background:#fff; /* 구글 로그인 버튼 스타일 */
     }
     .google-btn img { 
-      width:22px; height:22px; 
+      width:22px; height:22px; /* 구글 아이콘 크기 설정 */
     }
 
     /* 메인 화면 스타일 */
     header { 
-      text-align:center; padding:20px; font-size:1.8rem; font-weight:bold; border-bottom:2px solid #ddd; 
+      text-align:center; padding:20px; font-size:1.8rem; font-weight:bold; border-bottom:2px solid #ddd; /* 헤더 스타일 */
     }
     nav.nav { 
-      text-align:center; margin:15px 0; 
+      text-align:center; margin:15px 0; /* 네비게이션 스타일 */
     }
     nav.nav button { 
-      background:#f5f5f5; border-radius:12px; padding:10px 20px; margin:0 8px; font-size:1.1rem; 
+      background:#f5f5f5; border-radius:12px; padding:10px 20px; margin:0 8px; font-size:1.1rem; /* 버튼 스타일 */
     }
 
     /* 사용자 정보 스타일 */
     .user-info { 
-      position:absolute; top:16px; right:24px; display:flex; align-items:center; gap:12px; 
+      position:absolute; top:16px; right:24px; display:flex; align-items:center; gap:12px; /* 사용자 정보 위치 및 스타일 */
     }
     .user-info img { 
-      width:40px; height:40px; border-radius:50%; object-fit:cover; 
+      width:40px; height:40px; border-radius:50%; object-fit:cover; /* 사용자 사진 원형으로 설정 */
     }
     .user-info span { 
-      font-weight:600; font-size:1rem; 
+      font-weight:600; font-size:1rem; /* 사용자 이름 스타일 */
     }
     .user-info button { 
-      padding:6px 14px; border-radius:10px; background:linear-gradient(135deg,#ffb066,#ff9043); color:#fff; font-weight:600; 
+      padding:6px 14px; border-radius:10px; background:linear-gradient(135deg,#ffb066,#ff9043); color:#fff; font-weight:600; /* 로그아웃 버튼 스타일 */
     }
 
     /* 오늘 날짜 표시 스타일 */
     .today-date { 
-      text-align:center; margin:10px 0; font-size:1.2rem; 
+      text-align:center; margin:10px 0; font-size:1.2rem; /* 오늘 날짜 스타일 */
     }
 
     /* 메인 컨테이너 스타일 */
     .container { 
-      max-width:700px; margin:0 auto; padding:15px; 
+      max-width:700px; margin:0 auto; padding:15px; /* 메인 컨테이너 스타일 */
     }
 
     /* 달력 관련 스타일 */
     .calendar-wrapper { 
-      max-width:700px; margin:0 auto; 
+      max-width:700px; margin:0 auto; /* 달력 래퍼 스타일 */
     }
     .calendar-header { 
-      display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-weight:700; font-size:1.2rem; 
+      display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-weight:700; font-size:1.2rem; /* 달력 헤더 스타일 */
     }
     .calendar-weekdays { 
       display:grid; 
@@ -81,16 +81,16 @@
       font-weight:bold; 
       padding:8px 0; 
       background:#f0f0f0; 
-      border-bottom:1px solid #ccc; 
+      border-bottom:1px solid #ccc; /* 요일 스타일 */
     }
     .calendar-weekdays div { 
-      padding:5px 0; 
+      padding:5px 0; /* 각 요일 셀 스타일 */
     }
     .calendar-grid { 
       display:grid; 
       grid-template-columns:repeat(7,1fr); 
       gap:4px; 
-      margin-top:5px; 
+      margin-top:5px; /* 달력 그리드 스타일 */
     }
     .calendar-cell { 
       aspect-ratio:1/1; 
@@ -101,16 +101,16 @@
       border-radius:20px; 
       cursor:pointer; 
       font-weight:500; 
-      transition: all .2s; 
+      transition: all .2s; /* 달력 셀 스타일 */
     }
     .calendar-cell:hover { 
       background:#f9f9f9; 
-      transform:translateY(-2px); 
+      transform:translateY(-2px); /* 셀 호버 시 스타일 */
     }
 
     /* 일기 작성 화면 */
     #writeScreen { 
-      display:flex; flex-direction:column; align-items:center; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,.05); gap:15px; 
+      display:flex; flex-direction:column; align-items:center; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,.05); gap:15px; /* 일기 작성 화면 스타일 */
     }
 
     /* 일기 작성 화면의 헤더 스타일 */
@@ -155,16 +155,16 @@
 
     /* 모달 스타일 */
     .modal { 
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; 
+      display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; /* 모달 배경 스타일 */
     }
     .modal-content { 
-      background:#fff; padding:20px; border-radius:12px; max-width:400px; width:80%; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2); position:relative; 
+      background:#fff; padding:20px; border-radius:12px; max-width:400px; width:80%; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2); position:relative; /* 모달 콘텐츠 스타일 */
     }
     .modal-content img { 
-      max-width:100%; margin-top:15px; border-radius:10px; display:none; 
+      max-width:100%; margin-top:15px; border-radius:10px; display:none; /* 모달 내 이미지 스타일 */
     }
     .close { 
-      position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; 
+      position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; /* 모달 닫기 버튼 스타일 */
     }
 
   </style>
@@ -174,112 +174,107 @@
 <!-- 로그인 화면 -->
 <div id="loginScreen" class="login-wrapper">
   <div class="login-box">
-    <h1>Emotionary</h1>
-    <p class="login-desc">Google 계정으로 로그인</p>
+    <h1>Emotionary</h1> <!-- 웹 앱 이름 -->
+    <p class="login-desc">Google 계정으로 로그인</p> <!-- 로그인 안내 문구 -->
     <button id="googleLoginBtn" class="google-btn">
-      <span role="img" aria-label="google">&#127760;</span> Google 로그인
+      <span role="img" aria-label="google">&#127760;</span> Google 로그인 <!-- 구글 로그인 버튼 -->
     </button>
   </div>
 </div>
 
-  <!-- 메인 화면 -->
-  <div id="mainScreen" style="display:none;">
-    <header>⌨️ Emotionary 🖱️</header>
+<!-- 메인 화면 -->
+<div id="mainScreen" style="display:none;">
+  <header>⌨️ Emotionary 🖱️</header> <!-- 메인 화면 헤더 -->
 
-    <nav class="nav">
-      <button id="showHomeBtn">달력 🗓️</button>
-      <button id="showWriteBtn">기록하기 ✒️</button>
-    </nav>
+  <nav class="nav">
+    <button id="showHomeBtn">달력 🗓️</button> <!-- 달력 보기 버튼 -->
+    <button id="showWriteBtn">기록하기 ✒️</button> <!-- 기록하기 버튼 -->
+  </nav>
 
-    <div class="user-info">
-      <img id="userPhoto" style="display:none;">
-      <span id="userName"></span>
-      <button id="logoutBtn" style="display:none;">로그아웃</button>
-    </div>
-
-    <div id="todayDate" class="today-date"></div>
-
-    <main class="container">
-
-      <!-- 달력 화면 -->
-      <section id="calendarSection">
-        <div class="calendar-wrapper">
-          <div class="calendar-header">
-            <button id="prevMonthBtn">◀</button>
-            <span id="calendarTitle"></span>
-            <button id="nextMonthBtn">▶</button>
-          </div>
-          <div class="calendar-weekdays">
-            <div>일</div><div>월</div><div>화</div>
-            <div>수</div><div>목</div><div>금</div><div>토</div>
-          </div>
-          <div id="calendarGrid" class="calendar-grid"></div>
-        </div>
-      </section>
-
-      <!-- 작성 화면 -->
-      <section id="writeScreen" style="display:none;">
-        <div class="write-header">
-          <label for="emotion">오늘의 감정:
-            <select id="emotion">
-              <option value="happy">😊 기분 좋아 ~ !</option>
-              <option value="sad">😭 눈물이 찔찔</option>
-              <option value="angry">😡 짜증나 ! !</option>
-              <option value="tired">😴 피곤해 . .</option>
-              <option value="soso">😌 그냥 그려 ~</option>
-            </select>
-          </label>
-
-          <label for="weather">오늘의 날씨:
-            <select id="weather">
-              <option value="sunny">☀️ 해가 쨍하잖아 !</option>
-              <option value="cloudy">☁️ 흐리네 . .</option>
-              <option value="rainy">☔ 우산을 챙겨요</option>
-              <option value="snowy">❄️ 눈이야 ~ 신난다 ~</option>
-              <option value="windy">💨 바람에 날라가겠어</option>
-            </select>
-          </label>
-
-          <span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span>
-          <input type="file" id="photo" accept="image/*" style="display:none;">
-        </div>
-
-        <div class="diary-section">
-          <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea>
-        </div>
-
-        <div class="save-section">
-          <button id="saveBtn">저장하기</button>
-        </div>
-      </section>
-
-    </main>
+  <div class="user-info">
+    <img id="userPhoto" style="display:none;"> <!-- 사용자 사진 -->
+    <span id="userName"></span> <!-- 사용자 이름 -->
+    <button id="logoutBtn" style="display:none;">로그아웃</button> <!-- 로그아웃 버튼 -->
   </div>
+
+  <div id="todayDate" class="today-date"></div> <!-- 오늘 날짜 표시 -->
+
+  <main class="container">
+
+    <!-- 달력 화면 -->
+    <section id="calendarSection">
+      <div class="calendar-wrapper">
+        <div class="calendar-header">
+          <button id="prevMonthBtn">◀</button> <!-- 이전 달로 가기 버튼 -->
+          <span id="calendarTitle"></span> <!-- 달력 제목 -->
+          <button id="nextMonthBtn">▶</button> <!-- 다음 달로 가기 버튼 -->
+        </div>
+        <div class="calendar-weekdays">
+          <div>일</div><div>월</div><div>화</div>
+          <div>수</div><div>목</div><div>금</div><div>토</div> <!-- 요일 표시 -->
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div> <!-- 달력 날짜 그리드 -->
+      </div>
+    </section>
+
+    <!-- 일기 작성 화면 -->
+    <section id="writeScreen" style="display:none;">
+      <div class="write-header">
+        <label for="emotion">오늘의 감정:
+          <select id="emotion"> <!-- 감정 선택 드롭다운 -->
+            <option value="happy">😊 기분 좋아 ~ !</option>
+            <option value="sad">😭 눈물이 찔찔</option>
+            <option value="angry">😡 짜증나 ! !</option>
+            <option value="tired">😴 피곤해 . .</option>
+            <option value="soso">😌 그냥 그려 ~</option>
+          </select>
+        </label>
+
+        <label for="weather">오늘의 날씨:
+          <select id="weather"> <!-- 날씨 선택 드롭다운 -->
+            <option value="sunny">☀️ 해가 쨍하잖아 !</option>
+            <option value="cloudy">☁️ 흐리네 . .</option>
+            <option value="rainy">☔ 우산을 챙겨요</option>
+            <option value="snowy">❄️ 눈이야 ~ 신난다 ~</option>
+            <option value="windy">💨 바람에 날라가겠어</option>
+          </select>
+        </label>
+
+        <span id="photoIcon" class="photo-icon" title="사진 선택 📸">📸</span> <!-- 사진 선택 아이콘 -->
+        <input type="file" id="photo" accept="image/*" style="display:none;"> <!-- 파일 입력 필드 -->
+      </div>
+
+      <div class="diary-section">
+        <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea> <!-- 일기 작성 텍스트 영역 -->
+      </div>
+
+      <div class="save-section">
+        <button id="saveBtn">저장하기</button> <!-- 저장 버튼 -->
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <!-- 모달 -->
 <div id="diaryModal" class="modal">
   <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
-    <!-- 날짜, 요일, 날씨 이모지를 나란히 배치할 컨테이너 -->
+    <span id="closeModal" class="close">&times;</span> <!-- 모달 닫기 버튼 -->
     <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
       <h2 id="modalDate" style="font-size: 1.5em; font-weight: bold;"></h2> <!-- 날짜 -->
       <span id="modalDay" style="font-size: 1.5em; font-weight: bold;"></span> <!-- 요일 -->
       <span id="weatherEmoji" style="font-size: 1.5em;"></span> <!-- 날씨 이모지 -->
     </div>
-    <!-- 감정 이모지를 세로로 배치할 컨테이너 -->
     <div class="emoji-container">
       <span id="emotionEmoji" style="font-size: 1.5em;"></span> <!-- 감정 이모지 -->
     </div>
-    <!-- 일기 내용 -->
-    <p id="modalDiary"></p>
-    <!-- 사진 -->
-    <img id="modalImage">
+    <p id="modalDiary"></p> <!-- 일기 내용 -->
+    <img id="modalImage"> <!-- 이미지 -->
   </div>
 </div>
 
-
-  <!-- JS 파일 -->
-  <script type="module" src="index.js"></script>
+<!-- JS 파일 -->
+<script type="module" src="index.js"></script> <!-- JavaScript 파일 연결 -->
 
 </body>
 </html>
