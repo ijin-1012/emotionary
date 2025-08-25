@@ -152,6 +152,9 @@ function openModal(data) {
     modalImage.style.display = "none"; // 사진이 없으면 숨기기
   }
 
+ 
+  // 모달을 열 때 콘솔 로그 추가
+  console.log("모달을 엽니다:", data); // 데이터 확인용 로그
   modal.style.display = "flex"; // 모달 표시
 }
 
@@ -244,7 +247,7 @@ function renderCalendar() {
         alert("이 날은 일기 안 썼어 . . 🥹");
         return;
       }
-
+      console.log("모달을 여는 데이터:", data); // 데이터 확인을 위한 로그 추가
       openModal({
         date: dateKey,
         text: data.text,
