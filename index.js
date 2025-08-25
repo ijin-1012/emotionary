@@ -181,6 +181,7 @@ modal.addEventListener("click", e => {
 });
 
 
+
 // 달력 렌더링 함수
 let currentDate = new Date(); // 현재 날짜
 function renderCalendar() {
