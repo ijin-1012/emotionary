@@ -202,17 +202,39 @@ function renderCalendar(){
         return;
       }
 
-  // 모달에 내용 채우기
-      modalDate.textContent = dateKey;
-      modalEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`;
-      modalDiary.textContent = data.text;
-      if (data.photoURL) {
-        modalImage.src = data.photoURL;
-        modalImage.style.display = "block";
-      } else {
-        modalImage.style.display = "none";
-      }
-      modal.style.display = "flex";
+  // 요일을 반환하는 함수
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return daysOfWeek[date.getDay()];
+}
+
+// 모달에 내용 채우기
+modalDate.textContent = dateKey; // 날짜 표시
+
+// 요일 계산 및 표시
+const modalDayElement = document.getElementById('modalDay'); // 요일을 표시할 요소
+modalDayElement.textContent = getDayOfWeek(dateKey); // 요일 표시
+
+// 날씨 이모지를 별도의 요소에 표시
+const weatherEmojiElement = document.getElementById('weatherEmoji'); // 날씨 이모지 표시할 요소
+weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
+
+// 감정 이모지를 별도의 요소에 표시
+const emotionEmojiElement = document.getElementById('emotionEmoji'); // 감정 이모지 표시할 요소
+emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
+
+modalDiary.textContent = data.text; // 일기 텍스트 표시
+
+if (data.photoURL) {
+  modalImage.src = data.photoURL; // 사진 표시
+  modalImage.style.display = "block";
+} else {
+  modalImage.style.display = "none"; // 사진이 없으면 숨기기
+}
+
+modal.style.display = "flex"; // 모달 표시
+
     });
 
     calendarGrid.appendChild(cell);
