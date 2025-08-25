@@ -198,7 +198,7 @@ function renderCalendar(){
     cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
       if (!data) {
-        alert("아무것도 기록하지 않았습니다 !! 😱");
+        alert("이 날은 일기 안 썼어 . . 🥹");
         return;
       }
 
