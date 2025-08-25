@@ -51,25 +51,35 @@
       width:40px; height:40px; border-radius:50%; object-fit:cover; 
     }
     .user-info span { 
-      font-weight:600; font-size:1rem; 
+      font-weight:600; 
+      font-size:1rem; 
     }
     .user-info button { 
-      padding:6px 14px; border-radius:10px; background:linear-gradient(135deg,#ffb066,#ff9043); color:#fff; font-weight:600; 
+      padding:6px 14px; 
+      border-radius:10px; 
+      background:linear-gradient(135deg,#ffb066,#ff9043); 
+      color:#fff; 
+      font-weight:600; 
     }
 
     /* 오늘 날짜 표시 스타일 */
     .today-date { 
-      text-align:center; margin:10px 0; font-size:1.2rem; 
+      text-align:center; 
+      margin:10px 0; 
+      font-size:1.2rem; 
     }
 
     /* 메인 컨테이너 스타일 */
     .container { 
-      max-width:700px; margin:0 auto; padding:15px; 
+      max-width:700px; 
+      margin:0 auto; 
+      padding:15px; 
     }
 
     /* 달력 관련 스타일 */
     .calendar-wrapper { 
-      max-width:700px; margin:0 auto; 
+      max-width:700px; 
+      margin:0 auto; 
     }
     .calendar-header { 
       display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-weight:700; font-size:1.2rem; 
@@ -238,16 +248,21 @@
     </main>
   </div>
 
-  <!-- 모달 -->
-  <div id="diaryModal" class="modal">
-    <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
-      <h2 id="modalDate"></h2>
-      <p id="modalEmotion"></p>
-      <p id="modalDiary"></p>
-      <img id="modalImage">
-    </div>
+<!-- 모달 -->
+<div id="diaryModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <!-- 날짜와 날씨 이모지를 함께 표시할 h2 요소 -->
+    <h2 id="modalDate">
+      <span id="modalWeatherEmoji"></span> <!-- 날씨 이모지를 위한 span 요소 -->
+      <span id="modalDateText"></span> <!-- 날짜 텍스트를 위한 span 요소 -->
+    </h2>
+    <!-- 감정 이모지를 표시할 span 요소 추가 -->
+    <p id="modalEmotionEmoji"></p>
+    <p id="modalDiary"></p>
+    <img id="modalImage">
   </div>
+</div>
 
   <!-- JS 파일 -->
   <script type="module" src="index.js"></script>
