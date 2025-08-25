@@ -260,22 +260,24 @@ function renderCalendar(){
     cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
       if (!data) {
-        alert("이 날에는 일기 안 썼습니다 .. 🥺");
+        alert("이 날에는 일기 안 썼다구 .. 🥺");
         return;
       }
 // 요일 이름 배열
-const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+const weekdays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 
- // 모달에 내용을 채우는 코드
- // Date 객체를 사용하여 요일 계산
+// 모달에 내용을 채우는 코드
+// Date 객체를 사용하여 요일 계산
 const date = new Date(dateKey);
 const dayOfWeek = date.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자 반환
 const weekdayName = weekdays[dayOfWeek]; // 요일 이름 가져오기
 
 // 날짜와 요일을 함께 설정
-document.getElementById('modalDateText').textContent = `${dateKey} ${weekdayName}`;
+document.getElementById('modalDateText').textContent = `${dateKey} (${weekdayName})`; // 날짜와 요일 텍스트를 설정
+
 // 날씨 이모지를 설정
-document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather);
+document.getElementById('modalWeatherEmoji').innerHTML = getWeatherEmoji(data.weather); 
+
 // 감정 이모지를 설정
 document.getElementById('modalEmotionEmoji').innerHTML = getEmotionEmoji(data.emotion);
 
@@ -385,4 +387,4 @@ saveBtn.addEventListener("click", async () => {
   };
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg);
-});
+}); 
