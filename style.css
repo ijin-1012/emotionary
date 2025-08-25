@@ -474,4 +474,4 @@ nav.nav button {
 .sad-theme { background: linear-gradient(135deg, #c0dfff, #80bfff); color: #333; }
 .angry-theme { background: linear-gradient(135deg, #ffb3b3, #ff8080); color: #333; }
 .tired-theme { background: linear-gradient(135deg, #dcdcdc, #a0a0a0); color: #333; } /* 기존 tired 테마 */
-.soso-theme { background: linear-gradient(135deg, #a0e6b7, #78c4a1); color: #333; } /* 새로 추가된 soso 테마 (초록색) */
+.soso-theme { background: linear-gradient(135deg, #a0e6b7, #78c4a1); color: #333; } /* 새로 추가된 soso 테마 (초록색) */ 

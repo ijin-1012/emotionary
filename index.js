@@ -305,4 +305,4 @@ saveBtn.addEventListener("click", async () => {
   };
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
   alert(randomMsg);
-}); 
+});  
