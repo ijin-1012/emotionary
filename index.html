@@ -169,7 +169,7 @@
     <header>⌨️ Emotionary 🖱️</header>
 
     <nav class="nav">
-      <button id="showHomeBtn">달력 🗓️</button>
+      <button id="showHomeBtn">캘린더 🗓️</button>
       <button id="showWriteBtn">기록하기 ✒️</button>
     </nav>
 
@@ -242,17 +242,22 @@
 <div id="diaryModal" class="modal">
   <div class="modal-content">
     <span id="closeModal" class="close">&times;</span>
-    <div class="date-weather-container">
-      <h2 id="modalDate"></h2>
-      <span id="weatherEmoji"></span> <!-- 날씨 이모지를 표시할 요소 -->
+    <!-- 날짜와 날씨 이모지를 나란히 배치할 컨테이너 -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <h2 id="modalDate"></h2> <!-- 날짜 -->
+      <span id="weatherEmoji"></span> <!-- 날씨 이모지 -->
     </div>
+    <!-- 감정 이모지를 세로로 배치할 컨테이너 -->
     <div class="emoji-container">
-      <span id="emotionEmoji"></span> <!-- 감정 이모지를 표시할 요소 -->
+      <span id="emotionEmoji"></span> <!-- 감정 이모지 -->
     </div>
+    <!-- 일기 내용 -->
     <p id="modalDiary"></p>
-    <img id="modalImage"> <!-- 사진 -->
+    <!-- 사진 -->
+    <img id="modalImage">
   </div>
 </div>
+
 
   <!-- JS 파일 -->
   <script type="module" src="index.js"></script>
