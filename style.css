@@ -347,17 +347,6 @@ nav.nav button {
   background: #fff;
 }
 
-/* 사진 아이콘 */
-.photo-icon {
-  font-size: 1.6rem;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.photo-icon:hover {
-  transform: scale(1.2);
-}
-
 .diary-section {
   max-width: none;
     display: flex; /* 또는 다른 레이아웃으로 변경 */

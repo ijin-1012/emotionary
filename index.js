@@ -33,7 +33,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 // === 상태 ===
 let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, text, photoURL } }
@@ -56,8 +55,6 @@ const nextMonthBtn = document.getElementById("nextMonthBtn");
 const emotionSelect = document.getElementById("emotion");
 const weatherSelect = document.getElementById("weather");
 const diaryInput = document.getElementById("diary");
-const photoInput = document.getElementById("photo");
-const photoIcon = document.getElementById("photoIcon");
 const saveBtn = document.getElementById("saveBtn");
 const modal = document.getElementById("diaryModal");
 const closeModal = document.getElementById("closeModal");
@@ -77,13 +74,6 @@ logoutBtn.addEventListener("click", async () => {
   try { await signOut(auth); } catch(err){ console.error("로그아웃 실패:", err); }
 });
 
-// === Firestore 일기 저장 ===
-async function uploadPhoto(file){
-  if(!file) return null;
-  const storageRef = ref(storage, `diaryPhotos/${auth.currentUser.uid}_${Date.now()}_${file.name}`);
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
-}
 
 async function saveDiary(diaryText, emotion, weather, photoFile){
   const photoURL = photoFile ? await uploadPhoto(photoFile) : null;
@@ -93,11 +83,9 @@ async function saveDiary(diaryText, emotion, weather, photoFile){
     text: diaryText,
     emotion,
     weather,
-    photoURL,
     createdAt: Timestamp.now()
   });
   console.log("일기 저장 ID:", docRef.id);
-  return { photoURL };
 }
 
 async function loadDiaries(){
@@ -141,11 +129,6 @@ showHomeBtn.addEventListener("click",() => {
   calendarSection.style.display="block"; 
 });
 
-// === 사진 선택 ===
-photoIcon.addEventListener("click",() => photoInput.click());
-photoInput.addEventListener("change", e => { 
-  if(e.target.files[0]) console.log("선택된 이미지:", e.target.files[0].name); 
-});
 
 // === 모달 닫기 ===
 closeModal.addEventListener("click", () => modal.style.display="none");
@@ -280,14 +263,12 @@ saveBtn.addEventListener("click", async () => {
   const diaryText = diaryInput.value;
   const emotion = emotionSelect.value;
   const weather = weatherSelect.value;
-  const photoFile = photoInput.files[0];
   const { photoURL } = await saveDiary(diaryText, emotion, weather, photoFile);
 
   const dateKey = new Date().toISOString().split("T")[0];
   diaryData[dateKey] = { emotion, weather, text: diaryText, photoURL };
 
   diaryInput.value = "";
-  photoInput.value = "";
   writeScreen.style.display = "none";
   calendarSection.style.display = "block";
   renderCalendar();
