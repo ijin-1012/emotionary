@@ -128,7 +128,7 @@ body {
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   padding: 20px; /* 내부 여백 */
-  width: 100%; /* 부모 요소의 가로폭을 100%로 설정 */
+  width: 300%; 
 }
 
 /* 일기 작성 섹션의 텍스트 영역 스타일 */
