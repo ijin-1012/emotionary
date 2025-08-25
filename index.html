@@ -84,7 +84,7 @@
       display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:5px; 
     }
     .calendar-cell { 
-      aspect-ratio:1/1; display:flex; justify-content:center; align-items:center; border:1px solid #ccc; border-radius:6px; cursor:pointer; font-weight:500; transition: all .2s; 
+      aspect-ratio:1/1; display:flex; justify-content:center; align-items:center; border:1px solid #ccc; border-radius:12px; cursor:pointer; font-weight:500; transition: all .2s; 
     }
     .calendar-cell:hover { 
       background:#f9f9f9; transform:translateY(-2px); 
@@ -169,7 +169,7 @@
     <header>⌨️ Emotionary 🖱️</header>
 
     <nav class="nav">
-      <button id="showHomeBtn">달력 🗓️</button>
+      <button id="showHomeBtn">캘린더 🗓️</button>
       <button id="showWriteBtn">기록하기 ✒️</button>
     </nav>
 
@@ -238,16 +238,23 @@
     </main>
   </div>
 
-  <!-- 모달 -->
-  <div id="diaryModal" class="modal">
-    <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
+<!-- 모달 -->
+<div id="diaryModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <div class="date-weather-container">
       <h2 id="modalDate"></h2>
-      <p id="modalEmotion"></p>
-      <p id="modalDiary"></p>
-      <img id="modalImage">
+      <span id="weatherEmoji"></span> <!-- 날씨 이모지를 표시할 요소 -->
     </div>
+    <div class="emoji-container">
+      <span id="emotionEmoji"></span> <!-- 감정 이모지를 표시할 요소 -->
+    </div>
+    <p id="modalDiary"></p>
+    <img id="modalImage"> <!-- 사진 -->
   </div>
+</div>
+
+
 
   <!-- JS 파일 -->
   <script type="module" src="index.js"></script>

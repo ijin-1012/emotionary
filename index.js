@@ -217,17 +217,29 @@ function renderCalendar() {
         return;
       }
 
-      // 모달에 내용 채우기
-      modalDate.textContent = dateKey; // 날짜 표시
-      modalEmotion.innerHTML = `${getWeatherEmoji(data.weather)} ${getEmotionEmoji(data.emotion)}`; // 날씨와 감정 이모지 표시
-      modalDiary.textContent = data.text; // 일기 텍스트 표시
-      if (data.photoURL) {
-        modalImage.src = data.photoURL; // 사진 표시
-        modalImage.style.display = "block";
-      } else {
-        modalImage.style.display = "none"; // 사진이 없으면 숨기기
-      }
-      modal.style.display = "flex"; // 모달 표시
+// 모달에 내용 채우기
+modalDate.textContent = dateKey; // 날짜 표시
+
+// 날씨 이모지를 별도의 요소에 표시
+const weatherEmojiElement = document.getElementById('weatherEmoji'); // 날씨 이모지 표시할 요소
+weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
+
+// 감정 이모지를 별도의 요소에 표시
+const emotionEmojiElement = document.getElementById('emotionEmoji'); // 감정 이모지 표시할 요소
+emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
+
+modalDiary.textContent = data.text; // 일기 텍스트 표시
+
+if (data.photoURL) {
+  modalImage.src = data.photoURL; // 사진 표시
+  modalImage.style.display = "block";
+} else {
+  modalImage.style.display = "none"; // 사진이 없으면 숨기기
+}
+
+modal.style.display = "flex"; // 모달 표시
+
+
     });
 
     calendarGrid.appendChild(cell); // 달력 그리드에 날짜 셀 추가
