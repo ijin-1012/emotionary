@@ -157,21 +157,8 @@ showHomeBtn.addEventListener("click", () => {
 
 // 사진 선택 처리
 photoIcon.addEventListener("click", () => photoInput.click()); // 사진 아이콘 클릭 시 파일 선택창 열기
-
 photoInput.addEventListener("change", e => {
-  if (e.target.files[0]) {
-    const file = e.target.files[0]; // 선택된 파일
-    console.log("선택된 이미지:", file.name); // 선택된 이미지 파일 출력
-
-    // FileReader 객체를 사용하여 이미지를 미리보기
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const imgElement = document.getElementById("photoPreview"); // 미리보기 이미지 요소
-      imgElement.src = event.target.result; // 미리보기 이미지 설정
-      document.getElementById("photoPreviewWrapper").style.display = "block"; // 미리보기 이미지 보이기
-    };
-    reader.readAsDataURL(file); // 이미지 파일을 DataURL로 읽기
-  }
+  if (e.target.files[0]) console.log("선택된 이미지:", e.target.files[0].name); // 선택된 이미지 파일 출력
 });
 
 // 모달 닫기
@@ -179,7 +166,6 @@ closeModal.addEventListener("click", () => modal.style.display = "none"); // 모
 modal.addEventListener("click", e => {
   if (e.target === modal) modal.style.display = "none"; // 모달 외부 클릭 시 모달 숨기기
 });
-
 
 // 달력 렌더링 함수
 let currentDate = new Date(); // 현재 날짜
