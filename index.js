@@ -71,16 +71,35 @@ const modalImage = document.getElementById("modalImage"); // 모달 이미지
 // Firebase 인증의 로컬 세션을 브라우저에서 지속되도록 설정 (로그아웃하지 않으면 유지됨)
 setPersistence(auth, browserLocalPersistence).catch(console.error);
 
-// 로그인 후 리디렉션 결과 확인
+// 로그인 후 리디렉션 결과 확인 (페이지가 리프레시 된 후 작동)
 getRedirectResult(auth).then((result) => {
   if (result) {
     const user = result.user;
     console.log("로그인 성공:", user);
+    // 로그인 후 사용자 정보 처리
+    loginScreen.style.display = "none";
+    mainScreen.style.display = "block";
   } else {
     console.log("로그인되지 않은 상태");
   }
 }).catch((error) => {
   console.error("로그인 실패:", error);
+});
+
+// 로그인 상태 변화 감지
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("로그인 성공:", user);
+    // 로그인된 사용자의 정보 반영
+    loginScreen.style.display = "none";
+    mainScreen.style.display = "block";
+    userName.textContent = user.displayName || "User"; // 사용자 이름 표시
+    userPhoto.src = user.photoURL || "default-photo-url"; // 사용자 사진 표시
+  } else {
+    console.log("로그인되지 않은 상태");
+    loginScreen.style.display = "flex"; // 로그인 화면 보이기
+    mainScreen.style.display = "none"; // 메인 화면 숨기기
+  }
 });
 
 // Google 로그인 버튼 클릭 이벤트 리스너
@@ -100,7 +119,6 @@ logoutBtn.addEventListener("click", async () => {
     console.error("로그아웃 실패:", err); 
   }
 });
-
 
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
