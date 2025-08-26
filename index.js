@@ -195,6 +195,22 @@ modal.addEventListener("click", e => {
   }
 });
 
+// 수정 버튼 클릭 시
+const editButton = document.getElementById('editButton');
+editButton.addEventListener("click", () => {
+  console.log("수정 버튼이 클릭되었습니다."); 
+  // 수정 기능을 위한 로직을 여기에 추가하세요
+  // 예: 입력 필드를 활성화하거나, 수정 모드로 전환 등
+});
+
+// 삭제 버튼 클릭 시
+const deleteButton = document.getElementById('deleteButton');
+deleteButton.addEventListener("click", () => {
+  console.log("삭제 버튼이 클릭되었습니다."); 
+  // 삭제 기능을 위한 로직을 여기에 추가하세요
+  // 예: 일기 데이터를 삭제하고 모달을 닫는 등
+});
+
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜
 

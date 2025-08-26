@@ -120,18 +120,27 @@
   <div class="modal-content">
     <!-- 모달 닫기 버튼 -->
     <span id="closeModal" class="close">&times;</span>
+
     <!-- 날짜, 요일, 날씨 이모지를 나란히 배치할 컨테이너 -->
     <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
       <h2 id="modalDate" style="font-size: 1.5em; font-weight: bold;"></h2> <!-- 날짜, 볼드체 -->
       <span id="modalDay" style="font-size: 1.5em; font-weight: bold;"></span> <!-- 요일, 볼드체 -->
       <span id="weatherEmoji" style="font-size: 1.5em;"></span> <!-- 날씨 이모지 -->
     </div>
+
     <!-- 감정 이모지를 세로로 배치할 컨테이너 -->
     <div class="emoji-container">
       <span id="emotionEmoji" style="font-size: 1.5em;"></span> <!-- 감정 이모지 -->
     </div>
+
     <!-- 일기 내용 -->
     <p id="modalDiary"></p>
+
+    <!-- 수정 및 삭제 버튼 -->
+    <div class="modal-buttons">
+      <button id="editButton">수정</button>
+      <button id="deleteButton">삭제</button>
+    </div>
   </div>
 </div>
 
