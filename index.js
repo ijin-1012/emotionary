@@ -1,14 +1,14 @@
 // Firebase 관련 라이브러리 불러오기
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
-  getAuth,
+  getAuth, // 두 번째 import 제거
   signInWithRedirect, 
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
   setPersistence,
   browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"; // 여기에 이미 포함됨
 import {
   getFirestore,
   collection,
@@ -95,7 +95,6 @@ logoutBtn.addEventListener("click", async () => {
     console.error("로그아웃 실패:", err); 
   }
 });
-
 
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
