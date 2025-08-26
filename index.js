@@ -1,3 +1,99 @@
+// Firebase 관련 라이브러리 불러오기
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  Timestamp
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
+
+// === Firebase 초기화 ===
+const firebaseConfig = {
+  apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
+  authDomain: "emotionary-7eb12.firebaseapp.com",
+  projectId: "emotionary-7eb12",
+  storageBucket: "emotionary-7eb12.appspot.com",
+  messagingSenderId: "811615110413",
+  appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
+};
+// Firebase 앱 초기화
+const app = initializeApp(firebaseConfig);
+
+// Firebase Auth와 Firestore, Storage 인스턴스를 초기화
+const auth = getAuth(app); // 인증
+const provider = new GoogleAuthProvider(); // Google 로그인 프로바이더
+const db = getFirestore(app); // Firestore 데이터베이스
+
+// === 상태 관리 ===
+let diaryData = {}; // 일기 데이터 객체, 날짜를 키로 감정, 날씨, 텍스트, 사진 URL을 값으로 가짐
+
+// === DOM 요소 참조 ===
+const loginScreen = document.getElementById("loginScreen"); // 로그인 화면
+const mainScreen = document.getElementById("mainScreen"); // 메인 화면
+const googleLoginBtn = document.getElementById("googleLoginBtn"); // 구글 로그인 버튼
+const logoutBtn = document.getElementById("logoutBtn"); // 로그아웃 버튼
+const userPhoto = document.getElementById("userPhoto"); // 사용자 프로필 사진
+const userName = document.getElementById("userName"); // 사용자 이름
+const calendarSection = document.getElementById("calendarSection"); // 달력 화면
+const writeScreen = document.getElementById("writeScreen"); // 일기 작성 화면
+const showHomeBtn = document.getElementById("showHomeBtn"); // 달력 보기 버튼
+const showWriteBtn = document.getElementById("showWriteBtn"); // 일기 작성 화면 보기 버튼
+const calendarGrid = document.getElementById("calendarGrid"); // 달력 날짜 그리드
+const calendarTitle = document.getElementById("calendarTitle"); // 달력 제목 (월)
+const prevMonthBtn = document.getElementById("prevMonthBtn"); // 이전 달 버튼
+const nextMonthBtn = document.getElementById("nextMonthBtn"); // 다음 달 버튼
+const emotionSelect = document.getElementById("emotion"); // 감정 선택 드롭다운
+const weatherSelect = document.getElementById("weather"); // 날씨 선택 드롭다운
+const diaryInput = document.getElementById("diary"); // 일기 작성 텍스트 영역
+const saveBtn = document.getElementById("saveBtn"); // 저장 버튼
+const modal = document.getElementById("diaryModal"); // 일기 모달
+const closeModal = document.getElementById("closeModal"); // 모달 닫기 버튼
+const modalDate = document.getElementById("modalDate"); // 모달 날짜
+const modalEmotion = document.getElementById("modalEmotion"); // 모달 감정
+const modalDiary = document.getElementById("modalDiary"); // 모달 일기 내용
+const modalImage = document.getElementById("modalImage"); // 모달 이미지
+
+// === 세션 유지 ===
+// Firebase 인증의 로컬 세션을 브라우저에서 지속되도록 설정 (로그아웃하지 않으면 유지됨)
+setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+// === 로그인/로그아웃 ===
+
+// Google 로그인 버튼 클릭 이벤트 리스너
+googleLoginBtn.addEventListener("click", async () => {
+  try {
+    // 팝업을 통해 Google 로그인 실행
+    await signInWithPopup(auth, provider);
+  } catch (err) {
+    // 로그인 실패 시 에러 출력
+    console.error("로그인 실패:", err);
+  }
+});
+
+// 로그아웃 버튼 클릭 이벤트 리스너
+logoutBtn.addEventListener("click", async () => {
+  try {
+    // 로그아웃 실행
+    await signOut(auth);
+  } catch (err) {
+    // 로그아웃 실패 시 에러 출력
+    console.error("로그아웃 실패:", err);
+  }
+});
+
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
   // Firestore에 새로운 일기 문서 추가
