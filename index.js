@@ -74,8 +74,6 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 
 // === 로그인/로그아웃 ===
 
-import { getAuth, signInWithRedirect, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
 // Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
   try {
@@ -97,6 +95,7 @@ logoutBtn.addEventListener("click", async () => {
     console.error("로그아웃 실패:", err); 
   }
 });
+
 
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
