@@ -337,7 +337,7 @@ function renderCalendar() {
 
     // 클릭 시 모달 띄우기
     cell.addEventListener("click", () => {
-      const data = diaryData[dateKey];
+      const data = diaryData[dateKey]; // 해당 날짜의 일기 데이터
       if (!data) {
         alert("이 날은 일기 안 썼어 . . 🥹"); // 일기 미작성 시 알림
         return;
@@ -355,14 +355,6 @@ function renderCalendar() {
   }
 }
 
-// === 요일을 반환하는 함수 ===
-// 주어진 날짜에 해당하는 요일을 반환
-function getDayOfWeek(dateString) {
-  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const date = new Date(dateString);
-  return daysOfWeek[date.getDay()]; // 해당 날짜의 요일 반환
-}
-
 // === 감정 이모지 함수 ===
 // 감정 값에 맞는 이모지를 반환
 function getEmotionEmoji(emotion) {
@@ -373,7 +365,34 @@ function getEmotionEmoji(emotion) {
     tired: "😴",
     soso: "😌"
   };
-  return emojis[emotion] || "🙂"; // 기본값은 '🙂' 
+  return emojis[emotion] || "🙂"; // 기본값은 '🙂'
+}
+
+// === 모달 열기 함수 ===
+function openModal(data) {
+  // 모달에 데이터 설정 및 표시
+  const modal = document.getElementById('diaryModal');
+  const modalDate = document.getElementById('modalDate');
+  const modalDayElement = document.getElementById('modalDay');
+  const weatherEmojiElement = document.getElementById('weatherEmoji');
+  const emotionEmojiElement = document.getElementById('emotionEmoji');
+  const modalDiary = document.getElementById('modalDiary');
+
+  modalDate.textContent = data.date; // 날짜 표시
+  modalDayElement.textContent = getDayOfWeek(data.date); // 요일 표시
+  weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
+  emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
+  modalDiary.textContent = data.text; // 일기 텍스트 표시
+
+  modal.style.display = "flex"; // 모달 표시
+}
+
+// === 요일을 반환하는 함수 ===
+// 주어진 날짜에 해당하는 요일을 반환
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return daysOfWeek[date.getDay()]; // 해당 날짜의 요일 반환
 }
 
 // === 날씨 이모지 함수 ===
