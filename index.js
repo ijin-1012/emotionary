@@ -86,17 +86,6 @@ googleLoginBtn.addEventListener("click", async () => {
   }
 });
 
-// 로그인 후 상태 확인
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("로그인 성공:", user);
-    // 로그인 후 사용자 정보 처리 (예: 화면에 사용자 정보 표시)
-  } else {
-    console.log("로그인되지 않은 상태");
-  }
-});
-
-
 // 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
   try { 
@@ -140,6 +129,8 @@ async function loadDiaries(){
 // === 로그인 상태 감지 ===
 onAuthStateChanged(auth, async (user) => {
   if(user){
+    console.log("로그인 성공:", user);
+
     // 로그인된 사용자가 있을 경우
     loginScreen.style.display="none"; // 로그인 화면 숨기기
     mainScreen.style.display="block"; // 메인 화면 보이기
@@ -153,7 +144,9 @@ onAuthStateChanged(auth, async (user) => {
     // 일기 데이터 로드 후 달력 렌더링
     diaryData = await loadDiaries();
     renderCalendar();
-  }else{
+  } else { 
+    console.log("로그인되지 않은 상태");
+    
     //로그인하지 않은 경우
     loginScreen.style.display="flex"; // 로그인 화면 보이기
     mainScreen.style.display="none"; // 메인 화면 숨기기
