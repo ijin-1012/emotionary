@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
   getAuth,
-  signInWithPopup,
+  signInWithRedirect, 
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
@@ -75,9 +75,14 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 
 // === 로그인/로그아웃 ===
 
+import { getAuth, signInWithRedirect, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
 // Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
   try {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    
     // Google 로그인 리디렉션 실행
     await signInWithRedirect(auth, provider);
   } catch (err) {
@@ -85,6 +90,7 @@ googleLoginBtn.addEventListener("click", async () => {
     console.error("로그인 실패:", err);
   }
 });
+
 
 // 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
@@ -151,6 +157,20 @@ onAuthStateChanged(auth, async (user) => {
     loginScreen.style.display="flex"; // 로그인 화면 보이기
     mainScreen.style.display="none"; // 메인 화면 숨기기
   }
+});
+
+// 로그인 후 리디렉션 결과 확인
+getRedirectResult(auth).then((result) => {
+  if (result) {
+    const user = result.user;
+    console.log("로그인 성공:", user);
+    // 로그인 후 사용자 정보 처리
+    // 로그인된 사용자 정보를 UI에 반영할 수 있습니다.
+  } else {
+    console.log("로그인되지 않은 상태");
+  }
+}).catch((error) => {
+  console.error("로그인 실패:", error);
 });
 
 // === 화면 전환 ===
