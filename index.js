@@ -19,6 +19,7 @@ import {
   Timestamp
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
+import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 // === Firebase 초기화 ===
 const firebaseConfig = {
@@ -233,6 +234,23 @@ document.getElementById('deleteButton').addEventListener("click", () => {
   const diaryId = document.getElementById('deleteButton').getAttribute('data-id');
   if (diaryId) {
     deleteDiary(diaryId);
+  }
+});
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("로그인 성공:", user);
+    // Firestore에서 데이터를 불러오거나 삭제 작업을 진행합니다.
+    
+    // 예시로, 사용자가 로그인한 후에 삭제 기능을 실행
+    document.getElementById('deleteButton').addEventListener("click", () => {
+      const diaryId = document.getElementById('deleteButton').getAttribute('data-id');
+      if (diaryId) {
+        deleteDiary(diaryId); // 삭제 작업 수행
+      }
+    });
+  } else {
+    console.log("로그인되지 않은 상태");
   }
 });
 
