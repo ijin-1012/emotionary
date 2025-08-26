@@ -23,7 +23,7 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Firebase 설정 정보
+// === Firebase 설정 정보 ===
 const firebaseConfig = {
   apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
   authDomain: "emotionary-7eb12.firebaseapp.com",
@@ -100,6 +100,7 @@ logoutBtn.addEventListener("click", async () => {
     console.error("로그아웃 실패:", err); 
   }
 });
+
 
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
