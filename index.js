@@ -211,6 +211,39 @@ deleteButton.addEventListener("click", () => {
   // 예: 일기 데이터를 삭제하고 모달을 닫는 등
 });
 
+// === 수정 화면 열기 함수 ===
+function openEditScreen(data) {
+  const editScreen = document.getElementById('editScreen');
+  const editDiaryText = document.getElementById('editDiaryText');
+  
+  // 수정할 일기 내용을 입력 필드에 설정
+  editDiaryText.value = data.text;
+  
+  // 수정 화면 표시
+  editScreen.style.display = "flex";
+}
+
+// 수정 취소 버튼 클릭 시
+document.getElementById('cancelEditBtn').addEventListener('click', () => {
+  document.getElementById('editScreen').style.display = 'none'; // 수정 화면 닫기
+});
+
+// 수정 버튼 클릭 시 수정 화면 열기
+document.getElementById('editButton').addEventListener("click", () => {
+  const data = { /* 수정할 일기 데이터 */ };
+  openEditScreen(data);
+});
+
+// 삭제 버튼 클릭 시
+document.getElementById('deleteButton').addEventListener("click", () => {
+  // 일기 삭제 로직 추가 (예: 서버에서 삭제)
+  
+  // 달력 셀에서 해당 일기 제거
+  console.log("일기가 삭제되었습니다.");
+  modal.style.display = "none"; // 모달 닫기
+});
+ 
+
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜
 

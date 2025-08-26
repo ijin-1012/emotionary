@@ -297,6 +297,45 @@
       font-size:28px; /* 글꼴 크기 */
       cursor:pointer; /* 클릭 가능한 손 모양 커서 */
     }
+/* 수정 화면 스타일 */
+.edit-screen {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
+}
+
+.edit-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+.edit-header button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  background-color: #ff9043;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#editDiaryText {
+  width: 80%;
+  height: 300px;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
 
 
 /* 모바일 화면 (최대 600px) */
