@@ -56,7 +56,7 @@ header {
   align-items: center; /* 세로 중앙 정렬 */
   padding: 10px; /* 내부 여백 */
   border: 1px solid #ccc; /* 테두리 */
-  border-radius: 6px; /* 둥근 모서리 */
+  border-radius: 20px; /* 둥근 모서리 */
   cursor: pointer; /* 클릭 가능 표시 */
   font-weight: 500; /* 보통 두께 */
   transition: all 0.2s; /* 트랜지션 적용 */
