@@ -70,7 +70,8 @@ const modalDiary = document.getElementById("modalDiary"); // 모달 일기 내�
 const modalImage = document.getElementById("modalImage"); // 모달 이미지
 
 // Firebase 인증의 로컬 세션을 브라우저에서 지속되도록 설정 (로그아웃하지 않으면 유지됨)
-setPersistence(auth, browserLocalPersistence).catch(console.error);
+setPersistence(auth, browserLocalPersistence)
+  .catch(console.error);
 
 // 로그인 후 리디렉션 결과 확인 (페이지가 리프레시 된 후 작동)
 getRedirectResult(auth).then((result) => {
@@ -158,46 +159,19 @@ async function loadDiaries(){
   return diaries;
 }
 
-// === 로그인 상태 감지 ===
-onAuthStateChanged(auth, async (user) => {
-  if(user){
-    console.log("로그인 성공:", user);
-
-    // 로그인된 사용자가 있을 경우
-    loginScreen.style.display="none"; // 로그인 화면 숨기기
-    mainScreen.style.display="block"; // 메인 화면 보이기
-    userName.textContent=user.displayName; // 사용자 이름 표시
-    userPhoto.src=user.photoURL; // 사용사 사진 표시
-    userPhoto.style.display="inline"; // 사진 보이기
-    logoutBtn.style.display="inline"; // 로그아웃 버튼 보이기
-    calendarSection.style.display="block"; // 달력 섹션 보이기
-    writeScreen.style.display="none"; // 일기 작성 화면 숨기기
- 
-    // 일기 데이터 로드 후 달력 렌더링
-    diaryData = await loadDiaries();
-    renderCalendar();
-  } else { 
-    console.log("로그인되지 않은 상태");
-    
-    //로그인하지 않은 경우
-    loginScreen.style.display="flex"; // 로그인 화면 보이기
-    mainScreen.style.display="none"; // 메인 화면 숨기기
-  }
-});
-
 // 로그인 후 리디렉션 결과 확인
-getRedirectResult(auth).then((result) => {
-  if (result) {
-    const user = result.user;
-    console.log("로그인 성공:", user);
+getRedirectResult(auth)
+  .then((result) => {
+    if (result) {
+      const user = result.user;
+      console.log("로그인 성공:", user);
     // 로그인 후 사용자 정보 처리
-    // 로그인된 사용자 정보를 UI에 반영할 수 있습니다.
-  } else {
-    console.log("로그인되지 않은 상태");
-  }
-}).catch((error) => {
-  console.error("로그인 실패:", error);
-});
+    } else {
+      console.log("로그인되지 않은 상태");
+    }
+  }).catch((error) => {
+    console.error("로그인 실패:", error);
+  });
 
 // === 화면 전환 ===
 // '기록하기' 버튼 클릭 시 작성 화면 보이기
