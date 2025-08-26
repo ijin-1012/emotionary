@@ -343,26 +343,6 @@ function getEmotionEmoji(emotion) {
   };
   return emojis[emotion] || "🙂"; // 기본값은 '🙂'
 }
-
-// === 모달 열기 함수 ===
-function openModal(data) {
-  // 모달에 데이터 설정 및 표시
-  const modal = document.getElementById('diaryModal');
-  const modalDate = document.getElementById('modalDate');
-  const modalDayElement = document.getElementById('modalDay');
-  const weatherEmojiElement = document.getElementById('weatherEmoji');
-  const emotionEmojiElement = document.getElementById('emotionEmoji');
-  const modalDiary = document.getElementById('modalDiary');
-
-  modalDate.textContent = data.date; // 날짜 표시
-  modalDayElement.textContent = getDayOfWeek(data.date); // 요일 표시
-  weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
-  emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
-  modalDiary.textContent = data.text; // 일기 텍스트 표시
-
-  modal.style.display = "flex"; // 모달 표시
-}
-
 // === 요일을 반환하는 함수 ===
 // 주어진 날짜에 해당하는 요일을 반환
 function getDayOfWeek(dateString) {
