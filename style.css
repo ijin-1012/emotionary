@@ -251,10 +251,11 @@ button {
   background: #fff; /* 배경 흰색 */
 }
 
-.google-btn img { 
-  width: 22px; /* 구글 아이콘 크기 */
-  height: 22px; 
-}
+  /* 이모지 크기 조정 */
+    .google-btn .google-icon {
+      font-size: 24px; /* 이모지 크기 키우기 */
+      margin-right: 8px; /* 텍스트와 간격 좁히기 */
+    }
 
 /* 메인 */
 header { 
