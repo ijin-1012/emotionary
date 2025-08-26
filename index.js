@@ -78,8 +78,8 @@ const modalDiary = document.getElementById("modalDiary"); // 모달 일기 내�
 const modalImage = document.getElementById("modalImage"); // 모달 이미지
 
 // Firebase 인증의 로컬 세션을 브라우저에서 지속되도록 설정 (로그아웃하지 않으면 유지됨)
-setPersistence(auth, browserLocalPersistence)
-  .catch(console.error);
+//setPersistence(auth, browserLocalPersistence)
+  //.catch(console.error);
 
 // 로그인 후 리디렉션 결과 확인 (페이지가 리프레시 된 후 작동)
 getRedirectResult(auth)
