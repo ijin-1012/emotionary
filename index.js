@@ -348,7 +348,6 @@ function renderCalendar() {
         text: data.text,
         emotion: data.emotion,
         weather: data.weather,
-        photoURL: data.photoURL
       });
     });
 
