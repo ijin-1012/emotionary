@@ -35,9 +35,17 @@ const firebaseConfig = {
 
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
+
+let auth, provider, db;
+try {
+  auth = getAuth(app);  // Firebase 인증 객체 초기화
+  provider = new GoogleAuthProvider(); // Google 로그인 제공자 설정
+  db = getFirestore(app);  // Firestore 데이터베이스 객체 초기화
+  console.log('Firebase 인증 및 데이터베이스 초기화 성공');
+} catch (error) {
+  console.error('Firebase 초기화 오류:', error);
+}
+;
 
 // === 상태 ===
 let diaryData = {}; 
@@ -164,20 +172,6 @@ async function loadDiaries(){
   return diaries;
 }
 
-// 로그인 후 리디렉션 결과 확인
-getRedirectResult(auth)
-  .then((result) => {
-    if (result) {
-      const user = result.user;
-      console.log("로그인 성공:", user);
-    // 로그인 후 사용자 정보 처리
-    } else {
-      console.log("로그인되지 않은 상태");
-    }
-  }).catch((error) => {
-    console.error("로그인 실패:", error);
-  });
-
 // === 화면 전환 ===
 // '기록하기' 버튼 클릭 시 작성 화면 보이기
 showWriteBtn.addEventListener("click",() => { 
@@ -207,22 +201,15 @@ function openModal(data) {
   emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
   modalDiary.textContent = data.text; // 일기 텍스트 표시
 
-  // 삭제 버튼에 diaryId 설정 (삭제 버튼에 data-id 속성으로 일기 ID 저장)
+// 삭제 버튼에 diaryId 설정 (삭제 버튼에 data-id 속성으로 일기 ID 저장)
   deleteButton.setAttribute('data-id', data.id);
 
-  // 수정 버튼 클릭 시 수정 화면 열기
-  editButton.addEventListener("click", () => {
-    console.log("수정 버튼이 클릭되었습니다.");
-    openEditScreen(data); // 수정 화면 열기
-  });
-
-  // 삭제 버튼 클릭 시 일기 삭제
-  deleteButton.addEventListener("click", () => {
-    const diaryId = deleteButton.getAttribute('data-id');
-    if (diaryId) {
-      deleteDiary(diaryId); // 삭제 작업 수행
-    }
-  });
+  // 기존 이벤트 리스너 제거 후 추가 (중복 방지)
+  editButton.removeEventListener("click", openEditScreenHandler);
+  deleteButton.removeEventListener("click", deleteDiaryHandler);
+  
+  editButton.addEventListener("click", openEditScreenHandler);
+  deleteButton.addEventListener("click", deleteDiaryHandler);
 
   // 모달 표시
   modal.style.display = "flex"; 
@@ -244,44 +231,18 @@ function openModal(data) {
   });
 }
 
-// === 일기 삭제 함수 ===
-async function deleteDiary(diaryId) {
-  const diaryRef = doc(db, "diaries", diaryId);
+// 수정 버튼 클릭 시 수정 화면 열기
+function openEditScreenHandler() {
+  openEditScreen(data); // 수정 화면 열기
+}
 
-  try {
-    await deleteDoc(diaryRef);
-    console.log("일기가 삭제되었습니다.");
-
-    // 모달 닫기
-    document.getElementById('diaryModal').style.display = "none";
-
-    // Firestore에서 데이터를 불러와 diaryData 업데이트
-    diaryData = await loadDiaries();
-
-    // 화면 초기화 및 달력 렌더링
-    renderCalendar();
-
-  } catch (error) {
-    console.error("삭제 중 오류 발생: ", error);
+// 삭제 버튼 클릭 시 일기 삭제
+function deleteDiaryHandler() {
+  const diaryId = deleteButton.getAttribute('data-id');
+  if (diaryId) {
+    deleteDiary(diaryId); // 삭제 작업 수행
   }
 }
-
-// === 수정 화면 열기 함수 ===
-function openEditScreen(data) {
-  const editScreen = document.getElementById('editScreen');
-  const editDiaryText = document.getElementById('editDiaryText');
-  
-  // 수정할 일기 내용을 입력 필드에 설정
-  editDiaryText.value = data.text;
-  
-  // 수정 화면 표시
-  editScreen.style.display = 'block';  // 수정 화면 열기
-}
-
-// 수정 취소 버튼 클릭 시
-document.getElementById('cancelEditBtn').addEventListener('click', () => {
-  document.getElementById('editScreen').style.display = 'none'; // 수정 화면 닫기
-});
 
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜 초기화
