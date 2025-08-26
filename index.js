@@ -100,14 +100,12 @@ getRedirectResult(auth)
 
 // 로그인 상태 변화 감지
 onAuthStateChanged(auth, (user) => {
-  // 로그인 상태 확인 로그 추가
-  console.log("현재 로그인 상태:", user ? "로그인됨" : "로그인 안됨");
-
   if (user) {
     console.log("로그인 성공:", user);
     // 로그인 후 사용자 정보 처리
     loginScreen.style.display = "none";
     mainScreen.style.display = "block";
+
     userName.textContent = user.displayName || "User"; // 사용자 이름 표시
     userPhoto.src = user.photoURL || "default-photo-url"; // 사용자 사진 표시
     logoutBtn.style.display = "inline"; // 로그아웃 버튼 보이기
@@ -119,6 +117,7 @@ onAuthStateChanged(auth, (user) => {
     renderCalendar();
   } else {
     console.log("로그인되지 않은 상태");
+    
     loginScreen.style.display = "flex"; // 로그인 화면 보이기
     mainScreen.style.display = "none"; // 메인 화면 숨기기
   }
