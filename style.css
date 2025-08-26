@@ -273,3 +273,27 @@
       font-size:28px; /* 글꼴 크기 */
       cursor:pointer; /* 클릭 가능한 손 모양 커서 */
     }
+    /* 모바일 화면 (최대 600px) */
+@media (max-width: 600px) {
+  header {
+    font-size: 1.4rem; /* 타이틀 폰트 크기 줄이기 */
+    padding: 15px; /* 패딩 줄이기 */
+    margin-top: 50px; /* 사용자 정보와의 간격 확보 */
+  }
+
+  .user-info {
+    top: 10px;
+    right: 12px;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr); /* 셀을 유동적으로 조정 */
+  }
+
+  .calendar-cell {
+    padding: 6px;
+    font-size: 0.8rem;
+    height: auto; /* 높이 자동 조정 */
+    min-width: 40px;
+  }
+}
