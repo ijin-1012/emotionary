@@ -237,11 +237,12 @@ async function deleteDiary(diaryId) {
     // 모달 닫기
     document.getElementById('diaryModal').style.display = "none";
 
-    // DOM에서 해당 일기 삭제
-    const diaryElement = document.getElementById(`diary-${diaryId}`);
-    if (diaryElement) {
-      diaryElement.remove();  // 일기 삭제
-    }
+    // Firestore에서 데이터를 불러와 diaryData 업데이트
+    diaryData = await loadDiaries();
+
+    // 화면 초기화 및 달력 렌더링
+    renderCalendar();
+
   } catch (error) {
     console.error("삭제 중 오류 발생: ", error);
   }
