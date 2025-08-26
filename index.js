@@ -37,6 +37,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
 // === 상태 ===
 let diaryData = {}; 
@@ -90,11 +91,18 @@ getRedirectResult(auth).then((result) => {
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log("로그인 성공:", user);
-    // 로그인된 사용자의 정보 반영
+    // 로그인 후 사용자 정보 처리
     loginScreen.style.display = "none";
     mainScreen.style.display = "block";
     userName.textContent = user.displayName || "User"; // 사용자 이름 표시
     userPhoto.src = user.photoURL || "default-photo-url"; // 사용자 사진 표시
+    logoutBtn.style.display = "inline"; // 로그아웃 버튼 보이기
+    calendarSection.style.display = "block"; // 달력 섹션 보이기
+    writeScreen.style.display = "none"; // 일기 작성 화면 숨기기
+
+    // 일기 데이터 로드 후 달력 렌더링
+    diaryData = loadDiaries();
+    renderCalendar();
   } else {
     console.log("로그인되지 않은 상태");
     loginScreen.style.display = "flex"; // 로그인 화면 보이기
@@ -119,6 +127,7 @@ logoutBtn.addEventListener("click", async () => {
     console.error("로그아웃 실패:", err); 
   }
 });
+
 
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
