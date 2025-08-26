@@ -9,7 +9,7 @@ import {
   getRedirectResult, // 여기에 추가
   setPersistence,
   browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"; // firebase-auth.js에서 제대로 import
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";  // 이 라이브러리에서 가져옵니다.
 
 import {
   getFirestore,
@@ -37,6 +37,30 @@ googleLoginBtn.addEventListener("click", async () => {
     console.error("로그인 실패:", err);
   }
 });
+
+// 로그아웃 버튼 클릭 이벤트 리스너
+logoutBtn.addEventListener("click", async () => {
+  try { 
+    // 로그아웃 실행
+    await signOut(auth); 
+  } catch(err){ 
+    console.error("로그아웃 실패:", err); 
+  }
+});
+
+// 로그인 후 리디렉션 결과 확인
+getRedirectResult(auth).then((result) => {
+  if (result) {
+    const user = result.user;
+    console.log("로그인 성공:", user);
+    // 로그인 후 사용자 정보 처리
+  } else {
+    console.log("로그인되지 않은 상태");
+  }
+}).catch((error) => {
+  console.error("로그인 실패:", error);
+});
+
 
 // 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
