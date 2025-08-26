@@ -156,7 +156,7 @@
       justify-content:center; /* 수평 중앙 정렬 */
       align-items:center; /* 수직 중앙 정렬 */
       border:1px solid #ccc; /* 셀 테두리 */
-      border-radius:6px; /* 셀 모서리 둥글게 */
+      border-radius:16px; /* 셀 모서리 둥글게 */
       cursor:pointer; /* 클릭 가능한 손 모양 커서 */
       font-weight:500; /* 글꼴 두께 */
       transition: all .2s; /* 호버 효과에 애니메이션 추가 */
