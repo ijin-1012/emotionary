@@ -78,8 +78,8 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 // Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    // 팝업 대신 리디렉션을 통해 Google 로그인 실행
-    await signInWithRedirect(auth, provider);
+    // Google 로그인 팝업 실행
+    await signInWithPopup(auth, provider);
   } catch (err) {
     // 로그인 실패 시 에러 출력
     console.error("로그인 실패:", err);
