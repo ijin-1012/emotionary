@@ -6,10 +6,10 @@ import {
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
-  getRedirectResult, // 여기에 추가
+  getRedirectResult, 
   setPersistence,
   browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";  // 이 라이브러리에서 가져옵니다.
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"; 
 
 import {
   getFirestore,
@@ -23,15 +23,69 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+// Firebase 설정 정보
+const firebaseConfig = {
+  apiKey: "AIzaSyDXyG5MIkGzUzAQH7_3JdGtysIUUanZkfg",
+  authDomain: "emotionary-7eb12.firebaseapp.com",
+  projectId: "emotionary-7eb12",
+  storageBucket: "emotionary-7eb12.appspot.com",
+  messagingSenderId: "811615110413",
+  appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
+};
+
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// === 로그인/로그아웃 ===
+// === 상태 ===
+let diaryData = {}; 
+// { "YYYY-MM-DD": { emotion, weather, text } }
+
+// === DOM 요소 참조 ===
+const loginScreen = document.getElementById("loginScreen"); // 로그인 화면
+const mainScreen = document.getElementById("mainScreen"); // 메인 화면 
+const googleLoginBtn = document.getElementById("googleLoginBtn"); // 구글 로그인 버튼
+const logoutBtn = document.getElementById("logoutBtn"); // 로그아웃 버튼
+const userPhoto = document.getElementById("userPhoto"); // 사용자 프로필 사진
+const userName = document.getElementById("userName"); // 사용자 이름
+const calendarSection = document.getElementById("calendarSection"); // 달력 화면
+const writeScreen = document.getElementById("writeScreen"); // 일기 작성 화면
+const showHomeBtn = document.getElementById("showHomeBtn"); // 달력 보기 버튼
+const showWriteBtn = document.getElementById("showWriteBtn"); // 일기 작성 화면 보기 버튼
+const calendarGrid = document.getElementById("calendarGrid"); // 달력 날짜 그리드
+const calendarTitle = document.getElementById("calendarTitle"); // 달력 제목 (month)
+const prevMonthBtn = document.getElementById("prevMonthBtn"); // 이전 달 버튼
+const nextMonthBtn = document.getElementById("nextMonthBtn"); // 다음 달 버튼
+const emotionSelect = document.getElementById("emotion"); // 감정 선택 드롭다운
+const weatherSelect = document.getElementById("weather"); // 날씨 선택 드롭다운
+const diaryInput = document.getElementById("diary"); // 일기 작성 텍스트 영역
+const saveBtn = document.getElementById("saveBtn"); // 저장 버튼
+const modal = document.getElementById("diaryModal"); // 일기 모달
+const closeModal = document.getElementById("closeModal"); // 모달 닫기 버튼
+const modalDate = document.getElementById("modalDate"); // 모달 날짜
+const modalEmotion = document.getElementById("modalEmotion"); // 모달 감정
+const modalDiary = document.getElementById("modalDiary"); // 모달 일기 내용
+const modalImage = document.getElementById("modalImage"); // 모달 이미지
+
+// Firebase 인증의 로컬 세션을 브라우저에서 지속되도록 설정 (로그아웃하지 않으면 유지됨)
+setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+// 로그인 후 리디렉션 결과 확인
+getRedirectResult(auth).then((result) => {
+  if (result) {
+    const user = result.user;
+    console.log("로그인 성공:", user);
+  } else {
+    console.log("로그인되지 않은 상태");
+  }
+}).catch((error) => {
+  console.error("로그인 실패:", error);
+});
+
+// Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    // Google 로그인 리디렉션 실행
     await signInWithRedirect(auth, provider);
   } catch (err) {
     console.error("로그인 실패:", err);
@@ -41,58 +95,8 @@ googleLoginBtn.addEventListener("click", async () => {
 // 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
   try { 
-    // 로그아웃 실행
     await signOut(auth); 
   } catch(err){ 
-    console.error("로그아웃 실패:", err); 
-  }
-});
-
-// 로그인 후 리디렉션 결과 확인
-getRedirectResult(auth).then((result) => {
-  if (result) {
-    const user = result.user;
-    console.log("로그인 성공:", user);
-    // 로그인 후 사용자 정보 처리
-  } else {
-    console.log("로그인되지 않은 상태");
-  }
-}).catch((error) => {
-  console.error("로그인 실패:", error);
-});
-
-
-// 로그아웃 버튼 클릭 이벤트 리스너
-logoutBtn.addEventListener("click", async () => {
-  try { 
-    // 로그아웃 실행
-    await signOut(auth); 
-  } catch(err){ 
-    console.error("로그아웃 실패:", err); 
-  }
-});
-
-// 로그인 후 리디렉션 결과 확인
-getRedirectResult(auth).then((result) => {
-  if (result) {
-    const user = result.user;
-    console.log("로그인 성공:", user);
-    // 로그인 후 사용자 정보 처리
-  } else {
-    console.log("로그인되지 않은 상태");
-  }
-}).catch((error) => {
-  console.error("로그인 실패:", error);
-});
-
-
-// 로그아웃 버튼 클릭 이벤트 리스너
-logoutBtn.addEventListener("click", async () => {
-  try { 
-    // 로그아웃 실행
-    await signOut(auth); 
-  } catch(err){ 
-    // 로그아웃 실패 시 에러 출력
     console.error("로그아웃 실패:", err); 
   }
 });
