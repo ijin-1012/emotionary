@@ -203,13 +203,39 @@ editButton.addEventListener("click", () => {
   // 예: 입력 필드를 활성화하거나, 수정 모드로 전환 등
 });
 
-// 삭제 버튼 클릭 시
-const deleteButton = document.getElementById('deleteButton');
-deleteButton.addEventListener("click", () => {
-  console.log("삭제 버튼이 클릭되었습니다."); 
-  // 삭제 기능을 위한 로직을 여기에 추가하세요
-  // 예: 일기 데이터를 삭제하고 모달을 닫는 등
+ // 삭제 버튼에 diaryId 설정 (삭제 버튼에 data-id 속성으로 일기 ID 저장)
+  const deleteButton = document.getElementById('deleteButton');
+  deleteButton.setAttribute('data-id', data.id);
+
+  // 일기 삭제 함수
+async function deleteDiary(diaryId) {
+  const diaryRef = doc(db, "diaries", diaryId);
+
+  try {
+    await deleteDoc(diaryRef);
+    console.log("일기가 삭제되었습니다.");
+
+    // 모달 닫기
+    document.getElementById('diaryModal').style.display = "none";
+
+    // DOM에서 해당 일기 삭제
+     const diaryElement = document.getElementById(`diary-${diaryId}`);
+    if (diaryElement) {
+      diaryElement.remove();  // 일기 삭제
+    }
+  } catch (error) {
+    console.error("삭제 중 오류 발생: ", error);
+  }
+}
+
+  // 삭제 버튼 클릭 시 호출
+document.getElementById('deleteButton').addEventListener("click", () => {
+  const diaryId = document.getElementById('deleteButton').getAttribute('data-id');
+  if (diaryId) {
+    deleteDiary(diaryId);
+  }
 });
+
 
 // === 수정 화면 열기 함수 ===
 function openEditScreen(data) {
@@ -241,27 +267,6 @@ function openEditScreen(data) {
   document.getElementById('editText').value = data.text; // 예시로 일기 텍스트 필드를 채웁니다.
   // 추가적으로 필요한 데이터도 채워줍니다.
 }
-
-// 일기 삭제 함수
-async function deleteDiary(diaryId) {
-  const diaryRef = doc(db, "diaries", diaryId);
-
-  try {
-    await deleteDoc(diaryRef);
-    console.log("일기가 삭제되었습니다.");
-    document.getElementById('diaryModal').style.display = "none";
-    // 페이지에서 일기 삭제 (예: DOM 조작)
-    document.getElementById(`diary-${diaryId}`).remove(); // 예시로 일기 요소를 삭제
-  } catch (error) {
-    console.error("삭제 중 오류 발생: ", error);
-  }
-}
-
-// 삭제 버튼 클릭 시 호출
-document.getElementById('deleteButton').addEventListener("click", () => {
-  const diaryId = /* 일기 ID를 가져오는 로직, 예: 모달에서 가져온 데이터.id */;
-  deleteDiary(diaryId);
-});
 
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜 초기화
