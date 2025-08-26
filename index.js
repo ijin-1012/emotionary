@@ -287,7 +287,6 @@ document.getElementById('editButton').addEventListener("click", () => {
   openEditScreen(data); // data를 함수로 전달
 });
 
-
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜 초기화
 
@@ -412,6 +411,7 @@ function getWeatherEmoji(weather) {
 document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
 });
+
 
 // === 이전/다음 월 버튼 ===
 // 이전 월로 이동
