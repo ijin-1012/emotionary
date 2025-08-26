@@ -264,7 +264,7 @@ function openEditScreen(data) {
   editDiaryText.value = data.text;
   
   // 수정 화면 표시
-  editScreen.style.display = "flex";
+  editScreen.style.display = 'block';  // 수정 화면 열기
 }
 
 // 수정 취소 버튼 클릭 시
@@ -277,14 +277,6 @@ document.getElementById('editButton').addEventListener("click", () => {
   const data = { /* 수정할 일기 데이터, 예를 들어 모달에서 가져온 데이터 */ };
   openEditScreen(data);
 });
-
-// 수정 화면 열기 함수
-function openEditScreen(data) {
-  // 수정 화면을 보여주고 데이터를 채워줍니다.
-  document.getElementById('editScreen').style.display = 'block';
-  document.getElementById('editText').value = data.text; // 예시로 일기 텍스트 필드를 채웁니다.
-  // 추가적으로 필요한 데이터도 채워줍니다.
-}
 
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜 초기화
