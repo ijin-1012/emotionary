@@ -80,9 +80,6 @@ import { getAuth, signInWithRedirect, GoogleAuthProvider } from "https://www.gst
 // Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    
     // Google 로그인 리디렉션 실행
     await signInWithRedirect(auth, provider);
   } catch (err) {
@@ -90,7 +87,6 @@ googleLoginBtn.addEventListener("click", async () => {
     console.error("로그인 실패:", err);
   }
 });
-
 
 // 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
