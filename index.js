@@ -78,16 +78,21 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 // Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
   try {
-    // 팝업을 통해 Google 로그인 실행
-    const result = await signInWithPopup(auth, provider);
-    // 팝업을 열 때 이러한 속성을 사용합니다.
-    const popup = window.open(result.user.photoURL, "_blank", "noopener,noreferrer");
-
-    // 로그인 처리 후 팝업을 통해 돌아온 결과 확인
-    console.log(result);
+    // 팝업 대신 리디렉션을 통해 Google 로그인 실행
+    await signInWithRedirect(auth, provider);
   } catch (err) {
     // 로그인 실패 시 에러 출력
     console.error("로그인 실패:", err);
+  }
+});
+
+// 로그인 후 상태 확인
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("로그인 성공:", user);
+    // 로그인 후 사용자 정보 처리 (예: 화면에 사용자 정보 표시)
+  } else {
+    console.log("로그인되지 않은 상태");
   }
 });
 
@@ -168,7 +173,6 @@ showHomeBtn.addEventListener("click",() => {
 });
 
 // === 모달 열기 함수 ===
-// 일기 클릭 시 모달 창 열기
 function openModal(data) {
   const modal = document.getElementById('diaryModal');
   const modalDate = document.getElementById('modalDate');
@@ -176,45 +180,53 @@ function openModal(data) {
   const weatherEmojiElement = document.getElementById('weatherEmoji');
   const emotionEmojiElement = document.getElementById('emotionEmoji');
   const modalDiary = document.getElementById('modalDiary');
+  const editButton = document.getElementById('editButton');
+  const deleteButton = document.getElementById('deleteButton');
 
   modalDate.textContent = data.date; // 날짜 표시
   modalDayElement.textContent = getDayOfWeek(data.date); // 요일 표시
   weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather); // 날씨 이모지 표시
   emotionEmojiElement.innerHTML = getEmotionEmoji(data.emotion); // 감정 이모지 표시
   modalDiary.textContent = data.text; // 일기 텍스트 표시
-   
-// 모달 표시
-  modal.style.display = "flex"; 
-  console.log("모달이 열렸습니다."); // 모달이 열리는지 로그 확인
-}
 
-// === 모달 닫기 ===
-closeModal.addEventListener("click", () => {
-  modal.style.display = "none"; // 모달 닫기 
-  console.log("모달이 닫혔습니다."); // 모달이 닫히는지 로그 확인
-});
-
-// 모달 외부 클릭 시 닫기
-modal.addEventListener("click", e => { 
-  if (e.target === modal) {
-    modal.style.display = "none"; 
-    console.log("모달이 외부 클릭으로 닫혔습니다."); // 외부 클릭 시 모달 닫힘 확인
-  }
-});
-
-// 수정 버튼 클릭 시
-const editButton = document.getElementById('editButton');
-editButton.addEventListener("click", () => {
-  console.log("수정 버튼이 클릭되었습니다."); 
-  // 수정 기능을 위한 로직을 여기에 추가하세요
-  // 예: 입력 필드를 활성화하거나, 수정 모드로 전환 등
-});
-
- // 삭제 버튼에 diaryId 설정 (삭제 버튼에 data-id 속성으로 일기 ID 저장)
-  const deleteButton = document.getElementById('deleteButton');
+  // 삭제 버튼에 diaryId 설정 (삭제 버튼에 data-id 속성으로 일기 ID 저장)
   deleteButton.setAttribute('data-id', data.id);
 
-  // 일기 삭제 함수
+  // 수정 버튼 클릭 시 수정 화면 열기
+  editButton.addEventListener("click", () => {
+    console.log("수정 버튼이 클릭되었습니다.");
+    openEditScreen(data); // 수정 화면 열기
+  });
+
+  // 삭제 버튼 클릭 시 일기 삭제
+  deleteButton.addEventListener("click", () => {
+    const diaryId = deleteButton.getAttribute('data-id');
+    if (diaryId) {
+      deleteDiary(diaryId); // 삭제 작업 수행
+    }
+  });
+
+  // 모달 표시
+  modal.style.display = "flex"; 
+  console.log("모달이 열렸습니다."); // 모달 열림 확인 로그
+
+  // === 모달 닫기 ===
+  const closeModal = document.getElementById('closeModal');
+  closeModal.addEventListener("click", () => {
+    modal.style.display = "none"; // 모달 닫기 
+    console.log("모달이 닫혔습니다."); // 모달 닫힘 확인 로그
+  });
+
+  // 모달 외부 클릭 시 닫기
+  modal.addEventListener("click", e => { 
+    if (e.target === modal) {
+      modal.style.display = "none"; 
+      console.log("모달이 외부 클릭으로 닫혔습니다."); // 외부 클릭 시 모달 닫힘 확인
+    }
+  });
+}
+
+// === 일기 삭제 함수 ===
 async function deleteDiary(diaryId) {
   const diaryRef = doc(db, "diaries", diaryId);
 
@@ -226,7 +238,7 @@ async function deleteDiary(diaryId) {
     document.getElementById('diaryModal').style.display = "none";
 
     // DOM에서 해당 일기 삭제
-     const diaryElement = document.getElementById(`diary-${diaryId}`);
+    const diaryElement = document.getElementById(`diary-${diaryId}`);
     if (diaryElement) {
       diaryElement.remove();  // 일기 삭제
     }
@@ -234,32 +246,6 @@ async function deleteDiary(diaryId) {
     console.error("삭제 중 오류 발생: ", error);
   }
 }
-
-  // 삭제 버튼 클릭 시 호출
-document.getElementById('deleteButton').addEventListener("click", () => {
-  const diaryId = document.getElementById('deleteButton').getAttribute('data-id');
-  if (diaryId) {
-    deleteDiary(diaryId);
-  }
-});
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("로그인 성공:", user);
-    // Firestore에서 데이터를 불러오거나 삭제 작업을 진행합니다.
-    
-    // 예시로, 사용자가 로그인한 후에 삭제 기능을 실행
-    document.getElementById('deleteButton').addEventListener("click", () => {
-      const diaryId = document.getElementById('deleteButton').getAttribute('data-id');
-      if (diaryId) {
-        deleteDiary(diaryId); // 삭제 작업 수행
-      }
-    });
-  } else {
-    console.log("로그인되지 않은 상태");
-  }
-});
-
 
 // === 수정 화면 열기 함수 ===
 function openEditScreen(data) {
@@ -278,20 +264,10 @@ document.getElementById('cancelEditBtn').addEventListener('click', () => {
   document.getElementById('editScreen').style.display = 'none'; // 수정 화면 닫기
 });
 
-// 수정 버튼 클릭 시 수정 화면 열기
-document.getElementById('editButton').addEventListener("click", () => {
-  // 이 부분에서 `data`를 실제로 전달해야 합니다. 예시:
-  const data = {
-    text: "수정할 일기 내용" // 수정할 실제 일기 데이터를 여기에 넣어야 합니다.
-  };
-  openEditScreen(data); // data를 함수로 전달
-});
-
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜 초기화
 
 // === 달력 렌더링 ===
-// 현재 월의 달력을 렌더링
 function renderCalendar() {
   const year = currentDate.getFullYear(); // 현재 연도
   const month = currentDate.getMonth(); // 현재 월
@@ -347,6 +323,7 @@ function renderCalendar() {
         text: data.text,
         emotion: data.emotion,
         weather: data.weather,
+        id: data.id // 일기 ID도 함께 전달
       });
     });
 
