@@ -1,48 +1,191 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <!-- 문자 인코딩 설정 (한글 처리) -->
   <meta charset="UTF-8" />
+  <!-- 뷰포트 설정 (모바일에서 적절하게 표시되도록) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <!-- 웹 페이지 제목 -->
   <title>Emotionary</title>
+
   <style>
     /* 기본 스타일 */
-    html, body { margin:0; padding:0; font-family:'Noto Sans KR',sans-serif; background:#fff; color:#222; }
-    button { cursor:pointer; border:none; outline:none; transition: all .2s ease; }
+    html, body { 
+      margin:0;  /* 기본 마진 제거 */
+      padding:0; /* 기본 패딩 제거 */
+      font-family:'Noto Sans KR',sans-serif; /* 폰트 설정 */ 
+      background:#fff; /* 배경색 설정 */
+      color:#222; /* 텍스트 색상 설정 */
+    }
+
+    /* 버튼 기본 스타일 */
+    button { 
+      cursor:pointer; /*  클릭 가능한 손 모양 커서 */
+      border:none; /* 테두리 제거 */
+      outline:none; /* 아웃라인 제거 */
+      transition: all .2s ease; /* 모든 스타일 변화에 0.2초의 애니메이션 효과 추가 */
+    }
 
     /* 로그인 화면 */
-    .login-wrapper { display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg,#a8edea,#fed6e3); }
-    .login-box { background:white; padding:50px 40px; border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,.15); width:360px; text-align:center; }
-    .google-btn { display:flex; align-items:center; justify-content:center; gap:12px; padding:14px; width:100%; border:1px solid #ddd; border-radius:8px; background:#fff; }
-    .google-btn img { width:22px; height:22px; }
+    .login-wrapper { 
+      display:flex; /* 플렉스 박스를 사용하여 중앙 정렬 */
+      justify-content:center; /* 수평 중앙 정렬 */
+      align-items:center; /* 수직 중앙 정렬 */
+      min-height:100vh; /* 화면을 꽉 채우기 위해 최소 높이를 100%로 설정 */
+      background:linear-gradient(135deg,#a8edea,#fed6e3); /* 배경 그라디언트 설정 */
+    }
+
+    .login-box { 
+      background:white; /* 흰색 배경 */
+      padding:50px 40px; /* 내부 여백 */
+      border-radius:16px; /* 둥근 모서리 */
+      box-shadow:0 12px 30px rgba(0,0,0,.15); /* 부드러운 그림자 효과 */ 
+      width:360px; /* 고정된 너비 */
+      text-align:center; /* 텍스트 가운데 정렬 */
+    }
+
+    .google-btn { 
+      display:flex; /* 플렉스 박스를 사용 */
+      align-items:center; /* 아이콘과 텍스트를 수직 정렬 */
+      justify-content:center; /* 아이콘과 텍스트를 수평 정렬 */
+      gap:12px; /* 아이콘과 텍스트 간의 간격 */
+      padding:14px; /* 내부 여백 */
+      width:100%; /* 버튼의 너비를 100%로 설정 */
+      border:1px solid #ddd; /* 연한 회색 테두리 */
+      border-radius:8px; /* 둥근 모서리 */
+      background:#fff; /* 흰색 배경 */
+    }
+      
+      .google-btn img { 
+        width:22px; /* 구글 아이콘의 너비 */
+        height:22px; /*구글 아이콘의 높이 */
+      }
+
 
     /* 메인 화면 */
-    header { text-align:center; padding:20px; font-size:1.8rem; font-weight:bold; border-bottom:2px solid #ddd; }
-    nav.nav { text-align:center; margin:15px 0; }
-    nav.nav button { background:#f5f5f5; border-radius:12px; padding:10px 20px; margin:0 8px; font-size:1.1rem; }
-    .user-info { position:absolute; top:16px; right:24px; display:flex; align-items:center; gap:12px; }
-    .user-info img { width:40px; height:40px; border-radius:50%; object-fit:cover; }
-    .user-info span { font-weight:600; font-size:1rem; }
-    .user-info button { padding:6px 14px; border-radius:10px; background:linear-gradient(135deg,#ffb066,#ff9043); color:#fff; font-weight:600; }
+    header { 
+      text-align:center; /* 헤더 텍스트 가운데 정렬 */
+      padding:20px; /* 내부 여백 */
+      font-size:1.8rem; /* 글꼴 크기 */
+      font-weight:bold; /* 글꼴 두께 */
+      border-bottom:2px solid #ddd; /* 하단에 연한 회색 테두리 */
+    }
 
-    .today-date { text-align:center; margin:10px 0; font-size:1.2rem; }
-    .container { max-width:700px; margin:0 auto; padding:15px; }
+    nav.nav { 
+      text-align:center; /* 네비게이션 버튼 중앙 정렬 */
+      margin:15px 0; /* 위 아래 마진 */
+    }
+
+    nav.nav button { 
+      background:#f5f5f5; /* 버튼 배경색 */
+      border-radius:12px; /* 버튼 모서리 둥글게 */
+      padding:10px 20px; /* 버튼 내부 여백 */
+      margin:0 8px; /* 버튼 간 간격 */
+      font-size:1.1rem; /* 버튼 텍스트 크기 */
+    }
+
+    .user-info { 
+      position:absolute; /* 절대 위치 지정 */
+      top:16px; /* 상단에서 16px 떨어지게 설정 */
+      right:24px; /* 우측에서 24px 떨어지게 설정 */
+      display:flex; /* 플렉스 박스를 사용하여 정렬 */
+      align-items:center; /* 아이콘과 텍스트를 수직 중앙에 정렬 */
+      gap:12px; /* 아이콘과 텍스트 간의 간격 */
+    }
+
+    .user-info img { 
+      width:40px; /* 프로필 이미지의 너비 */
+      height:40px; /* 프로필 이미지의 높이 */
+      border-radius:50%; /* 프로필 이미지를 원형으로 */
+      object-fit:cover; /* 이미지 비율을 맞추고 자르기 */
+    }
+
+    .user-info span { 
+      font-weight:600; /* 텍스트 두께 */
+      font-size:1rem; /* 텍스트 크기 */
+    }
+
+    .user-info button { 
+      padding:6px 14px; /* 버튼 내부 여백 */
+      border-radius:10px; /* 버튼 모서리 둥글게 */
+      background:linear-gradient(135deg,#ffb066,#ff9043); /* 그라디언트 배경 */
+      color:#fff; /* 글자 색상 흰색 */
+      font-weight:600; /* 버튼 글씨 두께 */
+    }
+
+    .today-date { 
+      text-align:center; /* 날짜 텍스트 가운데 정렬 */
+      margin:10px 0; /* 상하 마진 */
+      font-size:1.2rem; /* 글꼴 크기 */
+    }
+
+    .container { 
+      max-width:700px; /* 최대 너비 700px */
+      margin:0 auto; /* 수평 중앙 정렬 */
+      padding:15px; /* 내부 여백 */
+    }
 
     /* 달력 */
-    .calendar-wrapper { max-width:700px; margin:0 auto; }
-    .calendar-header { display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-weight:700; font-size:1.2rem; }
-    .calendar-weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-weight:bold; padding:8px 0; background:#f0f0f0; border-bottom:1px solid #ccc; }
-    .calendar-weekdays div { padding:5px 0; }
-    .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:5px; }
-    .calendar-cell { aspect-ratio:1/1; display:flex; justify-content:center; align-items:center; border:1px solid #ccc; border-radius:6px; cursor:pointer; font-weight:500; transition: all .2s; }
-    .calendar-cell:hover { background:#f9f9f9; transform:translateY(-2px); }
+    .calendar-wrapper { 
+      max-width:700px; /* 최대 너비 700px */
+      margin:0 auto; /* 수평 중앙 정렬 */
+    }
 
-        /* 작성 화면 */
+    .calendar-header { 
+      display:flex; /* 플렉스 박스 사용 */
+      justify-content:space-between; /* 좌우 정렬 */
+      align-items:center; /* 세로 중앙 정렬 */
+      padding:10px 0; /* 상하 패딩 */
+      font-weight:700; /* 글꼴 두께 */
+      font-size:1.2rem; /* 글꼴 크기 */
+    }
+
+    .calendar-weekdays { 
+      display:grid; /* 그리드 레이아웃 사용 */
+      grid-template-columns:repeat(7,1fr); /* 7개의 열을 균등하게 배치 */
+      text-align:center; /* 텍스트 가운데 정렬 */
+      font-weight:bold; /* 글꼴 두께 */
+      padding:8px 0; /* 상하 패딩 */
+      background:#f0f0f0; /* 배경 색상 */
+      border-bottom:1px solid #ccc; /* 하단 테두리 */
+    }
+
+    .calendar-weekdays div { 
+      padding:5px 0; /* 상하 패딩 */
+    }
+
+    .calendar-grid { 
+      display:grid; /* 그리드 레이아웃 사용 */
+      grid-template-columns:repeat(7,1fr); /* 7개의 열을 균등하게 배치 */
+      gap:4px; /* 셀 간 간격 */
+      margin-top:5px; /* 상단 마진 */
+    }
+
+    .calendar-cell { 
+      aspect-ratio:1/1; /* 셀을 정사각형으로 유지 */
+      display:flex; /* 플렉스 박스를 사용 */
+      justify-content:center; /* 수평 중앙 정렬 */
+      align-items:center; /* 수직 중앙 정렬 */
+      border:1px solid #ccc; /* 셀 테두리 */
+      border-radius:6px; /* 셀 모서리 둥글게 */
+      cursor:pointer; /* 클릭 가능한 손 모양 커서 */
+      font-weight:500; /* 글꼴 두께 */
+      transition: all .2s; /* 호버 효과에 애니메이션 추가 */
+    }
+
+    .calendar-cell:hover { 
+      background:#f9f9f9; /* 호버 시 배경색 변경 */
+      transform:translateY(-2px); /* 마우스 오버 시 위로 살짝 이동 */
+    }
+
+    /* 일기 작성 화면 */
     #writeScreen { 
-      display:flex; /* Flexbox 레이아웃을 사용 */
+      display:flex; /* 플렉스 박스를 사용 */
       flex-direction:column; /* 항목들을 수직으로 정렬 */
-      align-items:center; /* 항목들을 수평 중앙에 정렬 */
-      padding:20px; /* 내부 여백 추가 */
-      border-radius:12px; /* 모서리를 둥글게 */
+      align-items:center; /* 항목들을 수평 중앙 정렬 */
+      padding:20px; /* 내부 여백 */
+      border-radius:12px; /* 둥근 모서리 */
       box-shadow:0 0 15px rgba(0,0,0,.05); /* 부드러운 그림자 효과 */
       gap:15px; /* 항목 간의 간격 */
     }
@@ -68,12 +211,6 @@
     padding: 6px 10px; /* 내부 여백 */
     border-radius: 8px; /* 모서리를 둥글게 */
     border: 1px solid #ccc; /* 연한 회색 테두리 */
-  }
-
-  /* 사진 선택 아이콘 스타일 */
-  .photo-icon {
-    font-size: 1.6rem; /* 글꼴 크기 */
-    cursor: pointer; /* 마우스 포인터를 클릭 가능한 손 모양으로 변경 */
   }
 
 /* 일기 작성 섹션 스타일 */
@@ -109,11 +246,45 @@
     background: #eee; /* 연한 회색 배경 */
     font-size: 1.1rem; /* 글꼴 크기 */
   }
+
     /* 모달 */
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
-    .modal-content { background:#fff; padding:20px; border-radius:12px; max-width:400px; width:80%; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2); position:relative; }
-    .modal-content img { max-width:100%; margin-top:15px; border-radius:10px; display:none; }
-    .close { position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; }
+    .modal { 
+      display:none;  /* 기본적으로 숨김 */
+      position:fixed; /* 고정 위치 */
+      top:0; left:0; 
+      width:100%; 
+      height:100%; 
+      background-color: rgba(0,0,0,0.6); /* 반투명 검정 배경 */
+      justify-content:center; 
+      align-items:center; /* 중앙 정렬 */
+      z-index:1000; } /* 다른 요소 위에 표시 */
+
+    .modal-content { 
+      background:#fff; /* 흰색 배경 */
+      padding:20px; /* 내부 여백 */
+      border-radius:12px; /* 둥근 모서리 */
+      max-width:400px; /* 최대 너비 400px */
+      width:80%; /* 너비를 80%로 설정 */
+      text-align:center; /* 텍스트 중앙 정렬 */
+      box-shadow:0 4px 8px rgba(0,0,0,0.2); /* 그림자 */
+      position:relative; /* 상대적인 위치 지정 */
+    }
+
+    .modal-content img {
+      max-width:100%; /* 이미지를 최대 너비에 맞게 설정 */
+      margin-top:15px; /* 상단 마진 */
+      border-radius:10px; /* 이미지 모서리 둥글게 */
+      display:none; /* 이미지 기본적으로 숨김 */
+    }
+
+    /* 모달 닫기 버튼 스타일 */
+    .close { 
+      position:absolute; /* 절대 위치 */
+      top:10px; /* 상단에서 10px 떨어지게 설정 */
+      right:15px; /* 우측에서 15px 떨어지게 설정 */
+      font-size:28px; /* 글꼴 크기 */
+      cursor:pointer; /* 클릭 가능한 손 모양 커서 */
+    }
   </style>
   
   <!-- 외부 스타일시트 -->
@@ -126,29 +297,40 @@
 <!-- 로그인 화면 -->
 <div id="loginScreen" class="login-wrapper">
   <div class="login-box">
+    <!-- 로그인 화면 제목 -->
     <h1>Emotionary</h1>
+    <!-- 로그인 설명 -->
     <p class="login-desc">Google 계정으로 로그인</p>
+    <!-- Google 로그인 버튼 -->
     <button id="googleLoginBtn" class="google-btn">
       <span role="img" aria-label="google">&#127760;</span> Google 로그인
     </button>
   </div>
 </div>
 
-  <!-- 메인 화면 -->
+  <!-- 메인 화면 (로그인 후 표시) -->
   <div id="mainScreen" style="display:none;">
+    <!-- 헤더 -->
     <header>⌨️ Emotionary 🖱️</header>
 
     <nav class="nav">
+      <!-- 달력 버튼 -->
       <button id="showHomeBtn">달력 🗓️</button>
+      <!-- 기록ㅎ기 버튼 -->
       <button id="showWriteBtn">기록하기 ✒️</button>
     </nav>
 
+    <!-- 사용자 정보 (프로칠 사진 및 이름, 로그아웃 버튼) -->
     <div class="user-info">
+      <!-- 프로필 사진 (로그인 후 표시) -->
       <img id="userPhoto" style="display:none;">
+      <!-- 사용자 이름 -->
       <span id="userName"></span>
+      <!-- 로그아웃 버튼 -->
       <button id="logoutBtn" style="display:none;">로그아웃</button>
     </div>
 
+    <!-- 오늘 날씨 표시 -->
     <div id="todayDate" class="today-date"></div>
 
     <main class="container">
@@ -157,14 +339,19 @@
       <section id="calendarSection">
         <div class="calendar-wrapper">
           <div class="calendar-header">
-            <button id="prevMonthBtn">◀</button>
+            <!-- 이전 달 버튼 -->
+            <button id="prevMonthBtn">◀️</button>
+            <!-- 달력 제목 (현재 월 표시 )-->
             <span id="calendarTitle"></span>
-            <button id="nextMonthBtn">▶</button>
+            <!-- 다음 달 버튼 -->
+            <button id="nextMonthBtn">▶️</button>
           </div>
+          <!-- 요일 표시 (일 ~ 토) -->
           <div class="calendar-weekdays">
             <div>일</div><div>월</div><div>화</div>
             <div>수</div><div>목</div><div>금</div><div>토</div>
           </div>
+          <!-- 달력 날짜 그리드 -->
           <div id="calendarGrid" class="calendar-grid"></div>
         </div>
       </section>
@@ -172,6 +359,7 @@
       <!-- 작성 화면 -->
       <section id="writeScreen" style="display:none;">
         <div class="write-header">
+          <!-- 감정 선택 -->
           <label for="emotion">오늘의 감정:
             <select id="emotion">
               <option value="happy">😊 기분 좋아 ~ !</option>
@@ -181,7 +369,8 @@
               <option value="soso">😌 그냥 그려 ~</option>
             </select>
           </label>
-
+          
+          <!-- 날씨 선택-->
           <label for="weather">오늘의 날씨:
             <select id="weather">
               <option value="sunny">☀️ 해가 쨍하잖아 !</option>
@@ -191,11 +380,13 @@
               <option value="windy">💨 바람에 날라가겠어</option>
             </select>
           </label>
-
+        
+          <!-- 일기 작성 영역 -->
         <div class="diary-section">
           <textarea id="diary" placeholder="🤖 오늘 하루는 어땠나요?"></textarea>
         </div>
 
+        <!-- 저장 버튼 -->
         <div class="save-section">
           <button id="saveBtn">저장하기</button>
         </div>
@@ -207,6 +398,7 @@
 <!-- 모달 -->
 <div id="diaryModal" class="modal">
   <div class="modal-content">
+    <!-- 모달 닫기 버튼 -->
     <span id="closeModal" class="close">&times;</span>
     <!-- 날짜, 요일, 날씨 이모지를 나란히 배치할 컨테이너 -->
     <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">

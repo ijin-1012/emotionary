@@ -1,4 +1,4 @@
-// index.js
+// Firebase 관련 라이브러리 불러오기
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
   getAuth,
@@ -29,69 +29,95 @@ const firebaseConfig = {
   messagingSenderId: "811615110413",
   appId: "1:811615110413:web:6bf3ffe8c9105081ac9c44",
 };
+
+// Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
+
+// Firebase Auth와 Firestore, Storage 인스턴스를 초기화
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
 // === 상태 ===
-let diaryData = {}; // { "YYYY-MM-DD": { emotion, weather, text, photoURL } }
+let diaryData = {}; 
+// { "YYYY-MM-DD": { emotion, weather, text } }
 
-// === DOM ===
-const loginScreen = document.getElementById("loginScreen");
-const mainScreen = document.getElementById("mainScreen");
-const googleLoginBtn = document.getElementById("googleLoginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const userPhoto = document.getElementById("userPhoto");
-const userName = document.getElementById("userName");
-const calendarSection = document.getElementById("calendarSection");
-const writeScreen = document.getElementById("writeScreen");
-const showHomeBtn = document.getElementById("showHomeBtn");
-const showWriteBtn = document.getElementById("showWriteBtn");
-const calendarGrid = document.getElementById("calendarGrid");
-const calendarTitle = document.getElementById("calendarTitle");
-const prevMonthBtn = document.getElementById("prevMonthBtn");
-const nextMonthBtn = document.getElementById("nextMonthBtn");
-const emotionSelect = document.getElementById("emotion");
-const weatherSelect = document.getElementById("weather");
-const diaryInput = document.getElementById("diary");
-const saveBtn = document.getElementById("saveBtn");
-const modal = document.getElementById("diaryModal");
-const closeModal = document.getElementById("closeModal");
-const modalDate = document.getElementById("modalDate");
-const modalEmotion = document.getElementById("modalEmotion");
-const modalDiary = document.getElementById("modalDiary");
-const modalImage = document.getElementById("modalImage");
+// === DOM 요소 참조 ===
+const loginScreen = document.getElementById("loginScreen"); // 로그인 화면
+const mainScreen = document.getElementById("mainScreen"); // 메인 화면 
+const googleLoginBtn = document.getElementById("googleLoginBtn"); // 구글 로그인 버튼
+const logoutBtn = document.getElementById("logoutBtn"); // 로그아웃 버튼
+const userPhoto = document.getElementById("userPhoto"); // 사용자 프로필 사진
+const userName = document.getElementById("userName"); // 사용자 이름
+const calendarSection = document.getElementById("calendarSection"); // 달력 화면
+const writeScreen = document.getElementById("writeScreen"); // 일기 작성 화면
+const showHomeBtn = document.getElementById("showHomeBtn"); // 달력 보기 버튼
+const showWriteBtn = document.getElementById("showWriteBtn"); // 일기 작성 화면 보기 버튼
+const calendarGrid = document.getElementById("calendarGrid"); // 달력 날짜 그리드
+const calendarTitle = document.getElementById("calendarTitle"); // 달력 제목 (month)
+const prevMonthBtn = document.getElementById("prevMonthBtn"); // 이전 달 버튼
+const nextMonthBtn = document.getElementById("nextMonthBtn"); // 다음 달 버튼
+const emotionSelect = document.getElementById("emotion"); // 감정 선택 드롭다운
+const weatherSelect = document.getElementById("weather"); // 날씨 선택 드롭다운
+const diaryInput = document.getElementById("diary"); // 일기 작성 텍스트 영역
+const saveBtn = document.getElementById("saveBtn"); // 저장 버튼
+const modal = document.getElementById("diaryModal"); // 일기 모달
+const closeModal = document.getElementById("closeModal"); // 모달 닫기 버튼
+const modalDate = document.getElementById("modalDate"); // 모달 날짜
+const modalEmotion = document.getElementById("modalEmotion"); // 모달 감정
+const modalDiary = document.getElementById("modalDiary"); // 모달 일기 내용
+const modalImage = document.getElementById("modalImage"); // 모달 이미지
 
 // === 세션 유지 ===
+// Firebase 인증의 로컬 세션을 브라우저에서 지속되도록 설정 (로그아웃하지 않으면 유지됨)
 setPersistence(auth, browserLocalPersistence).catch(console.error);
 
 // === 로그인/로그아웃 ===
+
+// Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
-  try { await signInWithPopup(auth, provider); } catch(err){ console.error("로그인 실패:", err); }
+  try { 
+    // 팝업을 통해 Google 로그인 실행
+    await signInWithPopup(auth, provider);
+   } catch(err){ 
+    // 로그인 실패 시 에러 출력
+    console.error("로그인 실패:", err); 
+  }
 });
+
+// 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
-  try { await signOut(auth); } catch(err){ console.error("로그아웃 실패:", err); }
+  try { 
+    // 로그아웃 실행
+    await signOut(auth); 
+  } catch(err){ 
+    // 로그아웃 실패 시 에러 출력
+    console.error("로그아웃 실패:", err); 
+  }
 });
 
 // Firestore에 일기 저장 함수
 async function saveDiary(diaryText, emotion, weather) {
   // Firestore에 데이터 저장
   const docRef = await addDoc(collection(db, "diaries"), {
-    userId: auth.currentUser.uid,
-    date: new Date().toISOString().split("T")[0],
-    text: diaryText,
-    emotion,
-    weather,
-    createdAt: Timestamp.now()
+    userId: auth.currentUser.uid, // 사용자 ID
+    date: new Date().toISOString().split("T")[0], // 날짜 (YYYY-MM-DD 형식)
+    text: diaryText, // 일기 텍스트
+    emotion, // 감정
+    weather, // 날씨
+    createdAt: Timestamp.now() // 문서 생성 시간
   });
-  console.log("일기 저장 ID:", docRef.id);
+  console.log("일기 저장 ID:", docRef.id); // 저장된 문서의 ID를 로그로 출력
 }
 
+// Firestore에서 일기 로드 함수
 async function loadDiaries(){
+  // 현재 사용자의 일기들만 쿼리
   const q = query(collection(db,"diaries"), where("userId","==",auth.currentUser.uid));
   const snapshot = await getDocs(q);
-  const diaries = {};
+  const diaries = {}; // 날짜를 키로 저장된 일기 데이터
+
+  // 일기 데이터 순회하여 객체에 저장
   snapshot.forEach(doc => {
     const data = doc.data();
     diaries[data.date] = { text: data.text, emotion: data.emotion, weather: data.weather };
@@ -102,34 +128,40 @@ async function loadDiaries(){
 // === 로그인 상태 감지 ===
 onAuthStateChanged(auth, async (user) => {
   if(user){
-    loginScreen.style.display="none";
-    mainScreen.style.display="block";
-    userName.textContent=user.displayName;
-    userPhoto.src=user.photoURL;
-    userPhoto.style.display="inline";
-    logoutBtn.style.display="inline";
-    calendarSection.style.display="block";
-    writeScreen.style.display="none";
-
+    // 로그인된 사용자가 있을 경우
+    loginScreen.style.display="none"; // 로그인 화면 숨기기
+    mainScreen.style.display="block"; // 메인 화면 보이기
+    userName.textContent=user.displayName; // 사용자 이름 표시
+    userPhoto.src=user.photoURL; // 사용사 사진 표시
+    userPhoto.style.display="inline"; // 사진 보이기
+    logoutBtn.style.display="inline"; // 로그아웃 버튼 보이기
+    calendarSection.style.display="block"; // 달력 섹션 보이기
+    writeScreen.style.display="none"; // 일기 작성 화면 숨기기
+ 
+    // 일기 데이터 로드 후 달력 렌더링
     diaryData = await loadDiaries();
     renderCalendar();
   }else{
-    loginScreen.style.display="flex";
-    mainScreen.style.display="none";
+    //로그인하지 않은 경우
+    loginScreen.style.display="flex"; // 로그인 화면 보이기
+    mainScreen.style.display="none"; // 메인 화면 숨기기
   }
 });
 
 // === 화면 전환 ===
+// '기록하기' 버튼 클릭 시 작성 화면 보이기
 showWriteBtn.addEventListener("click",() => { 
   calendarSection.style.display="none"; 
   writeScreen.style.display="flex"; 
 });
+// '달력' 버튼 클릭 시 달력 화면 보이기
 showHomeBtn.addEventListener("click",() => { 
   writeScreen.style.display="none"; 
   calendarSection.style.display="block"; 
 });
 
 // === 모달 열기 함수 ===
+// 일기 클릭 시 모달 창 열기
 function openModal(data) {
   const modal = document.getElementById('diaryModal');
   const modalDate = document.getElementById('modalDate');
@@ -151,26 +183,31 @@ function openModal(data) {
 
 // === 모달 닫기 ===
 closeModal.addEventListener("click", () => {
-  modal.style.display = "none";
+  modal.style.display = "none"; // 모달 닫기 
   console.log("모달이 닫혔습니다."); // 모달이 닫히는지 로그 확인
 });
+
+// 모달 외부 클릭 시 닫기
 modal.addEventListener("click", e => { 
   if (e.target === modal) {
     modal.style.display = "none"; 
     console.log("모달이 외부 클릭으로 닫혔습니다."); // 외부 클릭 시 모달 닫힘 확인
   }
 });
+
 // === 초기화 ===
-let currentDate = new Date();
+let currentDate = new Date(); // 현재 날짜
 
 // === 요일을 반환하는 함수 ===
+// 주어진 날짜에 해당하는 요일을 반환
 function getDayOfWeek(dateString) {
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   const date = new Date(dateString);
-  return daysOfWeek[date.getDay()];
+  return daysOfWeek[date.getDay()]; // 해당 날짜의 요일 반환
 }
 
 // === 감정 이모지 함수 ===
+// 감정 값에 맞는 이모지를 반환
 function getEmotionEmoji(emotion) {
   const emojis = {
     happy: "😊",
@@ -179,10 +216,11 @@ function getEmotionEmoji(emotion) {
     tired: "😴",
     soso: "😌"
   };
-  return emojis[emotion] || "🙂";
+  return emojis[emotion] || "🙂"; // 기본값은 '🙂' 
 }
 
 // === 날씨 이모지 함수 ===
+// 날씨 값에 맞는 이모지를 반환
 function getWeatherEmoji(weather) {
   const emojis = {
     sunny: "☀️",
@@ -191,22 +229,23 @@ function getWeatherEmoji(weather) {
     snowy: "❄️",
     windy: "💨"
   };
-  return emojis[weather] || "🌤️";
+  return emojis[weather] || "🌤️"; // 기본값은 '🌤️'
 }
 
 // === 달력 렌더링 ===
+// 현재 월의 달력을 렌더링
 function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month + 1, 0).getDate();
+  const year = currentDate.getFullYear(); // 현재 연도
+  const month = currentDate.getMonth(); // 현재 월
+  const firstDay = new Date(year, month, 1).getDay(); // 첫날의 요일
+  const lastDate = new Date(year, month + 1, 0).getDate(); // 해당 월의 마지막 날
   const calendarTitle = document.getElementById('calendarTitle');
   const calendarGrid = document.getElementById('calendarGrid');
-  calendarTitle.textContent = `${year}년 ${month + 1}월`;
-  calendarGrid.innerHTML = "";
+  calendarTitle.textContent = `${year}년 ${month + 1}월`; // 달력 제목에 연도와 월 표시
+  calendarGrid.innerHTML = ""; // 기존 달력 그리드 내용 비우기
 
-  const emotionColor = { 
-    happy: "#ffe066", 
+  const emotionColor = { // 각 감정에 맞는 색상 설정 
+    happy: "#ffe066",  
     sad: "#74c0fc", 
     angry: "#ff6b6b", 
     tired: "#c9a0dc", 
@@ -216,14 +255,15 @@ function renderCalendar() {
   // 빈 칸 채우기
   for (let i = 0; i < firstDay; i++) calendarGrid.innerHTML += "<div></div>";
   
+  // 각 날짜별 셀 추가
   for (let d = 1; d <= lastDate; d++) {
     const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
     const cell = document.createElement("div");
     cell.className = "calendar-cell";
-    cell.dataset.date = dateKey;
-    cell.textContent = d;
+    cell.dataset.date = dateKey; // 날짜 데이터 저장
+    cell.textContent = d; // 날짜 표시
 
-    // 감정 이모지와 날짜만 표시
+    // 해당 날짜에 일기가 있으면 감정 이모지와 색상 추가
     if (diaryData[dateKey]) {
       const emotion = diaryData[dateKey].emotion;
       const color = emotionColor[emotion] || "#fff";
@@ -240,7 +280,7 @@ function renderCalendar() {
     cell.addEventListener("click", () => {
       const data = diaryData[dateKey];
       if (!data) {
-        alert("이 날은 일기 안 썼어 . . 🥹");
+        alert("이 날은 일기 안 썼어 . . 🥹"); // 일기 미작성 시 알림
         return;
       }
       console.log("모달을 여는 데이터:", data); // 데이터 확인을 위한 로그 추가
@@ -263,11 +303,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // === 이전/다음 월 버튼 ===
+// 이전 월로 이동
 prevMonthBtn.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
 });
 
+// 다음 월로 이동
 nextMonthBtn.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
   renderCalendar();
@@ -275,9 +317,9 @@ nextMonthBtn.addEventListener("click", () => {
 
 // 일기 저장 이벤트 리스너
 saveBtn.addEventListener("click", async () => {
-  const diaryText = diaryInput.value;
-  const emotion = emotionSelect.value;
-  const weather = weatherSelect.value;
+  const diaryText = diaryInput.value; // 일기 내용
+  const emotion = emotionSelect.value; // 선택된 감정
+  const weather = weatherSelect.value; // 선택된 날씨
 
   // 일기 데이터를 Firestore에 저장
   await saveDiary(diaryText, emotion, weather);
@@ -286,10 +328,10 @@ saveBtn.addEventListener("click", async () => {
   diaryData = await loadDiaries();
 
   // 화면 초기화 및 달력 렌더링
-  diaryInput.value = "";
-  writeScreen.style.display = "none";
-  calendarSection.style.display = "block";
-  renderCalendar();
+  diaryInput.value = ""; // 텍스트 영역 비우기
+  writeScreen.style.display = "none"; // 일기 작성 화면 숨기기
+  calendarSection.style.display = "block"; // 달력 화면 보이기
+  renderCalendar(); // 달력 재렌더링
 
 
   // 감정별 랜덤 메시지
@@ -325,6 +367,9 @@ saveBtn.addEventListener("click", async () => {
         "우선 이상과 현실을 정확히 구분하는 판단력을 키워 보세요 🐻",
         "그래 ~ ! 좋아, 나 결정했어 ~ 오늘 간식은 풀코스다아 ! 🐿️"]    
   };
+
+  // 랜덤 메시지를 선택하여 알림창에 표시하는 코드
   const randomMsg = messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
-  alert(randomMsg);
+  // 'messages' 객체에서 감정에 해당하는 배열을 가져오고, 그 배열에서 랜덤으로 하나의 메시지를 선택
+  alert(randomMsg); // 선택된 메시지를 알림창에 표시 
 });

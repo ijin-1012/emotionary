@@ -1,12 +1,12 @@
 /* 기본 스타일 */
 html, body { 
-  margin: 0; 
-  padding: 0; 
-  font-family: 'Noto Sans KR', sans-serif; 
-  width: 100%; 
-  min-height: 100%; 
-  background: #fff; 
-  color: #222;
+  margin: 0; /* 기본 여백 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+  font-family: 'Noto Sans KR', sans-serif; /* 한글 폰트 설정 */
+  width: 100%; /* 전체 너비 100% */
+  min-height: 100%; /* 최소 높이 100% */
+  background: #fff; /* 배경색 흰색 */
+  color: #222; /* 기본 글자 색상 */
 }
 
 /* 예시: 기본 폰트 크기 */
@@ -16,57 +16,57 @@ body {
 
 /* 메인 화면 */
 header {
-  text-align: center;
-  padding: 20px;
-  font-size: 1.8rem;
-  font-weight: bold;
-  border-bottom: 2px solid #ddd;
-  position: relative; /* 상대적 위치로 변경 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  padding: 20px; /* 패딩 20px */
+  font-size: 1.8rem; /* 글자 크기 */
+  font-weight: bold; /* 글자 두께 */
+  border-bottom: 2px solid #ddd; /* 하단에 연한 회색 선 */
+  position: relative; /* 상대적 위치로 설정 */
 }
 
 /* 사용자 정보 */
 .user-info {
-  position: fixed; /* 절대 위치로 바꿈 */
-  top: 16px; /* 위치 조정 */
-  right: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  z-index: 10; /* 위로 올리기 */
+  position: fixed; /* 절대 위치 설정 */
+  top: 16px; /* 상단 16px */
+  right: 24px; /* 오른쪽 24px */
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 수직 중앙 정렬 */
+  gap: 12px; /* 간격 12px */
+  z-index: 10; /* 다른 요소 위로 올리기 */
 }
 
 .user-info img {
-  width: 40px;
+  width: 40px; /* 이미지 크기 */
   height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+  border-radius: 50%; /* 원형으로 표시 */
+  object-fit: cover; /* 이미지 비율 맞추기 */
 }
 
 /* 달력 셀 */
 .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7개의 열을 균등 분배 */
-  gap: 4px;
-  margin-top: 5px;
+  display: grid; /* 그리드 레이아웃 */
+  grid-template-columns: repeat(7, 1fr); /* 7개의 열 */
+  gap: 4px; /* 셀 간 간격 */
+  margin-top: 5px; /* 상단 마진 */
 }
 
 .calendar-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-  height: 100%; /* 셀 높이를 부모 컨테이너에 맞게 확장 */
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  padding: 10px; /* 내부 여백 */
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 6px; /* 둥근 모서리 */
+  cursor: pointer; /* 클릭 가능 표시 */
+  font-weight: 500; /* 보통 두께 */
+  transition: all 0.2s; /* 트랜지션 적용 */
+  height: 100%; /* 부모 컨테이너 높이에 맞게 확장 */
   min-width: 40px; /* 최소 너비 */
 }
 
 .calendar-cell:hover {
-  background: #f9f9f9;
-  transform: translateY(-2px);
+  background: #f9f9f9; /* 마우스 오버 시 배경색 변경 */
+  transform: translateY(-2px); /* 위로 2px 이동 */
 }
 
 
@@ -82,101 +82,108 @@ header {
     right: 12px; /* 위치 조정 */
   }
 } 
+
   /* 로그인 화면 */
-  .login-box {
-    width: 90%;
-    padding: 40px;
-    margin: 0 auto; /* 화면 중앙에 배치 */
-  }
+.login-box {
+  width: 90%; /* 로그인 박스 너비 */
+  padding: 40px; /* 내부 여백 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
   /* 버튼 크기 조정 */
   .google-btn {
-    padding: 16px;
+    padding: 16px; /* 버튼 패딩 */
   }
 
   /* 달력 */
   .calendar-wrapper {
-    width: 100%;
-    padding: 10px;
+    width: 100%; /* 너비 100% */
+    padding: 10px; /* 내부 여백 */
   }
+
   .calendar-header {
-    font-size: 1.2rem;
-  }
+    font-size: 1.2rem; /* 글자 크기 */
+  } 
+
   #calendarTitle {
-    font-size: 1.2rem;
+    font-size: 1.2rem; /* 제목 크기 */
   }
+
   .calendar-weekdays {
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* 요일 글자 크기 */
   }
-  
+
   .calendar-cell {
-    padding: 6px;
-    font-size: 0.8rem;
-    height: 60px; /* 모바일에서 셀 높이를 고정 */
+    padding: 6px; /* 셀 패딩 */
+    font-size: 0.8rem; /* 글자 크기 */
+    height: 60px; /* 높이 고정 */
   }
 
   /* 작성 화면 */
-  #writeScreen {
-    flex-direction: column;
-    padding: 15px;
-  }
+#writeScreen {
+  flex-direction: column; /* 세로 방향으로 배치 */
+  padding: 15px; /* 내부 여백 */
+}
 
-  .write-header {
-    flex-direction: column; /* 세로로 나열 */
-  }
-  .write-header label {
-    font-size: 1rem;
-  }
+.write-header {
+  flex-direction: column; /* 세로로 나열 */
+}
 
-  .write-header select {
-    font-size: 1rem;
-    padding: 6px;
-  }
+.write-header label {
+  font-size: 1rem; /* 글자 크기 */
+}
 
-  .diary-section textarea {
-    max-width: 100%;
-    min-height: 120px;
-  }
+.write-header select {
+  font-size: 1rem; /* 드롭다운 글자 크기 */
+  padding: 6px; /* 드롭다운 패딩 */
+}
 
- .save-section button {
-  width: 100%;
-  padding: 15px 24px;
-  font-size: 1.1rem;
-  height: auto;
+.diary-section textarea {
+  max-width: 100%; /* 최대 너비 100% */
+  min-height: 120px; /* 최소 높이 120px */
+}
+
+.save-section button {
+  width: 100%; /* 버튼 너비 100% */
+  padding: 15px 24px; /* 버튼 패딩 */
+  font-size: 1.1rem; /* 글자 크기 */
+  height: auto; /* 높이 자동 */
   margin-top: 10px; /* 위쪽 여백 추가 */
-  }
+}
 
-  /* 모달 */
-  .modal-content {
-    padding: 20px;
-    max-width: 90%;
-    width: 90%;
-  }
+/* 모달 */
+.modal-content {
+  padding: 20px; /* 내부 여백 */
+  max-width: 90%; /* 최대 너비 90% */
+  width: 90%; /* 너비 90% */
+}
+
 
 /* 태블릿 화면 (최대 1024px) */
 @media (max-width: 1024px) {
   .calendar-header {
-    font-size: 1.4rem;
+    font-size: 1.4rem; /* 글자 크기 조정 */
   }
 
   .calendar-weekdays {
-    font-size: 1rem;
+    font-size: 1rem; /* 요일 글자 크기 */
   }
 
   .calendar-cell {
-    font-size: 16px; /* 글자 크기 다소 키우기 */
+    font-size: 16px; /* 글자 크기 키우기 */
   }
 
   .write-header {
-    flex-direction: row;
-    gap: 15px;
+    flex-direction: row; /* 가로로 나열 */
+    gap: 15px; /* 간격 15px */
   }
 
   .write-header label {
-    font-size: 1rem;
+    font-size: 1rem; /* 글자 크기 */
   }
 
   .write-header select {
-    font-size: 1rem;
+    font-size: 1rem; /* 드롭다운 글자 크기 */
   }
 
 /* 일기 작성 섹션 스타일 */
@@ -185,12 +192,12 @@ header {
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   padding: 20px; /* 내부 여백 */
-  width: 100%;
+  width: 100%; /* 너비 100% */
 }
 
 /* 일기 작성 섹션의 텍스트 영역 스타일 */
 .diary-section textarea {
-  width: 300%;
+  width: 300%; /* 너비 300% */
   max-width: 700px; /* 최대 너비 설정 */
   min-height: 80px; /* 최소 높이 설정 */
   padding: 14px; /* 내부 여백 */
@@ -200,81 +207,89 @@ header {
 }
 
   .save-section button {
-    width: 80%;
-    padding: 14px;
+    width: 80%; /* 너비 80% */
+    padding: 14px; /* 패딩 */
   }
 }
 
+/* 기본 버튼 스타일 */
 button { 
-  cursor: pointer; 
-  border: none; 
-  outline: none; 
-  transition: all .2s ease; 
+  cursor: pointer; /* 클릭 커서 변경 */
+  border: none; /* 테두리 없애기 */
+  outline: none; /* 아웃라인 없애기 */
+  transition: all .2s ease; /* 모든 속성에 트랜지션 적용 */
 }
 
-/* 로그인 */
+/* 로그인 화면 */
 .login-wrapper { 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  min-height: 100vh; 
-  width: 100%; 
-  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  min-height: 100vh; /* 최소 높이 100vh */
+  width: 100%; /* 너비 100% */
+  background: linear-gradient(135deg, #a8edea, #fed6e3); /* 그라데이션 배경 */
 }
+
 .login-box { 
-  background: white; 
-  padding: 50px 40px; 
-  border-radius: 16px; 
-  box-shadow: 0 12px 30px rgba(0, 0, 0, .15); 
-  width: 360px; 
-  text-align: center; 
+  background: white; /* 배경 흰색 */
+  padding: 50px 40px; /* 내부 여백 */
+  border-radius: 16px; /* 둥근 모서리 */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .15); /* 그림자 */
+  width: 360px; /* 너비 360px */
+  text-align: center; /* 텍스트 중앙 정렬 */
 }
+
 .google-btn { 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 12px; 
-  padding: 14px; 
-  width: 100%; 
-  border: 1px solid #ddd; 
-  border-radius: 8px; 
-  background: #fff; 
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  gap: 12px; /* 간격 12px */
+  padding: 14px; /* 패딩 */
+  width: 100%; /* 너비 100% */
+  border: 1px solid #ddd; /* 테두리 */
+  border-radius: 8px; /* 둥근 모서리 */
+  background: #fff; /* 배경 흰색 */
 }
+
 .google-btn img { 
-  width: 22px; 
+  width: 22px; /* 구글 아이콘 크기 */
   height: 22px; 
 }
 
 /* 메인 */
 header { 
-  text-align: center; 
-  padding: 20px; 
-  font-size: 1.8rem; 
-  font-weight: bold; 
-  border-bottom: 2px solid #ddd; 
+  text-align: center; /* 텍스트 중앙 정렬 */
+  padding: 20px; /* 내부 여백 */
+  font-size: 1.8rem; /* 글자 크기 */
+  font-weight: bold; /* 글자 두께 */
+  border-bottom: 2px solid #ddd; /* 하단에 연한 회색 선 */
 }
+
 nav.nav { 
-  text-align: center; 
-  margin: 15px 0; 
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin: 15px 0; /* 상하 마진 15px */
 }
+
 nav.nav button { 
-  background: #f5f5f5; 
-  border-radius: 12px; 
-  padding: 10px 20px; 
-  margin: 0 8px; 
-  font-size: 1.1rem; 
+  background: #f5f5f5; /* 연한 배경 */
+  border-radius: 12px; /* 둥근 모서리 */
+  padding: 10px 20px; /* 내부 여백 */
+  margin: 0 8px; /* 좌우 마진 */
+  font-size: 1.1rem; /* 글자 크기 */
 }
+
 .today-date { 
-  text-align: center; 
-  margin: 10px 0; 
-  font-size: 1.2rem; 
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin: 10px 0; /* 상하 마진 */
+  font-size: 1.2rem; /* 글자 크기 */
 }
+
 .container { 
-  max-width: 700px; 
-  margin: 0 auto; 
-  padding: 15px; 
-  display: flex; 
-  flex-direction: column; 
+  max-width: 700px; /* 최대 너비 700px */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 15px; /* 내부 여백 */
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
 }
 
 /* 달력 전체를 감싸는 컨테이너 */
@@ -337,14 +352,16 @@ nav.nav button {
 }
 
 .calendar-cell .day { 
-  font-weight: 600;
+  font-weight: 600; /* 글씨 두께 */
 }
+
 .calendar-cell .emotion { 
-  margin-top: 4px; 
-  font-size: 1.3rem; 
+  margin-top: 4px; /* 감정 이모지와 간격 */
+  font-size: 1.3rem; /* 감정 이모지 크기 */
 }
+
 .diary-border { 
-  border: 2px solid #ff9043;
+  border: 2px solid #ff9043; /* 테두리 색상 */
 }
 .happy { border-color: #ffefc1; } 
 .sad { border-color: #c1e0ff; } 
@@ -360,7 +377,7 @@ nav.nav button {
     0 0 20px #ff6ec7,
     0 0 30px #ff6ec7,
     0 0 40px #ff6ec7;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease; /* 애니메이션 */
 }
 
 .has-diary:hover {
@@ -369,39 +386,40 @@ nav.nav button {
     0 0 20px #ff6ec7,
     0 0 30px #ff6ec7,
     0 0 50px #ff6ec7,
-    0 0 70px #ff6ec7;
+    0 0 70px #ff6ec7; /* 마우스 오버 시 더 강한 네온 효과 */
   transform: scale(1.08); /* 살짝 확대 효과 */
 }
+
 /* 작성 화면 전체 */
 #writeScreen {
-  display: flex !important;
+  display: flex !important; /* Flexbox 사용 */
 }
 
 /* 헤더 영역 (감정, 날씨, 사진) */
 .write-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  width: 100%;
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 20px; /* 간격 20px */
+  flex-wrap: wrap; /* 화면에 맞게 줄바꿈 */
+  width: 100%; /* 너비 100% */
 }
 
 /* 라벨 및 드롭다운 */
 .write-header label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  font-weight: 500;
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 세로 정렬 */
+  gap: 8px; /* 간격 8px */
+  font-size: 1rem; /* 글자 크기 */
+  font-weight: 500; /* 글씨 두께 */
 }
 
 .write-header select {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
-  background: #fff;
+  padding: 6px 10px; /* 드롭다운 패딩 */
+  border-radius: 8px; /* 둥근 모서리 */
+  border: 1px solid #ccc; /* 테두리 */
+  font-size: 0.95rem; /* 글자 크기 */
+  background: #fff; /* 배경 흰색 */
 }
 
 .diary-section {
@@ -417,107 +435,113 @@ nav.nav button {
     box-sizing: border-box; /* 패딩 포함하여 너비 계산 */
 }
 
-
 /* 저장 버튼 */
 .save-section button {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 12px;
-  background: #ffb347;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
+  padding: 12px 24px; /* 패딩 */
+  font-size: 1.1rem; /* 글자 크기 */
+  font-weight: bold; /* 글자 두께 */
+  border: none; /* 테두리 없애기 */
+  border-radius: 12px; /* 둥근 모서리 */
+  background: #ffb347; /* 배경색 */
+  color: white; /* 글자 색 */
+  cursor: pointer; /* 클릭 가능 표시 */
+  transition: background 0.3s; /* 배경 색상 변화 트랜지션 */
 }
 
 .save-section button:hover {
-  background: #ff944d;
+  background: #ff944d; /* 마우스 오버 시 배경색 변화*/
 }
-
 
 /* 사용자 정보 */
 .user-info { 
-  position: absolute; 
-  top: 16px; 
-  right: 24px; 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
+  position: absolute; /* 절대 위치 */
+  top: 16px; /* 상단 16px */
+  right: 24px; /* 오른쪽 24px */
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 12px; /* 간격 12px */
 }
+
 .user-info img { 
-  width: 40px; 
-  height: 40px; 
-  border-radius: 50%; 
-  object-fit: cover;
+  width: 40px; /* 이미지 크기 */
+  height: 40px;
+  border-radius: 50%; /* 원형 */
+  object-fit: cover; /* 비율 맞추기 */
 }
+
 .user-info span { 
-  font-weight: 600; 
-  font-size: 1rem; 
+  font-weight: 600; /* 글씨 두께 */
+  font-size: 1rem; /* 글자 크기 */
 }
+
 .user-info button { 
-  padding: 6px 14px; 
-  border-radius: 10px; 
-  background: linear-gradient(135deg, #ffb066, #ff9043); 
-  color: #fff; 
-  font-weight: 600;
+  padding: 6px 14px; /* 버튼 패딩 */
+  border-radius: 10px; /* 둥근 모서리 */
+  background: linear-gradient(135deg, #ffb066, #ff9043); /* 그라데이션 배경 */
+  color: #fff; /* 글자 색 */
+  font-weight: 600; /* 글씨 두께 */
 }
 
 /* 모달 (X버튼 제거 + 바깥 클릭 닫힘 + 가로로 넓게) */
 .hidden { display: none; }
 .modal {
-  position: fixed;
+  position: fixed; /* 고정 위치 */
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  width: 100%; /* 너비 100% */
+  height: 100%; /* 높이 100% */
+  background: rgba(0, 0, 0, 0.6); /* 배경 흐림 효과 */
+  display: none; /* 기본적으로 숨김 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  z-index: 1000; /* 가장 위에 위치 */
 }
+
 .modal-content {
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 16px;
-  max-width: 600px;
-  width: 80%;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease-in-out;
+  background: #fff; /* 배경 흰색 */
+  padding: 30px 40px; /* 내부 여백 */
+  border-radius: 16px; /* 둥근 모서리 */
+  max-width: 600px; /* 최대 너비 600px */
+  width: 80%; /* 너비 80% */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 그림자 */
+  animation: fadeIn 0.3s ease-in-out; /* 페이드 인 애니메이션 */
 }
+
 #modalDate {
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
+  font-weight: 700; /* 글씨 두께 */
+  font-size: 1.4rem; /* 글자 크기 */
+  margin-bottom: 10px; /* 하단 마진 */
 }
+
 #modalEmotion {
-  font-size: 1.2rem;
-  margin-bottom: 15px;
+  font-size: 1.2rem; /* 글자 크기 */
+  margin-bottom: 15px; /* 하단 마진 */
 }
+
 #modalDiary {
-  font-size: 1rem;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  color: #444;
+  font-size: 1rem; /* 글자 크기 */
+  white-space: pre-wrap; /* 줄 바꿈 처리 */
+  line-height: 1.5; /* 줄 간격 */
+  color: #444; /* 글자 색상 */
 }
+
 #modalImage {
-  max-width: 100%;
-  margin-top: 15px;
-  border-radius: 10px;
-  display: none;
+  max-width: 100%; /* 최대 너비 100% */
+  margin-top: 15px; /* 상단 마진 */
+  border-radius: 10px; /* 둥근 모서리 */
+  display: none; /* 기본적으로 숨김 */
 }
 
 /* 애니메이션 */
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.9); } /* 시작 상태 */
+  to { opacity: 1; transform: scale(1); } /* 끝 상태 */
 }
 
 /* 감정별 테마 */
 .happy-theme { background: linear-gradient(135deg, #fff7c0, #ffe680); color: #333; }
 .sad-theme { background: linear-gradient(135deg, #c0dfff, #80bfff); color: #333; }
 .angry-theme { background: linear-gradient(135deg, #ffb3b3, #ff8080); color: #333; }
-.tired-theme { background: linear-gradient(135deg, #dcdcdc, #a0a0a0); color: #333; } /* 기존 tired 테마 */
-.soso-theme { background: linear-gradient(135deg, #a0e6b7, #78c4a1); color: #333; } /* 새로 추가된 soso 테마 (초록색) */ 
+.tired-theme { background: linear-gradient(135deg, #dcdcdc, #a0a0a0); color: #333; }
+.soso-theme { background: linear-gradient(135deg, #a0e6b7, #78c4a1); color: #333; } 
