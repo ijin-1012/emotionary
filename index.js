@@ -74,7 +74,8 @@ setPersistence(auth, browserLocalPersistence)
   .catch(console.error);
 
 // 로그인 후 리디렉션 결과 확인 (페이지가 리프레시 된 후 작동)
-getRedirectResult(auth).then((result) => {
+getRedirectResult(auth)
+  .then((result) => {
   if (result) {
     const user = result.user;
     console.log("로그인 성공:", user);
@@ -84,12 +85,16 @@ getRedirectResult(auth).then((result) => {
   } else {
     console.log("로그인되지 않은 상태");
   }
-}).catch((error) => {
+})
+.catch((error) => {
   console.error("로그인 실패:", error);
 });
 
 // 로그인 상태 변화 감지
 onAuthStateChanged(auth, (user) => {
+  // 로그인 상태 확인 로그 추가
+  console.log("현재 로그인 상태:", user ? "로그인됨" : "로그인 안됨");
+
   if (user) {
     console.log("로그인 성공:", user);
     // 로그인 후 사용자 정보 처리
