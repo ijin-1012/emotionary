@@ -37,7 +37,6 @@ const app = initializeApp(firebaseConfig);
 // Firebase Auth와 Firestore, Storage 인스턴스를 초기화
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
 
 // === 상태 ===
 let diaryData = {}; 
