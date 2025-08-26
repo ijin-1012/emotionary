@@ -230,22 +230,41 @@ document.getElementById('cancelEditBtn').addEventListener('click', () => {
 
 // 수정 버튼 클릭 시 수정 화면 열기
 document.getElementById('editButton').addEventListener("click", () => {
-  const data = { /* 수정할 일기 데이터 */ };
+  const data = { /* 수정할 일기 데이터, 예를 들어 모달에서 가져온 데이터 */ };
   openEditScreen(data);
 });
 
-// 삭제 버튼 클릭 시
+// 수정 화면 열기 함수
+function openEditScreen(data) {
+  // 수정 화면을 보여주고 데이터를 채워줍니다.
+  document.getElementById('editScreen').style.display = 'block';
+  document.getElementById('editText').value = data.text; // 예시로 일기 텍스트 필드를 채웁니다.
+  // 추가적으로 필요한 데이터도 채워줍니다.
+}
+
+// 일기 삭제 함수
+async function deleteDiary(diaryId) {
+  const diaryRef = doc(db, "diaries", diaryId);
+
+  try {
+    await deleteDoc(diaryRef);
+    console.log("일기가 삭제되었습니다.");
+    document.getElementById('diaryModal').style.display = "none";
+    // 페이지에서 일기 삭제 (예: DOM 조작)
+    document.getElementById(`diary-${diaryId}`).remove(); // 예시로 일기 요소를 삭제
+  } catch (error) {
+    console.error("삭제 중 오류 발생: ", error);
+  }
+}
+
+// 삭제 버튼 클릭 시 호출
 document.getElementById('deleteButton').addEventListener("click", () => {
-  // 일기 삭제 로직 추가 (예: 서버에서 삭제)
-  
-  // 달력 셀에서 해당 일기 제거
-  console.log("일기가 삭제되었습니다.");
-  modal.style.display = "none"; // 모달 닫기
+  const diaryId = /* 일기 ID를 가져오는 로직, 예: 모달에서 가져온 데이터.id */;
+  deleteDiary(diaryId);
 });
- 
 
 // === 초기화 ===
-let currentDate = new Date(); // 현재 날짜
+let currentDate = new Date(); // 현재 날짜 초기화
 
 // === 요일을 반환하는 함수 ===
 // 주어진 날짜에 해당하는 요일을 반환
