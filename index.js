@@ -77,14 +77,20 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 
 // Google 로그인 버튼 클릭 이벤트 리스너
 googleLoginBtn.addEventListener("click", async () => {
-  try { 
+  try {
     // 팝업을 통해 Google 로그인 실행
-    await signInWithPopup(auth, provider);
-   } catch(err){ 
+    const result = await signInWithPopup(auth, provider);
+    // 팝업을 열 때 이러한 속성을 사용합니다.
+    const popup = window.open(result.user.photoURL, "_blank", "noopener,noreferrer");
+
+    // 로그인 처리 후 팝업을 통해 돌아온 결과 확인
+    console.log(result);
+  } catch (err) {
     // 로그인 실패 시 에러 출력
-    console.error("로그인 실패:", err); 
+    console.error("로그인 실패:", err);
   }
 });
+
 
 // 로그아웃 버튼 클릭 이벤트 리스너
 logoutBtn.addEventListener("click", async () => {
@@ -274,46 +280,16 @@ document.getElementById('cancelEditBtn').addEventListener('click', () => {
 
 // 수정 버튼 클릭 시 수정 화면 열기
 document.getElementById('editButton').addEventListener("click", () => {
-  const data = { /* 수정할 일기 데이터, 예를 들어 모달에서 가져온 데이터 */ };
-  openEditScreen(data);
+  // 이 부분에서 `data`를 실제로 전달해야 합니다. 예시:
+  const data = {
+    text: "수정할 일기 내용" // 수정할 실제 일기 데이터를 여기에 넣어야 합니다.
+  };
+  openEditScreen(data); // data를 함수로 전달
 });
+
 
 // === 초기화 ===
 let currentDate = new Date(); // 현재 날짜 초기화
-
-// === 요일을 반환하는 함수 ===
-// 주어진 날짜에 해당하는 요일을 반환
-function getDayOfWeek(dateString) {
-  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const date = new Date(dateString);
-  return daysOfWeek[date.getDay()]; // 해당 날짜의 요일 반환
-}
-
-// === 감정 이모지 함수 ===
-// 감정 값에 맞는 이모지를 반환
-function getEmotionEmoji(emotion) {
-  const emojis = {
-    happy: "😊",
-    sad: "😭",
-    angry: "😡",
-    tired: "😴",
-    soso: "😌"
-  };
-  return emojis[emotion] || "🙂"; // 기본값은 '🙂' 
-}
-
-// === 날씨 이모지 함수 ===
-// 날씨 값에 맞는 이모지를 반환
-function getWeatherEmoji(weather) {
-  const emojis = {
-    sunny: "☀️",
-    cloudy: "☁️",
-    rainy: "☔",
-    snowy: "❄️",
-    windy: "💨"
-  };
-  return emojis[weather] || "🌤️"; // 기본값은 '🌤️'
-}
 
 // === 달력 렌더링 ===
 // 현재 월의 달력을 렌더링
@@ -378,6 +354,40 @@ function renderCalendar() {
 
     calendarGrid.appendChild(cell);
   }
+}
+
+// === 요일을 반환하는 함수 ===
+// 주어진 날짜에 해당하는 요일을 반환
+function getDayOfWeek(dateString) {
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return daysOfWeek[date.getDay()]; // 해당 날짜의 요일 반환
+}
+
+// === 감정 이모지 함수 ===
+// 감정 값에 맞는 이모지를 반환
+function getEmotionEmoji(emotion) {
+  const emojis = {
+    happy: "😊",
+    sad: "😭",
+    angry: "😡",
+    tired: "😴",
+    soso: "😌"
+  };
+  return emojis[emotion] || "🙂"; // 기본값은 '🙂' 
+}
+
+// === 날씨 이모지 함수 ===
+// 날씨 값에 맞는 이모지를 반환
+function getWeatherEmoji(weather) {
+  const emojis = {
+    sunny: "☀️",
+    cloudy: "☁️",
+    rainy: "☔",
+    snowy: "❄️",
+    windy: "💨"
+  };
+  return emojis[weather] || "🌤️"; // 기본값은 '🌤️'
 }
 
 // DOM이 완전히 로드된 후에 코드 실행
