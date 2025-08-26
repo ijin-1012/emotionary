@@ -71,7 +71,10 @@ googleLoginBtn.addEventListener("click", async () => {
   try { await signInWithPopup(auth, provider); } catch(err){ console.error("로그인 실패:", err); }
 });
 logoutBtn.addEventListener("click", async () => {
-  try { await signOut(auth); } catch(err){ console.error("로그아웃 실패:", err); }
+  try { await signOut(auth);
+    console.log("로그아웃 성공");
+   } catch(err){ console.error("로그아웃 실패:", err); 
+   }
 }); 
 
 // Firestore에 일기 저장 함수
@@ -99,21 +102,23 @@ async function loadDiaries(){
   return diaries;
 }
 
-// === 로그인 상태 감지 ===
+// 로그인 상태 감지
 onAuthStateChanged(auth, async (user) => {
-  if(user){
+  if(user) {
+    console.log('로그인된 사용자:', user); // 사용자 정보 출력
+
     loginScreen.style.display="none";
     mainScreen.style.display="block";
-    userName.textContent=user.displayName;
-    userPhoto.src=user.photoURL;
-    userPhoto.style.display="inline";
-    logoutBtn.style.display="inline";
+    userName.textContent=user.displayName;  // 사용자 이름 업데이트
+    userPhoto.src=user.photoURL;  // 사용자 사진 업데이트
+    userPhoto.style.display="inline";  // 사용자 사진 표시
+    logoutBtn.style.display="inline";  // 로그아웃 버튼 표시
     calendarSection.style.display="block";
     writeScreen.style.display="none";
 
     diaryData = await loadDiaries();
     renderCalendar();
-  }else{
+  } else {
     loginScreen.style.display="flex";
     mainScreen.style.display="none";
   }
