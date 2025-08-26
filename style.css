@@ -266,28 +266,12 @@
       position:relative; /* 상대적인 위치 지정 */
     }
 
-/* 모달 버튼들을 오른쪽 하단에 배치하기 위한 스타일 */
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 80%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: flex-end; /* 버튼들을 오른쪽으로 정렬 */
-  gap: 10px; /* 버튼 간의 간격 */
-  margin-top: auto; /* 버튼들이 컨테이너의 아래쪽으로 이동 */
-  align-self: flex-end; /* 버튼들을 모달의 오른쪽 끝으로 정렬 */
-}
-
+    .modal-content img {
+      max-width:100%; /* 이미지를 최대 너비에 맞게 설정 */
+      margin-top:15px; /* 상단 마진 */
+      border-radius:10px; /* 이미지 모서리 둥글게 */
+      display:none; /* 이미지 기본적으로 숨김 */
+    }
 
     /* 모달 닫기 버튼 스타일 */
     .close { 
@@ -297,46 +281,6 @@
       font-size:28px; /* 글꼴 크기 */
       cursor:pointer; /* 클릭 가능한 손 모양 커서 */
     }
-/* 수정 화면 스타일 */
-.edit-screen {
-  display: none; /* 기본적으로 숨김 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  flex-direction: column;
-}
-
-.edit-header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px;
-}
-
-.edit-header button {
-  padding: 8px 16px;
-  border-radius: 5px;
-  background-color: #ff9043;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-#editDiaryText {
-  width: 80%;
-  height: 300px;
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
 
 /* 모바일 화면 (최대 600px) */
 @media (max-width: 600px) {
