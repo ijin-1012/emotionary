@@ -219,8 +219,8 @@ function renderCalendar() {
     sad: "#74c0fc", 
     angry: "#ff6b6b", 
     tired: "#c9a0dc", 
-    soso: "#a0dcb2ff",
-    full: "#ff77b4"
+    soso: "#ff77b4",
+    full: "#a0dcb2ff"
   };
 
   // 빈 칸 채우기
