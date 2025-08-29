@@ -195,10 +195,10 @@ function getWeatherEmoji(weather) {
     sunny: "☀️",
     cloudy: "☁️",
     rainy: "☔",
-    snowy: "❄️",
+    snowy: "☃️",
     windy: "💨",
-    hot: "🥵",
-    cold: "🥶"
+    hot: "🔥",
+    cold: "❄️"
   };
   return emojis[weather] || "🌤️";
 }
